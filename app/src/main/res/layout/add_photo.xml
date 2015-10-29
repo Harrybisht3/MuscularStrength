@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/select_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:background="@color/red">
+
+            <ImageView
+                android:id="@+id/backBtn"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:src="@drawable/nav_back_btn" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rel_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:background="@color/bg">
+            <app.android.muscularstrength.custom.GridViewWithHeaderAndFooter
+                android:id="@+id/selectedgallery"
+                android:visibility="gone"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:horizontalSpacing="@dimen/_10sdp"
+                android:verticalSpacing="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:numColumns="2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></app.android.muscularstrength.custom.GridViewWithHeaderAndFooter>
+
+            <Button
+                android:id="@+id/select_photos"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_centerInParent="true"
+                android:background="@color/red"
+                android:padding="@dimen/_10sdp"
+                android:text="Select Photos"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/selectionGridlayout"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/rel_layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/cancelBtn"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:src="@android:drawable/ic_menu_close_clear_cancel" />
+
+            <Spinner
+                android:id="@+id/selection_sp"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/spinner_bg"></Spinner>
+        </RelativeLayout>
+        <GridView
+            android:id="@+id/imageGallery"
+            android:numColumns="4"
+            android:layout_below="@+id/rel_layout1"
+            android:layout_above="@+id/bottom"
+            android:verticalSpacing="@dimen/_2sdp"
+            android:horizontalSpacing="@dimen/_2sdp"
+            android:layout_marginLeft="@dimen/_2sdp"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </GridView>
+        <RelativeLayout
+            android:id="@+id/bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <ImageView
+                android:id="@+id/camera"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:src="@android:drawable/ic_menu_camera" />
+
+            <TextView
+                android:id="@+id/choosetxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="@dimen/_10sdp"
+                android:text="Choose photos"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/selectedsize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/edittext_bg"
+                android:drawableRight="@drawable/membership_option_tick"
+                android:padding="@dimen/_10sdp"
+                android:text="10"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_20sdp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
