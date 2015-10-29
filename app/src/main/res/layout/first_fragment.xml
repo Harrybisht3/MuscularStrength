@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/edittext_bg">
+
+                <ImageView
+                    android:id="@+id/circleindicator"
+                    android:layout_width="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:src="@drawable/circle" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/circleindicator"
+                    android:layout_alignRight="@+id/circleindicator"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_18sdp" />
+
+                <TextView
+                    android:id="@+id/firststep"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/circleindicator"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:text="@string/membershipoption"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_18sdp" />
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/verify_txt"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:textColor="@color/white"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textSize="@dimen/_16sdp"
+                android:padding="@dimen/_10sdp"
+                android:text="@string/verify_mem"
+                android:layout_height="wrap_content" />
+            <Spinner
+                android:id="@+id/member_sp"
+                android:layout_width="match_parent"
+                android:background="@drawable/spinner_bg"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"></Spinner>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/tick1"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/membership_option_tick"
+                    android:layout_height="@dimen/_25sdp" />
+                <TextView
+                    android:id="@+id/member_txt"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tick1"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:text="@string/create_cust"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/tick2"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/membership_option_tick"
+                    android:layout_height="@dimen/_25sdp" />
+                <TextView
+                    android:id="@+id/submitcontent_txt"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tick2"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:text="@string/submit_con"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/tick3"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/membership_option_tick"
+                    android:layout_height="@dimen/_25sdp" />
+                <TextView
+                    android:id="@+id/becomeaff_txt"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tick3"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:text="@string/become_aff"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/tick4"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/membership_option_tick"
+                    android:layout_height="@dimen/_25sdp" />
+                <TextView
+                    android:id="@+id/particpate_txt"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tick4"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:text="@string/participate"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/tick5"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/membership_option_tick"
+                    android:layout_height="@dimen/_25sdp" />
+                <TextView
+                    android:id="@+id/enter_con_txt"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tick5"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:text="@string/enter_cont"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/tick6"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/membership_option_tick"
+                    android:layout_height="@dimen/_25sdp" />
+                <TextView
+                    android:id="@+id/ask_questtxt"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tick6"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:text="@string/ask_ques"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_13sdp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:background="@color/next_previous"
+                android:layout_height="@dimen/_50sdp"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_10sdp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/previous"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/previous_btn"
+                        android:layout_height="@dimen/_20sdp" />
+                    <TextView
+                        android:id="@+id/previous_txt"
+                        android:textColor="@color/cat_color"
+                        android:textSize="@dimen/_13sdp"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:text="@string/previous"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <ImageView
+                    android:id="@+id/thumb"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/next_previous_divider"
+                    android:layout_height="@dimen/_20sdp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/next_txt"
+                        android:textColor="@color/cat_color"
+                        android:textSize="@dimen/_13sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:text="@string/next"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <ImageView
+                        android:id="@+id/next"
+                        android:layout_width="@dimen/_20sdp"
+                        android:src="@drawable/next_btn"
+                        android:layout_height="@dimen/_20sdp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+            <include android:id="@+id/footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/footer_layout"></include>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
