@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="nav_items">
+        <item>HOME</item>
+       <!-- <item>NEWSFEED</item>
+        <item>PROFILE</item>
+        <item>MY ACCOUNT</item>
+        <item>MY CONTENT</item>
+        <item>LIFTS</item>
+        <item>CUSTOMIZE AVATAR</item>
+        <item>EDIT PROFILE</item>
+        <item>ACCOUNT SETTING</item>
+        <item>FRIENDS</item>
+        <item>MANAGE PHOTOS</item>
+        <item>MANAGE VIDEOS</item>-->
+        <item>LOGOUT</item>
+    </string-array>
+    <string-array name="comman_arrays">
+        <item>BOARD</item>
+        <item>STORY</item>
+        <item>PHOTOS</item>
+        <item>VIDEOS</item>
+        <item>ROUTINES</item>
+        <item>MEAL PLAN</item>
+        <item>LIFTS</item>
+        <item>PROGRESS</item>
+    </string-array>
+
+</resources>
