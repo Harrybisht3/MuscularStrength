@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/userimg"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="@dimen/_60sdp"
+        app:border_width="1dp"
+        app:border_color="@android:color/transparent"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_alignTop="@+id/userimg"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/userimg"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="wrap_content"
+            android:text="time ago"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            android:textSize="@dimen/_12sdp"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/text_user"
+            android:layout_width="wrap_content"
+            android:text="time ago"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/cat_color"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/acceptBtn"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/friend_request_btn_accept_icon"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp" />
+            <TextView
+                android:id="@+id/accept_txt"
+                android:text="@string/accept"
+                android:textSize="@dimen/_12sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_width="wrap_content"
+                android:textColor="@color/accept"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/acceptBtn"/>
+            <ImageView
+                android:id="@+id/denyBtn"
+                android:layout_width="@dimen/_20sdp"
+                android:src="@drawable/friend_request_btn_deny_icon"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_toRightOf="@+id/accept_txt"
+                android:layout_height="@dimen/_15sdp" />
+            <TextView
+                android:id="@+id/deny_txt"
+                android:text="@string/deny"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="normal"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_toRightOf="@+id/denyBtn"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>
