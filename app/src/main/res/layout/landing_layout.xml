@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/landing_bg"
+    android:orientation="vertical">
+    <ImageView
+        android:id="@+id/logo_dash"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/landing_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_height="@dimen/_120sdp" />
+
+    <RelativeLayout
+        android:id="@+id/pager_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center" />
+
+    </RelativeLayout>
+    <com.viewpagerindicator.CirclePageIndicator
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/indicator"
+        android:layout_above="@+id/signupBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:fillColor="@color/white"
+        app:pageColor="@color/cat_color"
+        app:strokeColor="@color/cat_color"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:padding="@dimen/_10sdp" />
+
+
+
+        <Button
+            android:id="@+id/signupBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_55sdp"
+            android:textStyle="bold"
+            android:textSize="@dimen/_18sdp"
+            android:text="@string/signUp"
+            android:layout_above="@+id/loginNowBtn"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/btn_transparent_bg"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/loginNowBtn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_55sdp"
+            android:textStyle="bold"
+            android:textSize="@dimen/_18sdp"
+            android:layout_above="@+id/copyrighttxt"
+            android:background="@drawable/login_btn_bg"
+            android:layout_margin="@dimen/_10sdp"
+            android:text="@string/login_now"
+            android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/copyrighttxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/_10sdp"
+            android:alpha=".5"
+            android:layout_centerHorizontal="true"
+            android:text="@string/copyright"
+            android:textColor="@color/white"
+            android:drawablePadding="@dimen/_10sdp"
+            android:layout_alignParentBottom="true"/>
+
+
+
+
+</RelativeLayout>
