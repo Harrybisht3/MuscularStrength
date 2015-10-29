@@ -31,6 +31,7 @@ import java.util.List;
 import app.android.muscularstrength.R;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.AddPhotoActivity;
+import app.android.muscularstrength.activity.CreateAlbumActivity;
 import app.android.muscularstrength.activity.DashBoardActivity;
 import app.android.muscularstrength.adapter.AlbumAdapter;
 import app.android.muscularstrength.model.Album;
@@ -123,7 +124,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
             @Override
             public void run() {
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("userid", "" + 118495);
+                params.put("userid", "" + userObj.getUserId());
                  /* params.put("display","15");*/
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.photos, "GET", params);
@@ -177,13 +178,24 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.createAlbum:
+                Intent it1=new Intent(getActivity(), CreateAlbumActivity.class);
+                startActivityForResult(it1,3);
                 break;
             case R.id.addPhotos:
                 Intent it=new Intent(getActivity(), AddPhotoActivity.class);
                 startActivity(it);
                 break;
+
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==getActivity().RESULT_OK){
+            getPhoto();
         }
     }
 }
