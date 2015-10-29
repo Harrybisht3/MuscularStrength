@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/album_name"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/rect_bg"
+        android:hint="Album Name"
+        android:padding="@dimen/_10sdp"
+        android:textColorHint="@color/cat_color" />
+
+    <Spinner
+        android:id="@+id/shareoption_sp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/spwhite_bg"
+        android:padding="@dimen/_10sdp" />
+
+    <EditText
+        android:id="@+id/album_caption"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_margin="@dimen/_10sdp"
+        android:background="@drawable/rect_bg"
+        android:gravity="start"
+        android:hint="Add a caption..."
+        android:padding="@dimen/_10sdp"
+        android:textColorHint="@color/cat_color" />
+
+    <Button
+        android:id="@+id/createalbumBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/red"
+        android:padding="@dimen/_10sdp"
+        android:text="@string/createalbum"
+        android:textColor="@color/white" />
+
+    <include
+        layout="@layout/footer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></include>
+
+</LinearLayout>
