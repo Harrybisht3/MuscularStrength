@@ -16,6 +16,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ import app.android.muscularstrength.R;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.adapter.SelectedImageAdapter;
 import app.android.muscularstrength.custom.GridViewWithHeaderAndFooter;
+import app.android.muscularstrength.model.PhotoParser;
 import app.android.muscularstrength.webservice.WebServices;
 
 /**
@@ -64,9 +66,12 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     List<String> selectedFiles;
     RelativeLayout selectView, selectionView;
     TextView textselect;
+    ArrayList<String> al_id;
+    ArrayList<String> al_name;
     ProgressDialog pDialog;
     int countUpload = 0;
     ImageView actionbarmenu,back_Btn;
+    TextView title;
     Spinner sp_album,selection_sp;
     Button upload;
 
@@ -80,6 +85,11 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         View v = getSupportActionBar().getCustomView();
         actionbarmenu = (ImageView) v.findViewById(R.id.menu_icon);
         back_Btn = (ImageView) v.findViewById(R.id.back_icon);
+        title=(TextView)v.findViewById(R.id.titleactionbar);
+        title.setText("ADD PHOTOS");
+        al_id= getIntent().getStringArrayListExtra("AlbumID");
+        al_name=getIntent().getStringArrayListExtra("AlbumName");
+        Log.i("DATA ALBUM", "" + al_id.toString());
         actionbarmenu.setVisibility(View.GONE);
         back_Btn.setVisibility(View.VISIBLE);
         Toolbar parent = (Toolbar) v.getParent();//first get parent toolbar of current action bar
