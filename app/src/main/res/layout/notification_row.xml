@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/userimg"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        app:border_width="1dp"
+        app:border_color="@android:color/transparent"/>
+    <TextView
+        android:id="@+id/notification_txt"
+        android:layout_alignTop="@+id/userimg"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_toRightOf="@+id/userimg"
+        android:text="hello"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/notification_time"
+        android:layout_below="@+id/notification_txt"
+        android:layout_alignLeft="@+id/notification_txt"
+        android:layout_width="wrap_content"
+        android:text="i month ago"
+        android:textSize="@dimen/_12sdp"
+        android:textColor="@color/cat_color"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/deleteBtn"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/notification_txt"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:src="@drawable/notifications_icon_trash"
+        android:layout_height="@dimen/_20sdp" />
+
+
+</RelativeLayout>

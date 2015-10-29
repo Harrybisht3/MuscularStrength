@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/headerView"
+    android:layout_width="match_parent"
+    android:background="@drawable/dash_bg"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:id="@+id/actionbar_layout"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentLeft="true" >
+            <ImageView
+                android:id="@+id/menu_icon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_weight="1"
+                android:src="@drawable/dash_icon_menu"
+                android:layout_height="@dimen/_30sdp" />
+            <ImageView
+                android:id="@+id/help_icon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_weight="1"
+                android:src="@drawable/dash_icon_help"
+                android:layout_height="@dimen/_30sdp"/>
+            <ImageView
+                android:id="@+id/addfriend_icon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_weight="1"
+                android:src="@drawable/dash_icon_addfriend"
+                />
+        </LinearLayout>
+        <ImageView
+            android:id="@+id/logo_dash"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/landing_logo"
+            android:layout_centerHorizontal="true"
+            android:layout_height="@dimen/_120sdp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" >
+            <ImageView
+                android:id="@+id/profile_icon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_weight="1"
+                android:src="@drawable/dash_icon_profile"
+                />
+            <ImageView
+                android:id="@+id/message_icon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_weight="1"
+                android:src="@drawable/dash_icon_msg"
+                />
+            <ImageView
+                android:id="@+id/notification_icon"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_weight="1"
+                android:src="@drawable/notifications_social_bell"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/contentframe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/actionbar_layout"></FrameLayout>
+</RelativeLayout>

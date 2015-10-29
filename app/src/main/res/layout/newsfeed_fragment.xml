@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ExpandableListView
+        android:id="@+id/list_newsfeed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ExpandableListView>
+   <!-- <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/header_layout">
+            </include>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/filterimg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_media_ff"/>
+                <TextView
+                    android:id="@+id/textFilter"
+                    android:padding="@dimen/_7sdp"
+                    android:layout_toRightOf="@+id/filterimg"
+                    android:text="@string/filter"
+                    android:textSize="@dimen/_13sdp"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/updateBtn"
+                    android:background="@color/red"
+                    android:text="@string/update"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_alignParentRight="true"
+                    android:textAllCaps="false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <include
+                android:id="@+id/footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/footer_layout"/>
+        </LinearLayout>
+    </ScrollView>-->
+</LinearLayout>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/bg"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/_8sdp">
+
+        <Spinner
+            android:id="@+id/routine"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_weight="1"
+            android:background="@drawable/rect_bg"></Spinner>
+        <Spinner
+            android:id="@+id/day"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_weight="1"
+            android:background="@drawable/rect_bg"></Spinner>
+    </LinearLayout>
+    <EditText
+        android:id="@+id/addExercise"
+        android:background="@drawable/rect_bg"
+        android:layout_width="match_parent"
+        android:padding="@dimen/_10sdp"
+        android:hint="@string/addexercise"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:background="@color/red"
+            android:textColor="@color/white"
+            android:padding="@dimen/_8sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:text="@string/plusadd"
+            android:textSize="@dimen/_12sdp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/settings"
+            android:layout_toRightOf="@+id/add"
+            android:layout_width="wrap_content"
+            android:text="@string/settings"
+            android:textColor="@color/white"
+            android:background="@color/accept"
+            android:padding="@dimen/_8sdp"
+            android:drawableLeft="@android:drawable/picture_frame"
+            android:textSize="@dimen/_12sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/print"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/printer"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/previous"
+            android:layout_width="@dimen/_30sdp"
+            android:src="@drawable/nav_back_btn"
+            android:layout_height="@dimen/_30sdp" />
+        <ImageView
+            android:id="@+id/next"
+            android:layout_alignParentRight="true"
+            android:layout_width="@dimen/_30sdp"
+
+            android:src="@drawable/nav_forword_btn"
+            android:layout_height="@dimen/_30sdp"/>
+        <TextView
+            android:id="@+id/dayText"
+            android:layout_centerHorizontal="true"
+            android:text="Sunday"
+            android:padding="@dimen/_10sdp"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/pushup"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:textSize="@dimen/_12sdp"
+            android:textColor="@color/red"
+            android:text="Push-Up progression!"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/abs"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:textColor="@color/red"
+            android:textSize="@dimen/_12sdp"
+            android:text="abs"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/black"
+    android:paddingTop="@dimen/padding_menu"
+    android:paddingBottom="@dimen/padding_menu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/userimg"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        app:border_width="1dp"
+        app:border_color="@android:color/transparent"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_toRightOf="@+id/userimg"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/text_user"
+                android:text="admin"
+                android:textSize="@dimen/_12sdp"
+                android:layout_width="wrap_content"
+                android:textColor="@color/cat_color"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_time"
+                android:layout_width="wrap_content"
+                android:text="time ago"
+                android:textSize="@dimen/_12sdp"
+                android:maxLength="12"
+                android:textColor="@color/cat_color"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/text_preview"
+            android:layout_width="wrap_content"
+            android:text="time ago"
+            android:textSize="@dimen/_13sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/replyBtn"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:src="@drawable/icon_reply"
+                android:layout_height="@dimen/_20sdp" />
+            <TextView
+                android:id="@+id/text_reply"
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:layout_width="wrap_content"
+                android:layout_toRightOf="@+id/replyBtn"
+                android:text="Reply"
+                android:textSize="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/cat_color"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/replyQuoteBtn"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_toRightOf="@+id/text_reply"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_reply_quote"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_height="@dimen/_20sdp" />
+            <TextView
+                android:id="@+id/text_replyQuote"
+                android:layout_width="wrap_content"
+                android:layout_toRightOf="@+id/replyQuoteBtn"
+                android:text="Reply with Quotes"
+                android:textSize="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_centerVertical="true"
+                android:textColor="@color/cat_color"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

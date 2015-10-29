@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/userimg"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        app:border_width="1dp"
+        app:border_color="@android:color/transparent"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_toRightOf="@+id/userimg"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/text_user"
+                android:text="admin"
+                android:textSize="@dimen/_12sdp"
+                android:layout_width="wrap_content"
+                android:textColor="@color/cat_color"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_time"
+                android:layout_width="wrap_content"
+                android:text="time ago"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/cat_color"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/text_fullName"
+                android:layout_width="wrap_content"
+                android:text="time ago"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_preview"
+                android:layout_width="wrap_content"
+                android:text="time ago"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/cat_color"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

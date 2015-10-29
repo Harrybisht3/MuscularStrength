@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include layout="@layout/header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/header"></include>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/previous"
+                    android:layout_width="@dimen/_30sdp"
+                    android:src="@drawable/nav_back_btn"
+                    android:layout_height="@dimen/_30sdp" />
+                <ImageView
+                    android:id="@+id/next"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/_30sdp"
+
+                    android:src="@drawable/nav_forword_btn"
+                    android:layout_height="@dimen/_30sdp"/>
+                <TextView
+                    android:id="@+id/dayText"
+                    android:layout_centerHorizontal="true"
+                    android:text="Create Your Own "
+                    android:padding="@dimen/_10sdp"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_alignLeft="@+id/dayText"
+                    android:layout_below="@+id/dayText"
+                    android:layout_alignRight="@+id/dayText"
+                    android:background="@color/red"
+                    android:layout_height="@dimen/_1sdp" />
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/print"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/printer"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/share"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:src="@android:drawable/ic_menu_share"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <ListView
+                android:id="@+id/list_mealplan"
+                android:layout_width="match_parent"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_height="wrap_content"></ListView>
+
+            <include android:id="@+id/footer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/footer_layout"></include>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
