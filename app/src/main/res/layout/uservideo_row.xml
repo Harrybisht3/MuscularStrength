@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/playlayout"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/thumbVideo"
+            android:layout_width="@dimen/_100sdp"
+            android:scaleType="fitXY"
+            android:layout_height="@dimen/_80sdp" />
+        <ImageView
+            android:id="@+id/playbtn"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@android:drawable/ic_media_play"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/video_title"
+        android:layout_gravity="center_horizontal"
+        android:text="Lorae"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:singleLine="true"
+        android:layout_below="@+id/playlayout"
+        android:layout_alignLeft="@+id/playlayout"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/caption_edit"
+            android:layout_below="@+id/playlayout"
+            android:layout_alignLeft="@+id/playlayout"
+            android:background="@drawable/rect_bg"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
+            android:visibility="gone"
+            android:text=""
+            android:textColor="@color/cat_color"
+            android:hint="Add a caption..."
+            android:textColorHighlight="@color/cat_color"
+            android:layout_alignRight="@+id/playlayout"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40sdp" />
+    </RelativeLayout>
+</RelativeLayout>
