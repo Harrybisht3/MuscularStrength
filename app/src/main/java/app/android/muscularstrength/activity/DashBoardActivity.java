@@ -71,7 +71,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
     SessionManager session;
     User userObj;
 
-    int[] icons = {R.drawable.icon_home, R.drawable.icon_logout};
+    int[] icons = {R.drawable.icon_home,R.drawable.icon_newsfeeds,R.drawable.icon_profile,R.drawable.dash_icon_articles,R.drawable.dash_icon_recipes,R.drawable.icon_lifts,R.drawable.icon_customize_avatar,R.drawable.icon_edit_profile,R.drawable.icon_account_setting,R.drawable.icon_friends,R.drawable.icon_manage_photos,R.drawable.icon_manage_videos, R.drawable.icon_logout};
 
     // private ActionBarDrawerToggle mDrawerToggle;
 //Toolbar toolbar;
