@@ -60,6 +60,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
     User userObj;
     AlbumAdapter adapter;
     List<Album> album;
+    PhotoParser data;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -129,7 +130,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.photos, "GET", params);
                 Gson gson = new Gson();
-                PhotoParser data = gson.fromJson(json.toString(), PhotoParser.class);
+                data = gson.fromJson(json.toString(), PhotoParser.class);
                 if (data.getResult().equalsIgnoreCase("SUCCESS")) {
                     //datanewsFeed.addAll(data.getData().getNewsfeed());
                     album = new ArrayList<Album>();
@@ -178,11 +179,19 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.createAlbum:
-                Intent it1=new Intent(getActivity(), CreateAlbumActivity.class);
-                startActivityForResult(it1,3);
+                Intent it1 = new Intent(getActivity(), CreateAlbumActivity.class);
+                startActivityForResult(it1, 3);
                 break;
             case R.id.addPhotos:
-                Intent it=new Intent(getActivity(), AddPhotoActivity.class);
+                ArrayList<String> id = new ArrayList<String>();
+                ArrayList<String> albumname = new ArrayList<String>();
+                for (Album alb : album) {
+                    id.add(alb.getId());
+                    albumname.add(alb.getTitle());
+                }
+                Intent it = new Intent(getActivity(), AddPhotoActivity.class);
+                it.putStringArrayListExtra("AlbumID", id);
+                it.putStringArrayListExtra("AlbumName", albumname);
                 startActivity(it);
                 break;
 
@@ -194,7 +203,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==getActivity().RESULT_OK){
+        if (resultCode == getActivity().RESULT_OK) {
             getPhoto();
         }
     }
