@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="cam">#3E8DC2</color>
+    <color name="white">#FFFFFF</color>
+    <color name="color1">#D8892C</color>
+    <color name="tansparent">#99000000</color>
+    <color name="black">#000000</color>
+    <color name="red">#FF0000</color>
+    <color name="actionbar_color">#D20502</color>
+    <color name="green">#00FF00</color>
+    <color name="blue">#0000FF</color>
+    <color name="gray">#ACACAC</color>
+    <color name="inner">#1D1E20</color>
+    <color name="bg_border">#7FFFFFFF</color>
+    <color name="list_color">#1C1C1C</color>
+    <color name="divider">#0D0D0D</color>
+    <color name="menutxt">#808080</color>
+    <color name="savebtn">#62CDF1</color>
+    <color name="cat_color">#838486</color>
+    <color name="img_border">#545557</color>
+    <color name="accept">#63CDF1</color>
+    <color name="profile_bg">#1E2225</color>
+    <color name="social_bg">#1B1B1B</color>
+    <color name="bg">#111214</color>
+    <color name="next_previous">#232323</color>
+    <color name="level">#B28C3B</color>
+    <color name="spinnertxt">#0C0D0F</color>
+</resources>
