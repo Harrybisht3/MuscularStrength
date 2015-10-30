@@ -3,6 +3,8 @@ package app.android.muscularstrength.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import app.android.muscularstrength.R;
 import app.android.muscularstrength.Util.Util;
+import app.android.muscularstrength.activity.AddPhotoActivity;
 
 /**
  * Created by Bisht Bhawna on 9/24/2015.
@@ -51,8 +54,11 @@ public class SelectedImageAdapter extends BaseAdapter {
 
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
+       // final ImageModel model=new ImageModel();
         if (convertView == null) {
             holder = new ViewHolder();
+           // model.setpath(medifiles.get(position));
+            //model.setCaption(null);
             convertView = mInflater.inflate(
                     R.layout.uservideo_row, null);
             holder.imageview = (ImageView) convertView.findViewById(R.id.thumbVideo);
@@ -67,10 +73,34 @@ public class SelectedImageAdapter extends BaseAdapter {
             holder.imageview.setLayoutParams(lp);
             holder.imageview.setScaleType(ImageView.ScaleType.FIT_CENTER);
             convertView.setTag(holder);
+            holder.caption_edit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.toString().trim().length() > 0) {
+                       AddPhotoActivity.imagesmodel.get(position).setCaption(s.toString());
+                    } else {
+                        AddPhotoActivity.imagesmodel.get(position).setCaption(null);
+                    }
+                    // model.setpath(medifiles.get(position));
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+
         }
         else {
             holder = (ViewHolder) convertView.getTag();
         }
+        //AddPhotoActivity.imagesmodel.add(position, model);
        // holder.checkbox.setId(position);
         holder.imageview.setId(position);
    /*     holder.checkbox.setOnClickListener(new View.OnClickListener() {
