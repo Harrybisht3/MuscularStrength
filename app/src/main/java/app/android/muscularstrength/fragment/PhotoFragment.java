@@ -134,6 +134,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
                 if (data.getResult().equalsIgnoreCase("SUCCESS")) {
                     //datanewsFeed.addAll(data.getData().getNewsfeed());
                     album = new ArrayList<Album>();
+                    album.clear();
                     album.addAll(data.getData().getData());
                     mainHandler.sendMessage(mainHandler.obtainMessage(1));
                 } else {
