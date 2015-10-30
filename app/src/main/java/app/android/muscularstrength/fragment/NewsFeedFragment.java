@@ -144,8 +144,10 @@ public class NewsFeedFragment extends Fragment {
                 Gson gson = new Gson();
                 NewsFeedParser data = gson.fromJson(json.toString(), NewsFeedParser.class);
                 if (data.getResult().equalsIgnoreCase("SUCCESS")) {
-                    datanewsFeed.addAll(data.getData().getNewsfeed());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    if(data.getData().getNewsfeed()!=null) {
+                        datanewsFeed.addAll(data.getData().getNewsfeed());
+                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    }
                 } else {
                     mainHandler.sendMessage(mainHandler.obtainMessage(0));
                 }
