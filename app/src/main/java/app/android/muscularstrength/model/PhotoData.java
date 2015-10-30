@@ -1,12 +1,15 @@
 package app.android.muscularstrength.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Bisht Bhawna on 8/23/2015.
  */
-public class PhotoData {@SerializedName("id")
+public class PhotoData implements Parcelable{@SerializedName("id")
 @Expose
 private String id;
     @SerializedName("image")
@@ -15,6 +18,24 @@ private String id;
     @SerializedName("title")
     @Expose
     private String title;
+
+    protected PhotoData(Parcel in) {
+        id = in.readString();
+        image = in.readString();
+        title = in.readString();
+    }
+
+    public static final Creator<PhotoData> CREATOR = new Creator<PhotoData>() {
+        @Override
+        public PhotoData createFromParcel(Parcel in) {
+            return new PhotoData(in);
+        }
+
+        @Override
+        public PhotoData[] newArray(int size) {
+            return new PhotoData[size];
+        }
+    };
 
     /**
      *
@@ -71,4 +92,15 @@ private String id;
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(image);
+        dest.writeString(title);
+    }
 }
