@@ -6,11 +6,15 @@
         android:id="@+id/album_sp"
         android:layout_width="match_parent"
         android:layout_margin="@dimen/_10sdp"
-       android:background="@drawable/spinner_bg"
+       android:background="@drawable/spwhite_bg"
         android:layout_height="wrap_content"></Spinner>
     <Button
         android:id="@+id/addtoalbum"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="@dimen/_10sdp"
+        android:background="@color/red"
+        android:textColor="@color/white"
         android:text="Add Photos"
         android:layout_margin="@dimen/_10sdp"
         android:layout_height="wrap_content" />
