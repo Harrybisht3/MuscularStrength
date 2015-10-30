@@ -47,8 +47,10 @@ import app.android.muscularstrength.fragment.ArticleFragment;
 import app.android.muscularstrength.fragment.FragmentHome;
 import app.android.muscularstrength.fragment.FriendRequestFragment;
 import app.android.muscularstrength.fragment.MessageFragment;
+import app.android.muscularstrength.fragment.NewsFeedFragment;
 import app.android.muscularstrength.fragment.NotificationFragment;
 import app.android.muscularstrength.fragment.ProfileFragment;
+import app.android.muscularstrength.fragment.RecipesFragment;
 import app.android.muscularstrength.model.User;
 import app.android.muscularstrength.session.SessionManager;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -315,17 +317,20 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
             actionbarmenu.setVisibility(View.VISIBLE);
             fragment = new FragmentHome();
         } else if (position == 2) {
-
-
-        } else if (position == 3) {
-            fragment = new ArticleFragment();
+            fragment=new NewsFeedFragment();
             fragment.setArguments(bundle);
+        } else if (position == 3) {
+            fragment = new ProfileFragment();
+            //fragment.setArguments(bundle);
         } else if (position == 4) {
-
+            fragment=new ArticleFragment();
+            fragment.setArguments(bundle);
         } else if (position == 5) {
-
+            fragment=new RecipesFragment();
+            fragment.setArguments(bundle);
         } else if (position == 6) {
-
+          //  fragment=new Lif();
+            //fragment.setArguments(bundle);
         } else if (position == 7) {
 
         } else if (position == 8) {
