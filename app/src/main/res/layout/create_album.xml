@@ -12,6 +12,7 @@
         android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/rect_bg"
         android:hint="Album Name"
+        android:textColor="@color/white"
         android:padding="@dimen/_10sdp"
         android:textColorHint="@color/cat_color" />
 
@@ -19,6 +20,7 @@
         android:id="@+id/shareoption_sp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
+
         android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/spwhite_bg"
         android:padding="@dimen/_10sdp" />
@@ -29,6 +31,7 @@
         android:layout_height="@dimen/_100sdp"
         android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/rect_bg"
+        android:textColor="@color/white"
         android:gravity="start"
         android:hint="Add a caption..."
         android:padding="@dimen/_10sdp"
