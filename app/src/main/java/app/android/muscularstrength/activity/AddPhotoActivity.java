@@ -66,8 +66,9 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     List<String> selectedFiles;
     RelativeLayout selectView, selectionView;
     TextView textselect;
-    ArrayList<String> al_id;
-    ArrayList<String> al_name;
+   /* ArrayList<String> al_id;
+    ArrayList<String> al_name;*/
+    PhotoParser photoparser;
     ProgressDialog pDialog;
     int countUpload = 0;
     ImageView actionbarmenu,back_Btn;
@@ -87,9 +88,10 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         back_Btn = (ImageView) v.findViewById(R.id.back_icon);
         title=(TextView)v.findViewById(R.id.titleactionbar);
         title.setText("ADD PHOTOS");
-        al_id= getIntent().getStringArrayListExtra("AlbumID");
-        al_name=getIntent().getStringArrayListExtra("AlbumName");
-        Log.i("DATA ALBUM", "" + al_id.toString());
+        photoparser=getIntent().getParcelableExtra("ParcelableList");
+       // al_id= getIntent().getStringArrayListExtra("AlbumID");
+        //al_name=getIntent().getStringArrayListExtra("AlbumName");
+        Log.i("DATA ALBUM", "" + photoparser.getResult());
         actionbarmenu.setVisibility(View.GONE);
         back_Btn.setVisibility(View.VISIBLE);
         Toolbar parent = (Toolbar) v.getParent();//first get parent toolbar of current action bar
