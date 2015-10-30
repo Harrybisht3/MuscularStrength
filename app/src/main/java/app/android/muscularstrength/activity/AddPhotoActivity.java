@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -44,6 +45,7 @@ import app.android.muscularstrength.R;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.adapter.SelectedImageAdapter;
 import app.android.muscularstrength.custom.GridViewWithHeaderAndFooter;
+import app.android.muscularstrength.model.Album;
 import app.android.muscularstrength.model.PhotoParser;
 import app.android.muscularstrength.webservice.WebServices;
 
@@ -123,11 +125,30 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         View footerView = layoutInflater.inflate(R.layout.grid_footer, null);
         selectedgallery.addFooterView(footerView);
         sp_album=(Spinner)footerView.findViewById(R.id.album_sp);
+        //String[]list=new String[photoparser.getData().getData().size()];
+        List<String>list=new ArrayList<String>();
+        for (Album ab:photoparser.getData().getData()) {
+            list. add(ab.getTitle());
+        }
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.myspinner_style,list);
+        adapter.setDropDownViewResource(R.layout.myspinner_style);
+        sp_album.setAdapter(adapter);
         //selection_sp
         upload=(Button)footerView.findViewById(R.id.addtoalbum);
         pDialog = new ProgressDialog(this);
         upload.setOnClickListener(this);
         pDialog.setMessage("loading...");
+        sp_album.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.cat_color));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
