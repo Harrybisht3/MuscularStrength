@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -100,10 +99,10 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         parent.setContentInsetsAbsolute(0, 0);// set padding programmatically to 0dp
        // moveDrawerToTop();
         init();
-        File root = new File(Environment
+        /*File root = new File(Environment
                 .getExternalStorageDirectory()
                 .getAbsolutePath());
-        ListDir(root);
+        ListDir(root);*/
 
 
     }
@@ -188,7 +187,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         }).start();
 
     }
-    void ListDir(File f) {
+   /* void ListDir(File f) {
         File[] files = f.listFiles();
         fileList.clear();
         for (File file : files) {
@@ -197,7 +196,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.myspinner_style,fileList);
         adapter.setDropDownViewResource(R.layout.myspinner_style);
         selection_sp.setAdapter(adapter);
-    }
+    }*/
 
 
     @Override
