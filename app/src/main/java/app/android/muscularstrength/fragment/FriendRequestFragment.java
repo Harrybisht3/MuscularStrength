@@ -123,7 +123,7 @@ public class FriendRequestFragment extends Fragment{
             @Override
             public void run() {
                 HashMap<String,String> params=new HashMap<String, String>();
-                params.put("userid","135953");
+                params.put("userid",userObj.getUserId());
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.Friend_Request,"GET",params);
                 Gson gson = new Gson();
