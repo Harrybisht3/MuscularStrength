@@ -45,6 +45,9 @@
         <activity
             android:name=".activity.AddPhotoActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CreateAlbumActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 
