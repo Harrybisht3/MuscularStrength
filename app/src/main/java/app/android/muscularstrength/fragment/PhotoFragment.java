@@ -183,15 +183,16 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
                 startActivityForResult(it1, 3);
                 break;
             case R.id.addPhotos:
-                ArrayList<String> id = new ArrayList<String>();
+               /* ArrayList<String> id = new ArrayList<String>();
                 ArrayList<String> albumname = new ArrayList<String>();
                 for (Album alb : album) {
                     id.add(alb.getId());
                     albumname.add(alb.getTitle());
-                }
+                }*/
                 Intent it = new Intent(getActivity(), AddPhotoActivity.class);
-                it.putStringArrayListExtra("AlbumID", id);
-                it.putStringArrayListExtra("AlbumName", albumname);
+               // it.putStringArrayListExtra("AlbumID", id);
+                //it.putStringArrayListExtra("AlbumName", albumname);
+                it.putExtra("ParcelableList",data);
                 startActivity(it);
                 break;
 
