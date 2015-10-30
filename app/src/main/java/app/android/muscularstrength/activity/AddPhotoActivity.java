@@ -62,6 +62,7 @@ import app.android.muscularstrength.webservice.WebServices;
  */
 public class AddPhotoActivity extends AppCompatActivity implements View.OnClickListener {
     Button selectphotos;
+
     ImageView backBtn, cancelbtn, camera;
     GridView imageGallery;
     GridViewWithHeaderAndFooter selectedgallery;
