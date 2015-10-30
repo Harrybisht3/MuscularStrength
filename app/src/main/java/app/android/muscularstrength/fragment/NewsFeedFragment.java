@@ -148,6 +148,9 @@ public class NewsFeedFragment extends Fragment {
                         datanewsFeed.addAll(data.getData().getNewsfeed());
                         mainHandler.sendMessage(mainHandler.obtainMessage(1));
                     }
+                    else{
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
                 } else {
                     mainHandler.sendMessage(mainHandler.obtainMessage(0));
                 }
