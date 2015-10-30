@@ -29,11 +29,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -45,7 +51,10 @@ import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.adapter.SelectedImageAdapter;
 import app.android.muscularstrength.custom.GridViewWithHeaderAndFooter;
 import app.android.muscularstrength.model.Album;
+import app.android.muscularstrength.model.ImageModel;
 import app.android.muscularstrength.model.PhotoParser;
+import app.android.muscularstrength.model.User;
+import app.android.muscularstrength.session.SessionManager;
 import app.android.muscularstrength.webservice.WebServices;
 
 /**
@@ -67,15 +76,17 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     List<String> selectedFiles;
     RelativeLayout selectView, selectionView;
     TextView textselect;
-   /* ArrayList<String> al_id;
-    ArrayList<String> al_name;*/
+    SessionManager session;
+    User userObj;
     PhotoParser photoparser;
+    int selectedalbum;
     ProgressDialog pDialog;
     int countUpload = 0;
     ImageView actionbarmenu,back_Btn;
     TextView title;
     Spinner sp_album,selection_sp;
     Button upload;
+    public static List<ImageModel>imagesmodel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +100,9 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         back_Btn = (ImageView) v.findViewById(R.id.back_icon);
         title=(TextView)v.findViewById(R.id.titleactionbar);
         title.setText("ADD PHOTOS");
+        session=new SessionManager(this);
+        Gson gson=new Gson();
+        userObj=gson.fromJson(session.getSession(),User.class);
         photoparser=getIntent().getParcelableExtra("ParcelableList");
        // al_id= getIntent().getStringArrayListExtra("AlbumID");
         //al_name=getIntent().getStringArrayListExtra("AlbumName");
@@ -140,6 +154,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         sp_album.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedalbum=position;
                 ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.cat_color));
             }
 
@@ -210,6 +225,22 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                 hideShow(false);
                 break;
             case R.id.addtoalbum:
+                boolean alltrue=true;
+                Log.i("SIZE MODEL","SIZE="+imagesmodel.size());
+                for (ImageModel img:imagesmodel) {
+                    if(img.getCaption()!=null){
+                        continue;
+                    }
+                    else{
+                        alltrue=false;
+                        break;
+                    }
+                }
+                if(alltrue){
+                   uploadImages();
+                }
+                else
+                    Toast.makeText(AddPhotoActivity.this,"Add  caption to all selected photos",Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;
@@ -232,6 +263,14 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void setSelectedgallery() {
+        imagesmodel=new ArrayList<ImageModel>();
+        imagesmodel.clear();
+        for (String path:selectedFiles) {
+            ImageModel model=new ImageModel();
+            model.setCaption(null);
+            model.setpath(path);
+            imagesmodel.add(model);
+        }
         SelectedImageAdapter adapter = new SelectedImageAdapter(AddPhotoActivity.this, selectedFiles);
         selectedgallery.setAdapter(adapter);
     }
@@ -343,7 +382,8 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //http://muscularstrength.com/creat_album.php?userid=135953&album_id=1281&caption=test&imgefile=$_FILES["frmFile"]
-    private void uploadFile(String pathToOurFile, String urlServer, HashMap<String, String> params) {
+    private List<String> uploadFile(String pathToOurFile, String urlServer, HashMap<String, String> params) {
+        List<String> response = new ArrayList<String>();
         HttpURLConnection connection = null;
         DataOutputStream outputStream = null;
         DataInputStream inputStream = null;
@@ -375,7 +415,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
             connection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
             outputStream = new DataOutputStream(connection.getOutputStream());
             outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-            outputStream.writeBytes("Content-Disposition: form-data; name=\"frmFile\"" + pathToOurFile + "\"" + lineEnd);
+            outputStream.writeBytes("Content-Disposition: form-data; name=\"frmFile\";filename=\"" + pathToOurFile + "\"" + lineEnd);
             outputStream.writeBytes(lineEnd);
             bytesAvailable = fileInputStream.available();
             bufferSize = Math.min(bytesAvailable, maxBufferSize);
@@ -427,23 +467,39 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
             fileInputStream.close();
             outputStream.flush();
             outputStream.close();
+            int status = connection.getResponseCode();
+            if (status == HttpURLConnection.HTTP_OK) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    response.add(line);
+                }
+                reader.close();
+                connection.disconnect();
+            } else {
+                throw new IOException("Server returned non-OK status: " + status);
+            }
         } catch (Exception ex) {
             //Exception handling
+            return null;
         }
+        return response;
     }
 
     //upload images to server
     private void uploadImages() {
+        if(countUpload==0)
         pDialog.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("userid", "" + 2);
-                params.put("album_id", "1281");
-                params.put("caption", "15");
+                params.put("userid", "" + userObj.getUserId());
+                params.put("album_id", photoparser.getData().getData().get(selectedalbum).getId());
+                params.put("caption", imagesmodel.get(countUpload).getCaption());
 
-                uploadFile(selectedFiles.get(countUpload), WebServices.addPhotos, params);
+              List<String>resp= uploadFile(selectedFiles.get(countUpload), WebServices.addPhotos, params);
+                Log.i("Response","R="+resp.toString());
             }
 
         }).start();
