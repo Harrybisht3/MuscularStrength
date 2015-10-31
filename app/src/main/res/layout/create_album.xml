@@ -20,10 +20,9 @@
         android:id="@+id/shareoption_sp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
-
         android:layout_margin="@dimen/_10sdp"
         android:background="@drawable/spwhite_bg"
-        android:padding="@dimen/_10sdp" />
+         />
 
     <EditText
         android:id="@+id/album_caption"
