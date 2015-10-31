@@ -16,9 +16,11 @@
 
         <CheckBox
             android:id="@+id/itemCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_25sdp"
+            android:button="@drawable/checkbox_selector"
+            android:layout_height="@dimen/_25sdp"
             android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/_2sdp"
             android:layout_alignParentTop="true" />
     </RelativeLayout>
 
