@@ -67,9 +67,9 @@
 
             <ImageView
                 android:id="@+id/cancelBtn"
-                android:layout_width="@dimen/_35sdp"
-                android:layout_height="@dimen/_35sdp"
-                android:src="@android:drawable/ic_menu_close_clear_cancel" />
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:src="@drawable/close_gal" />
 
             <Spinner
                 android:id="@+id/selection_sp"
@@ -100,11 +100,11 @@
             <ImageView
                 android:id="@+id/camera"
                 android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_35sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
-                android:src="@android:drawable/ic_menu_camera" />
+                android:src="@drawable/camera_upload" />
 
             <TextView
                 android:id="@+id/choosetxt"
@@ -113,19 +113,23 @@
                 android:layout_centerInParent="true"
                 android:padding="@dimen/_10sdp"
                 android:text="Choose photos"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_14sdp" />
 
             <TextView
                 android:id="@+id/selectedsize"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_margin="@dimen/_5sdp"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/edittext_bg"
-                android:drawableRight="@drawable/membership_option_tick"
-                android:padding="@dimen/_10sdp"
+                android:drawableRight="@drawable/selectedcheck"
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingRight="@dimen/_10sdp"
                 android:text="10"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_20sdp" />
+                android:textSize="@dimen/_14sdp" />
         </RelativeLayout>
     </RelativeLayout>
 
