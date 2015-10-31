@@ -19,6 +19,7 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -132,45 +133,28 @@ public class ExclusiveFragment extends Fragment implements AdapterView.OnItemCli
                 params.put("display","15");*/
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.Exclusive,"GET",params);
-                Gson gson = new Gson();
-                ExclusiveCatParse data=gson.fromJson(json.toString(),ExclusiveCatParse.class);
-                if(data.getResult().equalsIgnoreCase("SUCCESS")){
-                    catExclusive=new ArrayList<Category>();
-                    catExclusive.addAll(data.getCategories());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                }
-                else{
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
-                }
-            }
-        }).start();
-    }
-   /* //search Artciles
-    private void getSearchArticle(final int page,final String quary){
-        pDialog.show();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HashMap<String,String>params=new HashMap<String, String>();
-                params.put("page",""+page);
-                params.put("display","15");
-                params.put("search",quary);
-                JSONParser parser = new JSONParser();
-                JSONObject json=parser.makeHttpRequest(WebServices.article,"GET",params);
-                Gson gson = new Gson();
-                ArticleParser data=gson.fromJson(json.toString(),ArticleParser.class);
-                if(data.getResult().equalsIgnoreCase("SUCCESS")){
-                    dataArticle=new ArrayList<Article>();
-                    dataArticle.addAll(data.getData().getArticles());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                }
-                else{
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                try {
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                        Gson gson = new Gson();
+                        ExclusiveCatParse data = gson.fromJson(json.toString(), ExclusiveCatParse.class);
+                       // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                            catExclusive = new ArrayList<Category>();
+                            catExclusive.addAll(data.getCategories());
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                        /*} else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }*/
+                    }
+                    else{
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
     }
-*/
+
     private void setListAdapter(){
         for(int i=0;i<catExclusive.size();i++){
             adapter.add(catExclusive.get(i));
