@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -39,6 +40,7 @@ public class RoutineFragment extends Fragment {
     TextView user, account_type, level;
     SessionManager session;
     User userObj;
+    ExpandableListView list_routine;
 
 
 
@@ -50,7 +52,7 @@ public class RoutineFragment extends Fragment {
         DashBoardActivity.actionBar.show();
         DashBoardActivity.menuView.setVisibility(View.GONE);
         DashBoardActivity.mainView.setBackground(null);
-        DashBoardActivity.actiontitle.setText("VIDEOS");
+        DashBoardActivity.actiontitle.setText("ROUTINES");
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.routine_fragment, container, false);
             density = Util.getDensity(getActivity());

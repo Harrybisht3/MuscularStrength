@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -89,6 +90,7 @@ public class RecipesFragment extends Fragment {
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.Recipes,"GET",params);
                 try {
+                    if(json!=null){
                     if(json.getString("result").equalsIgnoreCase("SUCCESS")){
                     Gson gson = new Gson();
                     RecipeParser data=gson.fromJson(json.toString(),RecipeParser.class);
@@ -101,6 +103,10 @@ public class RecipesFragment extends Fragment {
                         errorMessage=json.getJSONObject("").getString("");
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
+                } else {
+                    errorMessage = getResources().getString(R.string.errorMessage);
+                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -126,6 +132,7 @@ public class RecipesFragment extends Fragment {
                     pDialog.cancel();
                     switch (message.what) {
                         case 0:
+                            Toast.makeText(getActivity(),""+errorMessage,Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             setListAdapter();

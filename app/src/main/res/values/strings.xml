@@ -94,4 +94,5 @@
     <string name="important_note">If you are using a PROMO CODE you still need to enter credit card information.After the promotional period, the credit card will automatically be charged for the next period. If you cancel your membership before the end of the promotional period,your membership will instantly downgrade to GOLD.</string>
 <string name="hint_promo">Promo Code:</string>
     <string name="submitBtn">Submit</string>
+    <string name="errorMessage">Error Occurs.</string>
 </resources>

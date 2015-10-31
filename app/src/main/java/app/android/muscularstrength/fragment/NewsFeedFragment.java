@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -49,9 +50,10 @@ public class NewsFeedFragment extends Fragment {
     private int page_no = 1;
     ProgressDialog pDialog;
     CircleImageView userProfileImg;
-    TextView user,account_type,level;
+    TextView user, account_type, level;
     SessionManager session;
     User userObj;
+    String errorMessage;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
@@ -70,18 +72,18 @@ public class NewsFeedFragment extends Fragment {
             adapter = new NewsFeedAdapter(getActivity(), datanewsFeed);
             // list_newsfeed.setIndicatorBounds(Util.getDisplay(getActivity()).widthPixels - GetDipsFromPixel(50), Util.getDisplay(getActivity()).widthPixels - GetDipsFromPixel(10));
             list_newsfeed.setAdapter(adapter);
-            session=new SessionManager(getActivity());
-            Gson gson=new Gson();
-            userObj=gson.fromJson(session.getSession(),User.class);
+            session = new SessionManager(getActivity());
+            Gson gson = new Gson();
+            userObj = gson.fromJson(session.getSession(), User.class);
             View headerlayout = View.inflate(getActivity(), R.layout.header_layout, null);
             list_newsfeed.addHeaderView(headerlayout, null, false);
             View view1 = View.inflate(getActivity(), R.layout.footer_layout, null);
             list_newsfeed.addFooterView(view1, null, false);
             // View headerlayout= rootView.findViewById(R.id.header);
-            userProfileImg=(CircleImageView)headerlayout.findViewById(R.id.profileImg);
-            user = (TextView)headerlayout.findViewById(R.id.user);
-            account_type = (TextView)headerlayout.findViewById(R.id.account_type);
-            level = (TextView)headerlayout.findViewById(R.id.level);
+            userProfileImg = (CircleImageView) headerlayout.findViewById(R.id.profileImg);
+            user = (TextView) headerlayout.findViewById(R.id.user);
+            account_type = (TextView) headerlayout.findViewById(R.id.account_type);
+            level = (TextView) headerlayout.findViewById(R.id.level);
             Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
             user.setText(userObj.getFirstName() + "" + userObj.getLastName());
             account_type.setText(userObj.getAccountType());
@@ -97,7 +99,7 @@ public class NewsFeedFragment extends Fragment {
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 //Util.setExpendableListViewHeight(parent, groupPosition);
                 //return false;
-                 return true;
+                return true;
             }
         });
      /*   list_newsfeed.setOnTouchListener(new View.OnTouchListener() {
@@ -143,18 +145,23 @@ public class NewsFeedFragment extends Fragment {
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.newsFeed, "GET", params);
                 try {
-                    if(json.getString("result").equalsIgnoreCase("SUCCESS")){
-                    Gson gson = new Gson();
-                    NewsFeedParser data = gson.fromJson(json.toString(), NewsFeedParser.class);
-                   // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
-                        if(data.getData().getNewsfeed()!=null) {
-                            datanewsFeed.addAll(data.getData().getNewsfeed());
-                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                        }
-                        else{
+                    if (json != null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                            Gson gson = new Gson();
+                            NewsFeedParser data = gson.fromJson(json.toString(), NewsFeedParser.class);
+                            // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                            if (data.getData().getNewsfeed() != null) {
+                                datanewsFeed.addAll(data.getData().getNewsfeed());
+                                mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                            } else {
+                                errorMessage = "No News Feed.";
+                                mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                            }
+                        } else {
                             mainHandler.sendMessage(mainHandler.obtainMessage(0));
                         }
                     } else {
+                        errorMessage = getResources().getString(R.string.errorMessage);
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
                 } catch (JSONException e) {
@@ -167,7 +174,7 @@ public class NewsFeedFragment extends Fragment {
     private void setListAdapter() {
         adapter.notifyDataSetChanged();
         list_newsfeed.setSelection(0);
-       // Util.setExpendableListViewHeight(list_newsfeed, 0);
+        // Util.setExpendableListViewHeight(list_newsfeed, 0);
     }
 
     private Handler mainHandler = new Handler() {
@@ -179,6 +186,7 @@ public class NewsFeedFragment extends Fragment {
                     pDialog.cancel();
                     switch (message.what) {
                         case 0:
+                            Toast.makeText(getActivity(), "" + errorMessage, Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             //  isSearch=false;

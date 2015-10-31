@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -49,7 +50,7 @@ public class UserStoryFragment extends Fragment {
     SessionManager session;
     User userObj;
     TextView storyTxt;
-    String story;
+    String story,errorMessage;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -105,6 +106,7 @@ public class UserStoryFragment extends Fragment {
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.story, "GET", params);
                 try {
+                    if(json!=null){
                     if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
                         Gson gson = new Gson();
                         StoryParser data = gson.fromJson(json.toString(), StoryParser.class);
@@ -115,6 +117,10 @@ public class UserStoryFragment extends Fragment {
                     } else {
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
+                } else {
+                    errorMessage = getResources().getString(R.string.errorMessage);
+                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -141,6 +147,7 @@ public class UserStoryFragment extends Fragment {
                     pDialog.cancel();
                     switch (message.what) {
                         case 0:
+                            Toast.makeText(getActivity(),""+errorMessage,Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             storyTxt.setText(Html.fromHtml(story));

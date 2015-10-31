@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -46,10 +47,12 @@ public class NotificationFragment extends Fragment {
     ListView list_notification;
     NotificationAdapter adapter;
     ArrayList<Notification> dataNotification;
-    private int page_no=1;
+    private int page_no = 1;
     ProgressDialog pDialog;
     CircleImageView userProfileImg;
-    TextView user,account_type,level;
+    TextView user, account_type, level;
+    String errorMessage;
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
     @Nullable
@@ -59,63 +62,62 @@ public class NotificationFragment extends Fragment {
         // getActivity().getActionBar().show();
         DashBoardActivity.actionBar.show();
         DashBoardActivity.menuView.setVisibility(View.GONE);
-        DashBoardActivity. mainView.setBackground(null);
+        DashBoardActivity.mainView.setBackground(null);
         DashBoardActivity.actiontitle.setText("NOTIFICATIONS");
-        list_notification=(ListView)rootView.findViewById(R.id.list_notification);
-        adapter=new NotificationAdapter(getActivity());
+        list_notification = (ListView) rootView.findViewById(R.id.list_notification);
+        adapter = new NotificationAdapter(getActivity());
         list_notification.setAdapter(adapter);
-        session=new SessionManager(getActivity());
-        Gson gson=new Gson();
-        userObj=gson.fromJson(session.getSession(),User.class);
+        session = new SessionManager(getActivity());
+        Gson gson = new Gson();
+        userObj = gson.fromJson(session.getSession(), User.class);
         //header View
         View headerlayout = View.inflate(getActivity(), R.layout.header_layout, null);
         list_notification.addHeaderView(headerlayout, null, false);
         View view1 = View.inflate(getActivity(), R.layout.footer_layout, null);
         list_notification.addFooterView(view1, null, false);
-       // View headerlayout= rootView.findViewById(R.id.header);
-        userProfileImg=(CircleImageView)headerlayout.findViewById(R.id.profileImg);
-        user = (TextView)headerlayout.findViewById(R.id.user);
-        account_type = (TextView)headerlayout.findViewById(R.id.account_type);
-        level = (TextView)headerlayout.findViewById(R.id.level);
+        // View headerlayout= rootView.findViewById(R.id.header);
+        userProfileImg = (CircleImageView) headerlayout.findViewById(R.id.profileImg);
+        user = (TextView) headerlayout.findViewById(R.id.user);
+        account_type = (TextView) headerlayout.findViewById(R.id.account_type);
+        level = (TextView) headerlayout.findViewById(R.id.level);
         Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
         user.setText(userObj.getFirstName() + "" + userObj.getLastName());
         account_type.setText(userObj.getAccountType());
         level.setText(userObj.getUserLevel());
-        pDialog=new ProgressDialog(getActivity());
+        pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("loading...");
 
         // DashBoardActivity. mainView.setBackgroundColor(getResources().getColor(R.color.tansparent));
         Bundle args = getArguments();
-        from=args.getInt("from");
-
-
-
-
-
+        from = args.getInt("from");
         getNotifications();
-        return  rootView;
+        return rootView;
     }
 
     //get articles
-    private void getNotifications(){
+    private void getNotifications() {
         pDialog.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                HashMap<String,String> params=new HashMap<String, String>();
-                params.put("userid",userObj.getUserId());
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("userid", userObj.getUserId());
                 JSONParser parser = new JSONParser();
-                JSONObject json=parser.makeHttpRequest(WebServices.notification,"GET",params);
+                JSONObject json = parser.makeHttpRequest(WebServices.notification, "GET", params);
                 try {
-                    if(json.getString("result").equalsIgnoreCase("SUCCESS")){
-                    Gson gson = new Gson();
-                    NotificationParser data=gson.fromJson(json.toString(),NotificationParser.class);
-                   // if(data.getResult().equalsIgnoreCase("SUCCESS")){
-                        dataNotification=new ArrayList<Notification>();
-                        dataNotification.addAll(data.getData().getNotification());
-                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                    }
-                    else{
+                    if (json != null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                            Gson gson = new Gson();
+                            NotificationParser data = gson.fromJson(json.toString(), NotificationParser.class);
+                            // if(data.getResult().equalsIgnoreCase("SUCCESS")){
+                            dataNotification = new ArrayList<Notification>();
+                            dataNotification.addAll(data.getData().getNotification());
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                        } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }
+                    } else {
+                        errorMessage = getResources().getString(R.string.errorMessage);
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
                 } catch (JSONException e) {
@@ -125,12 +127,12 @@ public class NotificationFragment extends Fragment {
         }).start();
     }
 
-    private void setListAdapter(){
-        for(int i=0;i<dataNotification.size();i++){
+    private void setListAdapter() {
+        for (int i = 0; i < dataNotification.size(); i++) {
             adapter.add(dataNotification.get(i));
         }
         adapter.notifyDataSetChanged();
-      //  Util.setListViewHeight(list_notification);
+        //  Util.setListViewHeight(list_notification);
 
     }
 
@@ -143,6 +145,7 @@ public class NotificationFragment extends Fragment {
                     pDialog.cancel();
                     switch (message.what) {
                         case 0:
+                            Toast.makeText(getActivity(), "" + errorMessage, Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             setListAdapter();

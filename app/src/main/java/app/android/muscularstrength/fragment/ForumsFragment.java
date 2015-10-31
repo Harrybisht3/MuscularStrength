@@ -72,7 +72,7 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
     TextView my_post, todays_post, past_post;
     DatePickerDialog datePickerDialog;
     boolean isSearch=false;
-    String quary;
+    String quary,errorMessage;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
@@ -115,25 +115,7 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
             // DashBoardActivity. mainView.setBackgroundColor(getResources().getColor(R.color.tansparent));
             Bundle args = getArguments();
             from = args.getInt("from");
-       /* rootView.setFocusableInTouchMode(true);
-        rootView.requestFocus();
-        rootView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == event.ACTION_UP
-                        && keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (from == 1) {
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fragmentManager.beginTransaction();
-                        ft.replace(R.id.contentframe, new DashBoardFragment());
-                        ft.commit();
-                    } else {
-                        getActivity().getSupportFragmentManager().popBackStack();
-                    }
-                }
-                return true;
-            }
-        });*/
+
 
             getForum(page_no);
         }
@@ -228,6 +210,7 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.Forums, "GET", params);
                 try {
+                    if(json!=null){
                     if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
                         Gson gson = new Gson();
                         ForumParser data = gson.fromJson(json.toString(), ForumParser.class);
@@ -241,6 +224,10 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                     } else {
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
+                } else{
+                    errorMessage=getResources().getString(R.string.errorMessage);
+                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -259,6 +246,7 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.Forums, "GET", params);
                 try {
+                    if(json!=null){
                     if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
                         Gson gson = new Gson();
                         ForumParser data = gson.fromJson(json.toString(), ForumParser.class);
@@ -271,6 +259,10 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                     } else {
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
+                } else{
+                    errorMessage=getResources().getString(R.string.errorMessage);
+                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -293,6 +285,7 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                     pDialog.cancel();
                     switch (message.what) {
                         case 0:
+                            Toast.makeText(getActivity(),""+errorMessage,Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             isSearch=false;
@@ -351,15 +344,25 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                 params.put("search",quary);*/
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.Forums, "GET", params);
-                Gson gson = new Gson();
-                ForumParser data = gson.fromJson(json.toString(), ForumParser.class);
-                if (data.getResult().equalsIgnoreCase("SUCCESS")) {
-                    //  dataForumPast=new ArrayList<ForumPast>();
-                    dataforum.clear();
-                    dataforum.addAll(data.getForums());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                } else {
+                try {
+                    if(json!=null){
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")){
+                    Gson gson = new Gson();
+                    ForumParser data = gson.fromJson(json.toString(), ForumParser.class);
+                    //if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                        //  dataForumPast=new ArrayList<ForumPast>();
+                        dataforum.clear();
+                        dataforum.addAll(data.getForums());
+                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    } else {
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } else{
+                    errorMessage=getResources().getString(R.string.errorMessage);
                     mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();

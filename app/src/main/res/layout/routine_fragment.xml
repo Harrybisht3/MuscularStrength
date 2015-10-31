@@ -4,7 +4,12 @@
     android:background="@color/bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ScrollView
+    <ExpandableListView
+        android:id="@+id/list_routine"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ExpandableListView>
+   <!-- <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -140,6 +145,6 @@
                 layout="@layout/footer_layout"></include>
 
         </LinearLayout>
-    </ScrollView>
+    </ScrollView>-->
 
 </LinearLayout>

@@ -73,29 +73,7 @@ public class ThreadFragment extends Fragment {
         Bundle args = getArguments();
         id=args.getString("threadID");
         Log.i("threadID=", "" + id);
-      /*  rootView.setFocusableInTouchMode(true);
-        rootView.requestFocus();
-        rootView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == event.ACTION_UP
-                        && keyCode == KeyEvent.KEYCODE_BACK) {
-                   *//* if (from == 1) {
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fragmentManager.beginTransaction();
-                        ft.replace(R.id.contentframe, new DashBoardFragment());
-                        ft.commit();
-                    } else {
-                        getActivity().getSupportFragmentManager().popBackStack();
-                    }*//*
-                    DashBoardActivity.actionbarmenu.setVisibility(View.VISIBLE);
-                    DashBoardActivity.back_Btn.setVisibility(View.GONE);
-                    getActivity().getSupportFragmentManager().popBackStack();
-                    DashBoardActivity.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                }
-                return true;
-            }
-        });*/
+
         DashBoardActivity.back_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +98,7 @@ public class ThreadFragment extends Fragment {
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.Forums,"GET",params);
                 try {
+                    if(json!=null){
                     if(json.getString("result").equalsIgnoreCase("SUCCESS")){
                     Gson gson = new Gson();
                     ThreadParser data=gson.fromJson(json.toString(),ThreadParser.class);
@@ -135,6 +114,10 @@ public class ThreadFragment extends Fragment {
                         errorMessage=json.getJSONObject("posts").getString("data");
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
+                } else {
+                    errorMessage = getResources().getString(R.string.errorMessage);
+                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

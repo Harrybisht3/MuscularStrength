@@ -52,7 +52,7 @@ public class ArticleFragment extends Fragment {
     private int page_no=1;
     ProgressDialog pDialog;
     boolean isSearch=false;
-    String quary;
+    String quary,errorMessage;
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
 
@@ -201,6 +201,7 @@ public class ArticleFragment extends Fragment {
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.article,"GET",params);
                 try {
+                    if(json!=null){
                     if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
                         Gson gson = new Gson();
                         ArticleParser data = gson.fromJson(json.toString(), ArticleParser.class);
@@ -213,6 +214,10 @@ public class ArticleFragment extends Fragment {
                         }*/
                     }
                     else{
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                    } else{
+                        errorMessage=getResources().getString(R.string.errorMessage);
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
                 } catch (JSONException e) {

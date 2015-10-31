@@ -44,6 +44,7 @@ public class ExclusiveFragment extends Fragment implements AdapterView.OnItemCli
     ArrayList<Category> catExclusive;
     private int page_no=1;
     ProgressDialog pDialog;
+    String errorMessage;
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
     @Nullable
@@ -134,6 +135,7 @@ public class ExclusiveFragment extends Fragment implements AdapterView.OnItemCli
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.Exclusive,"GET",params);
                 try {
+                    if(json!=null){
                     if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
                         Gson gson = new Gson();
                         ExclusiveCatParse data = gson.fromJson(json.toString(), ExclusiveCatParse.class);
@@ -146,6 +148,10 @@ public class ExclusiveFragment extends Fragment implements AdapterView.OnItemCli
                         }*/
                     }
                     else{
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                    } else{
+                        errorMessage=getResources().getString(R.string.errorMessage);
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
                 } catch (JSONException e) {

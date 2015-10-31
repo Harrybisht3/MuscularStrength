@@ -54,7 +54,7 @@ public class MealPlanFragment extends Fragment {
     MealPlanAdapter adapter;
     ListView list_mealplan;
     ArrayList<MealPlanMaster> dataMealplan;
-
+    String errorMessage;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -109,6 +109,7 @@ public class MealPlanFragment extends Fragment {
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.meal_plan, "GET", params);
                 try {
+                    if(json!=null){
                     if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
                     Gson gson = new Gson();
                     MealPlanParser data = gson.fromJson(json.toString(), MealPlanParser.class);
@@ -119,6 +120,10 @@ public class MealPlanFragment extends Fragment {
                     } else {
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
+                } else {
+                    errorMessage = getResources().getString(R.string.errorMessage);
+                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

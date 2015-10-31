@@ -50,6 +50,7 @@ public class MessageFragment extends Fragment {
     ProgressDialog pDialog;
     CircleImageView userProfileImg;
     TextView user,account_type,level;
+    String errorMessage;
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
     @Nullable
@@ -102,6 +103,7 @@ public class MessageFragment extends Fragment {
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.Message,"GET",params);
                 try {
+                    if(json!=null){
                     if(json.getString("result").equalsIgnoreCase("SUCCESS")){
                     Gson gson = new Gson();
                     MessageParser data=gson.fromJson(json.toString(),MessageParser.class);
@@ -113,6 +115,10 @@ public class MessageFragment extends Fragment {
                     else{
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
+                } else {
+                    errorMessage = getResources().getString(R.string.errorMessage);
+                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

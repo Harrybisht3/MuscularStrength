@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -62,6 +63,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
     AlbumAdapter adapter;
     List<Album> album;
     PhotoParser data;
+    String errorMessage;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -131,16 +133,22 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.photos, "GET", params);
                 try {
-                    if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
-                        Gson gson = new Gson();
-                        data = gson.fromJson(json.toString(), PhotoParser.class);
-                        //if (data.getResult().equalsIgnoreCase("SUCCESS")) {
-                        //datanewsFeed.addAll(data.getData().getNewsfeed());
-                        album = new ArrayList<Album>();
-                        album.clear();
-                        album.addAll(data.getData().getData());
-                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                    } else {
+                    if(json!=null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                            Gson gson = new Gson();
+                            data = gson.fromJson(json.toString(), PhotoParser.class);
+                            //if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                            //datanewsFeed.addAll(data.getData().getNewsfeed());
+                            album = new ArrayList<Album>();
+                            album.clear();
+                            album.addAll(data.getData().getData());
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                        } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }
+                    }
+                    else{
+                        errorMessage=getResources().getString(R.string.errorMessage);
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
                 } catch (JSONException e) {
@@ -159,6 +167,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
                     pDialog.cancel();
                     switch (message.what) {
                         case 0:
+                            Toast.makeText(getActivity(),""+errorMessage,Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             setGridAdapter();
@@ -174,6 +183,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
     };
 
     private void setGridAdapter() {
+        adapter.clear();
         for (int i = 0; i < album.size(); i++) {
             adapter.add(album.get(i));
         }

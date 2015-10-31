@@ -39,7 +39,7 @@ import app.android.muscularstrength.webservice.WebServices;
  */
 public class ExclusiveVideoFragment extends Fragment implements AdapterView.OnItemClickListener {
     View rootView;
-    String id;
+    String id,errorMessage;
     ListView list_videos;
     VideoAdapter adapter;
     ArrayList<Video> dataVideos;
@@ -99,6 +99,7 @@ public class ExclusiveVideoFragment extends Fragment implements AdapterView.OnIt
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.Exclusive_Videos,"GET",params);
                 try {
+                    if(json!=null){
                     if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
                         Gson gson = new Gson();
                         VideoParse data = gson.fromJson(json.toString(), VideoParse.class);
@@ -113,6 +114,10 @@ public class ExclusiveVideoFragment extends Fragment implements AdapterView.OnIt
                     else{
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
+                } else{
+                    errorMessage=getResources().getString(R.string.errorMessage);
+                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

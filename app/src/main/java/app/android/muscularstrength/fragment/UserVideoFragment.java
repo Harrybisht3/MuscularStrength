@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
@@ -60,10 +61,11 @@ public class UserVideoFragment extends Fragment {
     TextView albumTxt;
     NonSwipeableViewPager viewpager;
     VideoViewPagerAdapter adapter;
-    ImageView previous,next;
+    ImageView previous, next;
     Button addBtn;
     FragmentTransaction ft;
     FragmentManager manager;
+    String errorMessage;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -77,24 +79,24 @@ public class UserVideoFragment extends Fragment {
         DashBoardActivity.actiontitle.setText("VIDEOS");
         ft = getChildFragmentManager().beginTransaction();
         manager = getActivity().getSupportFragmentManager();
-       if (rootView == null) {
+        if (rootView == null) {
             rootView = inflater.inflate(R.layout.uservideo_fragment, container, false);
             density = Util.getDensity(getActivity());
-            viewpager = (NonSwipeableViewPager)rootView.findViewById(R.id.videopager);
-            albumTxt=(TextView)rootView.findViewById(R.id.albumTxt);
-            previous=(ImageView)rootView.findViewById(R.id.previous);
-            next=(ImageView)rootView.findViewById(R.id.next);
+            viewpager = (NonSwipeableViewPager) rootView.findViewById(R.id.videopager);
+            albumTxt = (TextView) rootView.findViewById(R.id.albumTxt);
+            previous = (ImageView) rootView.findViewById(R.id.previous);
+            next = (ImageView) rootView.findViewById(R.id.next);
             // albumTxt.setText(adapter.get);
-            addBtn=(Button)rootView.findViewById(R.id.addVideo);
-            session=new SessionManager(getActivity());
-            Gson gson=new Gson();
-            userObj=gson.fromJson(session.getSession(),User.class);
+            addBtn = (Button) rootView.findViewById(R.id.addVideo);
+            session = new SessionManager(getActivity());
+            Gson gson = new Gson();
+            userObj = gson.fromJson(session.getSession(), User.class);
             //header View
-            View headerlayout= rootView.findViewById(R.id.header);
-            userProfileImg=(CircleImageView)headerlayout.findViewById(R.id.profileImg);
-            user = (TextView)headerlayout.findViewById(R.id.user);
-            account_type = (TextView)headerlayout.findViewById(R.id.account_type);
-            level = (TextView)headerlayout.findViewById(R.id.level);
+            View headerlayout = rootView.findViewById(R.id.header);
+            userProfileImg = (CircleImageView) headerlayout.findViewById(R.id.profileImg);
+            user = (TextView) headerlayout.findViewById(R.id.user);
+            account_type = (TextView) headerlayout.findViewById(R.id.account_type);
+            level = (TextView) headerlayout.findViewById(R.id.level);
             Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
             user.setText(userObj.getFirstName() + "" + userObj.getLastName());
             account_type.setText(userObj.getAccountType());
@@ -107,10 +109,9 @@ public class UserVideoFragment extends Fragment {
             getVideo();
 
             //getNewsfeed();
+        } else {
+            mainHandler.sendMessage(mainHandler.obtainMessage(1));
         }
-        else{
-           mainHandler.sendMessage(mainHandler.obtainMessage(1));
-       }
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,8 +135,6 @@ public class UserVideoFragment extends Fragment {
     }
 
 
-
-
     //get photos
     private void getVideo() {
         pDialog.show();
@@ -148,15 +147,21 @@ public class UserVideoFragment extends Fragment {
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.videos, "GET", params);
                 try {
-                    if(json.getString("result").equalsIgnoreCase("SUCCESS")){
-                    Gson gson = new Gson();
-                    UserVideoParser data = gson.fromJson(json.toString(), UserVideoParser.class);
-                   // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
-                        Video=new ArrayList<UserVideoMaster>();
-                        Video.addAll(data.getData().getVideo());
-                        //datanewsFeed.addAll(data.getData().getNewsfeed());
-                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    if (json != null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                            Gson gson = new Gson();
+                            UserVideoParser data = gson.fromJson(json.toString(), UserVideoParser.class);
+                            // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                            Video = new ArrayList<UserVideoMaster>();
+                            Video.addAll(data.getData().getVideo());
+                            //datanewsFeed.addAll(data.getData().getNewsfeed());
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                        } else {
+                            errorMessage = json.getJSONObject("data").getString("friend");
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }
                     } else {
+                        errorMessage = getResources().getString(R.string.errorMessage);
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
                 } catch (JSONException e) {
@@ -185,9 +190,10 @@ public class UserVideoFragment extends Fragment {
                     pDialog.cancel();
                     switch (message.what) {
                         case 0:
+                            Toast.makeText(getActivity(), "" + errorMessage, Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
-                            adapter = new VideoViewPagerAdapter(getActivity(),Video,albumTxt,ft,manager);
+                            adapter = new VideoViewPagerAdapter(getActivity(), Video, albumTxt, ft, manager);
                             // Binds the Adapter to the ViewPager
                             viewpager.setAdapter(adapter);
                             break;

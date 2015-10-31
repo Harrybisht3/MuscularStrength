@@ -130,6 +130,7 @@ public class FriendRequestFragment extends Fragment{
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.Friend_Request,"GET",params);
                 try {
+                    if(json!=null){
                     if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
                         Gson gson = new Gson();
                         FriendRequestParser data = gson.fromJson(json.toString(), FriendRequestParser.class);
@@ -145,6 +146,10 @@ public class FriendRequestFragment extends Fragment{
                         errorMessage=json.getJSONObject("data").getString("friend_request");
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
+                } else {
+                    errorMessage = getResources().getString(R.string.errorMessage);
+                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
