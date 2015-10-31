@@ -27,8 +27,8 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import app.android.muscularstrength.R;
 import app.android.muscularstrength.model.Childcomment;
@@ -43,17 +43,19 @@ import app.android.muscularstrength.webservice.WebServices;
  */
 public class NewsFeedAdapter extends BaseExpandableListAdapter {
     private Context _context;
-    private ArrayList<Newsfeed> data_newsfeed;
+    private List<Newsfeed> data_newsfeed;
     String msg;
     SessionManager session;
     User userObj;
-    public NewsFeedAdapter(Context context, ArrayList<Newsfeed> data_newsfeed) {
+
+    public NewsFeedAdapter(Context context, List<Newsfeed> data_newsfeed) {
         this._context = context;
         this.data_newsfeed = data_newsfeed;
-        session=new SessionManager(context);
-        Gson gson=new Gson();
-        userObj=gson.fromJson(session.getSession(),User.class);
+        session = new SessionManager(context);
+        Gson gson = new Gson();
+        userObj = gson.fromJson(session.getSession(), User.class);
     }
+
     @Override
     public int getGroupCount() {
         return data_newsfeed.size();
@@ -61,10 +63,9 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if(data_newsfeed.get(groupPosition).getChildcomment()==null){
+        if (data_newsfeed.get(groupPosition).getChildcomment() == null) {
             return 0;
-        }
-        else {
+        } else {
             return data_newsfeed.get(groupPosition).getChildcomment().size();
         }
     }
@@ -96,13 +97,13 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, final ViewGroup parent) {
-      final  Newsfeed headerInfo = (Newsfeed) getGroup(groupPosition);
+        final Newsfeed headerInfo = (Newsfeed) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater inf = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inf.inflate(R.layout.newsfeed_parent, null);
         }
-        ImageView userimg=(ImageView)convertView.findViewById(R.id.userimg);
-        ImageView indicator=(ImageView)convertView.findViewById(R.id.indicator);
+        ImageView userimg = (ImageView) convertView.findViewById(R.id.userimg);
+        ImageView indicator = (ImageView) convertView.findViewById(R.id.indicator);
         indicator.setVisibility(View.GONE);
         TextView heading = (TextView) convertView.findViewById(R.id.text_name);
         heading.setText(headerInfo.getName());
@@ -115,10 +116,10 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
         Glide.with(_context).load(headerInfo.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(userimg);
         ExpandableListView mExpandableListView = (ExpandableListView) parent;
         mExpandableListView.expandGroup(groupPosition);
-       // Util.setListViewHeight(mExpandableListView,groupPosition);
+        // Util.setListViewHeight(mExpandableListView,groupPosition);
         if (isExpanded) {
 
-            indicator.setImageResource( R.drawable.nav_up);
+            indicator.setImageResource(R.drawable.nav_up);
         } else {
             indicator.setImageResource(R.drawable.nav_down);
         }
@@ -139,17 +140,17 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-       final  Childcomment childinfo = (Childcomment) getChild(groupPosition, childPosition);
+        final Childcomment childinfo = (Childcomment) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater inf = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inf.inflate(R.layout.newsfeed_parent, null);
         }
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int)_context.getResources().getDimension(R.dimen._50sdp), (int)_context.getResources().getDimension(R.dimen._50sdp));
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int) _context.getResources().getDimension(R.dimen._50sdp), (int) _context.getResources().getDimension(R.dimen._50sdp));
         lp.setMargins((int) _context.getResources().getDimension(R.dimen._50sdp), (int) _context.getResources().getDimension(R.dimen._50sdp), 0, 0);
-        ImageView userimg=(ImageView)convertView.findViewById(R.id.userimg);
+        ImageView userimg = (ImageView) convertView.findViewById(R.id.userimg);
         userimg.setLayoutParams(lp);
-        ImageView indicator=(ImageView)convertView.findViewById(R.id.indicator);
+        ImageView indicator = (ImageView) convertView.findViewById(R.id.indicator);
         indicator.setVisibility(View.GONE);
         TextView heading = (TextView) convertView.findViewById(R.id.text_name);
         heading.setText(childinfo.getName());
@@ -182,48 +183,27 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
     }
+
     //get articles
     private void hitLike(final String postid) {
-       // pDialog.show();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HashMap<String, String> params = new HashMap<String, String>();
-                params.put("userid", "" + userObj.getUserId());
-                  params.put("id",postid);
-                JSONParser parser = new JSONParser();
-                JSONObject json = parser.makeHttpRequest(WebServices.newsFeedlike, "GET", params);
-                try {
-                    if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
-                       // datanewsFeed.addAll(data.getData().getNewsfeed());
-                        msg=json.getString("data");
-                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                    } else {
-                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-    private void replyPost(final String postid,final String comment) {
         // pDialog.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("userid", "" + userObj.getUserId());
-                params.put("id",postid);
-                params.put("postowner","147430");
-                params.put("comment",comment);
+                params.put("id", postid);
                 JSONParser parser = new JSONParser();
-                JSONObject json = parser.makeHttpRequest(WebServices.newsFeedReply, "GET", params);
+                JSONObject json = parser.makeHttpRequest(WebServices.newsFeedlike, "GET", params);
                 try {
-                    if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
-                        // datanewsFeed.addAll(data.getData().getNewsfeed());
-                        msg=json.getString("data");
-                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    if (json != null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                            // datanewsFeed.addAll(data.getData().getNewsfeed());
+                            msg = json.getString("data");
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                        } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }
                     } else {
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
@@ -233,30 +213,63 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
             }
         }).start();
     }
+
+    private void replyPost(final String postid, final String comment) {
+        // pDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("userid", "" + userObj.getUserId());
+                params.put("id", postid);
+                params.put("postowner", "147430");
+                params.put("comment", comment);
+                JSONParser parser = new JSONParser();
+                JSONObject json = parser.makeHttpRequest(WebServices.newsFeedReply, "GET", params);
+                try {
+                    if (json != null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                            // datanewsFeed.addAll(data.getData().getNewsfeed());
+                            msg = json.getString("data");
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                        } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }
+                    } else {
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
     private Handler mainHandler = new Handler() {
         public void handleMessage(Message message) {
             try {
 
-               // if (_context.isAdded()) {
-                  //  pDialog.dismiss();
-                    //pDialog.cancel();
-                    switch (message.what) {
-                        case 0:
-                            break;
-                        case 1:
-                            Toast.makeText(_context,msg,Toast.LENGTH_SHORT).show();
-                            break;
-                        case 2:
-                            // isSearch=true;
-                           // setListAdapter();
-                            break;
-                    }
+                // if (_context.isAdded()) {
+                //  pDialog.dismiss();
+                //pDialog.cancel();
+                switch (message.what) {
+                    case 0:
+                        break;
+                    case 1:
+                        Toast.makeText(_context, msg, Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        // isSearch=true;
+                        // setListAdapter();
+                        break;
+                }
                 //}
             } catch (Resources.NotFoundException e) {
 
             }
         }
     };
+
     public void showCommentAlert(final String postid) {
         final Dialog dialog = new Dialog(_context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -278,8 +291,8 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 if (comment_txt.getText().toString().length() != 0) {
                     dialog.dismiss();
-                  //  new SendComment().execute(comment_txt.getText().toString());
-                    replyPost(postid,comment_txt.getText().toString().trim());
+                    //  new SendComment().execute(comment_txt.getText().toString());
+                    replyPost(postid, comment_txt.getText().toString().trim());
 
                 } else {
                     comment_txt.setError(Html
