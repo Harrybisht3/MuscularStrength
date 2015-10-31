@@ -14,10 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ public class FriendRequestFragment extends Fragment{
     ProgressDialog pDialog;
     CircleImageView userProfileImg;
     TextView user,account_type,level;
+    String errorMessage;
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
     @Nullable
@@ -126,15 +129,24 @@ public class FriendRequestFragment extends Fragment{
                 params.put("userid",userObj.getUserId());
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.Friend_Request,"GET",params);
-                Gson gson = new Gson();
-                FriendRequestParser data=gson.fromJson(json.toString(),FriendRequestParser.class);
-                if(data.getResult().equalsIgnoreCase("SUCCESS")){
-                    dataFriendRequest=new ArrayList<FriendRequest>();
-                    dataFriendRequest.addAll(data.getData().getFriendRequest());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                }
-                else{
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                try {
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                        Gson gson = new Gson();
+                        FriendRequestParser data = gson.fromJson(json.toString(), FriendRequestParser.class);
+                       // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                            dataFriendRequest = new ArrayList<FriendRequest>();
+                            dataFriendRequest.addAll(data.getData().getFriendRequest());
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                       // } else {
+                            //mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        //}
+                    }
+                    else{
+                        errorMessage=json.getJSONObject("data").getString("friend_request");
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -158,6 +170,7 @@ public class FriendRequestFragment extends Fragment{
                     pDialog.cancel();
                     switch (message.what) {
                         case 0:
+                            Toast.makeText(getActivity(), ""+errorMessage, Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             setListAdapter();
