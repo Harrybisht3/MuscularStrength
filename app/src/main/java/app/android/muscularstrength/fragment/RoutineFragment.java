@@ -15,15 +15,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import app.android.muscularstrength.R;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.DashBoardActivity;
+import app.android.muscularstrength.adapter.RoutineAdapter;
+import app.android.muscularstrength.model.Routine;
+import app.android.muscularstrength.model.RoutineParser;
 import app.android.muscularstrength.model.User;
+import app.android.muscularstrength.network.JSONParser;
 import app.android.muscularstrength.session.SessionManager;
+import app.android.muscularstrength.webservice.WebServices;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -41,7 +54,9 @@ public class RoutineFragment extends Fragment {
     SessionManager session;
     User userObj;
     ExpandableListView list_routine;
-
+    RoutineAdapter adapter;
+    List<Routine> dataRoutine;
+    String errorMessage;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -55,16 +70,27 @@ public class RoutineFragment extends Fragment {
         DashBoardActivity.actiontitle.setText("ROUTINES");
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.routine_fragment, container, false);
+            list_routine = (ExpandableListView) rootView.findViewById(R.id.list_routine);
             density = Util.getDensity(getActivity());
-            session=new SessionManager(getActivity());
-            Gson gson=new Gson();
-            userObj=gson.fromJson(session.getSession(),User.class);
+            dataRoutine = new ArrayList<Routine>();
+            adapter = new RoutineAdapter(getActivity(), dataRoutine);
+
             //header View
-            View headerlayout= rootView.findViewById(R.id.header);
-            userProfileImg=(CircleImageView)headerlayout.findViewById(R.id.profileImg);
-            user = (TextView)headerlayout.findViewById(R.id.user);
-            account_type = (TextView)headerlayout.findViewById(R.id.account_type);
-            level = (TextView)headerlayout.findViewById(R.id.level);
+            View headerlayout = View.inflate(getActivity(), R.layout.header_layout, null);
+            list_routine.addHeaderView(headerlayout, null, false);
+            View view1 = View.inflate(getActivity(), R.layout.footer_layout, null);
+            list_routine.addFooterView(view1, null, false);
+            list_routine.setAdapter(adapter);
+            density = Util.getDensity(getActivity());
+            session = new SessionManager(getActivity());
+            Gson gson = new Gson();
+            userObj = gson.fromJson(session.getSession(), User.class);
+
+            // View headerlayout= rootView.findViewById(R.id.header);
+            userProfileImg = (CircleImageView) headerlayout.findViewById(R.id.profileImg);
+            user = (TextView) headerlayout.findViewById(R.id.user);
+            account_type = (TextView) headerlayout.findViewById(R.id.account_type);
+            level = (TextView) headerlayout.findViewById(R.id.level);
             Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
             user.setText(userObj.getFirstName() + "" + userObj.getLastName());
             account_type.setText(userObj.getAccountType());
@@ -75,6 +101,14 @@ public class RoutineFragment extends Fragment {
             from = args.getInt("from");
             Log.i(TAG, "called From=" + from);
             getRoutine();
+            list_routine.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                @Override
+                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                    //Util.setExpendableListViewHeight(parent, groupPosition);
+                    //return false;
+                    return true;
+                }
+            });
 
             //getNewsfeed();
         }
@@ -82,25 +116,36 @@ public class RoutineFragment extends Fragment {
 
         return rootView;
     }
+
     private void getRoutine() {
         pDialog.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mainHandler.sendMessage(mainHandler.obtainMessage(1));
-               /* HashMap<String, String> params = new HashMap<String, String>();
-                params.put("userid", "" + 2);
-                 *//* params.put("display","15");*//*
+                // mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("userid", "" + userObj.getUserId());
                 JSONParser parser = new JSONParser();
-                JSONObject json = parser.makeHttpRequest(WebServices.meal_plan, "GET", params);
-                Gson gson = new Gson();
-                UserVideoParser data = gson.fromJson(json.toString(), UserVideoParser.class);
-                if (data.getResult().equalsIgnoreCase("SUCCESS")) {
-                    //datanewsFeed.addAll(data.getData().getNewsfeed());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(from));
-                } else {
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
-                }*/
+                JSONObject json = parser.makeHttpRequest(WebServices.Routine, "GET", params);
+                try {
+                    if (json != null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                            Gson gson = new Gson();
+                            RoutineParser data = gson.fromJson(json.toString(), RoutineParser.class);
+                            //if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                            dataRoutine.clear();
+                            dataRoutine.addAll(data.getRoutines());
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                        } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }
+                    } else {
+                        errorMessage = getResources().getString(R.string.errorMessage);
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
@@ -114,16 +159,24 @@ public class RoutineFragment extends Fragment {
                     pDialog.cancel();
                     switch (message.what) {
                         case 0:
+                            Toast.makeText(getActivity(), "" + errorMessage, Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
-                           // storyTxt.setText(Html.fromHtml(story));
+                            // storyTxt.setText(Html.fromHtml(story));
+                            setListAdapter();
                             break;
 
                     }
                 }
             } catch (Resources.NotFoundException e) {
-
+        e.printStackTrace();
             }
         }
     };
+
+    private void setListAdapter() {
+        adapter.notifyDataSetChanged();
+        list_routine.setSelection(0);
+        // Util.setExpendableListViewHeight(list_newsfeed, 0);
+    }
 }

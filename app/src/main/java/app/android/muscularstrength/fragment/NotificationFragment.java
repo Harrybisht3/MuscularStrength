@@ -66,7 +66,7 @@ public class NotificationFragment extends Fragment {
         DashBoardActivity.actiontitle.setText("NOTIFICATIONS");
         list_notification = (ListView) rootView.findViewById(R.id.list_notification);
         adapter = new NotificationAdapter(getActivity());
-        list_notification.setAdapter(adapter);
+
         session = new SessionManager(getActivity());
         Gson gson = new Gson();
         userObj = gson.fromJson(session.getSession(), User.class);
@@ -75,6 +75,7 @@ public class NotificationFragment extends Fragment {
         list_notification.addHeaderView(headerlayout, null, false);
         View view1 = View.inflate(getActivity(), R.layout.footer_layout, null);
         list_notification.addFooterView(view1, null, false);
+        list_notification.setAdapter(adapter);
         // View headerlayout= rootView.findViewById(R.id.header);
         userProfileImg = (CircleImageView) headerlayout.findViewById(R.id.profileImg);
         user = (TextView) headerlayout.findViewById(R.id.user);

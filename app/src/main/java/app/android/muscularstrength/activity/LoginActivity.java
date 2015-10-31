@@ -249,7 +249,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
               //  ArticleParser data=gson.fromJson(json.toString(),ArticleParser.class);
                 try {
                 if(json!=null){
-
                    /* dataArticle=new ArrayList<Article>();
                     dataArticle.addAll(data.getData().getArticles());*/
                     if(json.has("User Id")) {

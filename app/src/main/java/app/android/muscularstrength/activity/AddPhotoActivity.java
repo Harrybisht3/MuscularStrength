@@ -33,20 +33,16 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import app.android.muscularstrength.R;
+import app.android.muscularstrength.Util.MultipartUtility;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.adapter.SelectedImageAdapter;
 import app.android.muscularstrength.custom.GridViewWithHeaderAndFooter;
@@ -88,6 +84,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     Spinner sp_album,selection_sp;
     Button upload;
     public static List<ImageModel>imagesmodel;
+    String errorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +107,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         Log.i("DATA ALBUM", "" + photoparser.getResult());
         actionbarmenu.setVisibility(View.GONE);
         back_Btn.setVisibility(View.VISIBLE);
+        back_Btn.setOnClickListener(this);
         Toolbar parent = (Toolbar) v.getParent();//first get parent toolbar of current action bar
         parent.setContentInsetsAbsolute(0, 0);// set padding programmatically to 0dp
        // moveDrawerToTop();
@@ -129,6 +127,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         selectphotos.setOnClickListener(this);
         backBtn = (ImageView) findViewById(R.id.backBtn);
         cancelbtn = (ImageView) findViewById(R.id.cancelBtn);
+        cancelbtn.setOnClickListener(this);
         camera = (ImageView) findViewById(R.id.camera);
         imageGallery = (GridView) findViewById(R.id.imageGallery);
         textselect = (TextView) findViewById(R.id.selectedsize);
@@ -243,6 +242,11 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                 else
                     Toast.makeText(AddPhotoActivity.this,"Add  caption to all selected photos",Toast.LENGTH_LONG).show();
                 break;
+            case R.id.back_icon:
+                finish();
+                case R.id.cancelBtn:
+                    hideShow(false);
+                    break;
             default:
                 break;
         }
@@ -251,14 +255,21 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
 
     public void hideShow(boolean value) {
         if (value) {
+            getSupportActionBar().hide();
             selectView.setVisibility(View.GONE);
             selectionView.setVisibility(View.VISIBLE);
         } else {
+            getSupportActionBar().show();
             selectView.setVisibility(View.VISIBLE);
             selectphotos.setVisibility(View.GONE);
             selectedgallery.setVisibility(View.VISIBLE);
             selectionView.setVisibility(View.GONE);
-            setSelectedgallery();
+            if(selectedFiles.size()>0) {
+                setSelectedgallery();
+            }
+            else {
+                selectphotos.setVisibility(View.VISIBLE);
+            }
         }
 
     }
@@ -383,9 +394,26 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //http://muscularstrength.com/creat_album.php?userid=135953&album_id=1281&caption=test&imgefile=$_FILES["frmFile"]
-    private List<String> uploadFile(String pathToOurFile, String urlServer, HashMap<String, String> params) {
-        List<String> response = new ArrayList<String>();
-        HttpURLConnection connection = null;
+    private String uploadFile() {
+        String response =null;
+
+        String charset = "UTF-8";
+       // String requestURL = "YOUR_URL";
+
+        MultipartUtility multipart = null;
+        try {
+            multipart = new MultipartUtility(WebServices.addPhotos, charset);
+            Log.i("USER ID","ID="+userObj.getUserId());
+            multipart.addFormField("userid", userObj.getUserId());
+            multipart.addFormField("album_id", photoparser.getData().getData().get(selectedalbum).getId());
+            multipart.addFormField("caption", imagesmodel.get(countUpload).getCaption());
+            multipart.addFilePart("frmFile", new File(selectedFiles.get(countUpload)));
+            response = multipart.finish();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*HttpURLConnection connection = null;
         DataOutputStream outputStream = null;
         DataInputStream inputStream = null;
         // String pathToOurFile = "/data/file_to_send.mp3";
@@ -416,7 +444,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
             connection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
             outputStream = new DataOutputStream(connection.getOutputStream());
             outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-            outputStream.writeBytes("Content-Disposition: form-data; name=\"frmFile\";filename=\"" + pathToOurFile + "\"" + lineEnd);
+            outputStream.writeBytes("Content-Disposition: form-data; name=\"frmFile\";filename=\"" + "filename.jpg" + "\"" + lineEnd);
             outputStream.writeBytes(lineEnd);
             bytesAvailable = fileInputStream.available();
             bufferSize = Math.min(bytesAvailable, maxBufferSize);
@@ -483,7 +511,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         } catch (Exception ex) {
             //Exception handling
             return null;
-        }
+        }*/
         return response;
     }
 
@@ -494,13 +522,29 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         new Thread(new Runnable() {
             @Override
             public void run() {
-                HashMap<String, String> params = new HashMap<String, String>();
+               /* HashMap<String, String> params = new HashMap<String, String>();
                 params.put("userid", "" + userObj.getUserId());
                 params.put("album_id", photoparser.getData().getData().get(selectedalbum).getId());
-                params.put("caption", imagesmodel.get(countUpload).getCaption());
-
-              List<String>resp= uploadFile(selectedFiles.get(countUpload), WebServices.addPhotos, params);
-                Log.i("Response","R="+resp.toString());
+                params.put("caption", imagesmodel.get(countUpload).getCaption());*/
+             String resp= uploadFile();
+                try {
+                    JSONObject json=new JSONObject(resp);
+                    if(json!=null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                            countUpload++;
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                        } else {
+                            errorMessage = json.getString("data");
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }
+                    } else {
+                        errorMessage = getResources().getString(R.string.errorMessage);
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.i("Response","R="+resp);
             }
 
         }).start();
@@ -512,17 +556,25 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
             try {
 
 
-                pDialog.dismiss();
-                pDialog.cancel();
+
                 switch (message.what) {
                     case 0:
+                        pDialog.dismiss();
+                        pDialog.cancel();
+                        Toast.makeText(AddPhotoActivity.this,""+errorMessage,Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
-                        if (countUpload < selectedFiles.size()) {
-
+                        if (countUpload < imagesmodel.size()) {
+                            uploadImages();
+                        }
+                        else{
+                            pDialog.dismiss();
+                            pDialog.cancel();
                         }
                         break;
                     case 2:
+                        pDialog.dismiss();
+                        pDialog.cancel();
                         imageAdapter = new ImageAdapter();
                         imageGallery.setAdapter(imageAdapter);
                         break;

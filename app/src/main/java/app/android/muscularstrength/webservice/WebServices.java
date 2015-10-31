@@ -12,6 +12,7 @@ public class WebServices {
     public static final String notification=host+"notifications_json.php";//userid=
     public static final String Friend_Request=host+"friendrequest_json.php";//userid=
     public static final String Forums= host+"forums_json.php";
+    public static  final String Routine=host+"routine_json.php";
    //subForumID=90
     public static final String Thread=host+"forums_json.php?";//threadID=2553
     public static final String Exclusive=host+"exclusive_categories_json.php";

@@ -18,5 +18,13 @@
         android:textSize="@dimen/_12sdp"
         android:layout_height="wrap_content"
         android:textColor="@color/cat_color" />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:background="@color/cat_color"
+        android:layout_height="@dimen/_1sdp"></View>
 
 </LinearLayout>

@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import app.android.muscularstrength.R;
 import app.android.muscularstrength.Util.Util;
@@ -46,8 +47,8 @@ public class NewsFeedFragment extends Fragment {
     float density;
     ExpandableListView list_newsfeed;
     NewsFeedAdapter adapter;
-    ArrayList<Newsfeed> datanewsFeed;
-    private int page_no = 1;
+   List<Newsfeed> datanewsFeed;
+    //private int page_no = 1;
     ProgressDialog pDialog;
     CircleImageView userProfileImg;
     TextView user, account_type, level;
@@ -71,7 +72,7 @@ public class NewsFeedFragment extends Fragment {
             datanewsFeed = new ArrayList<Newsfeed>();
             adapter = new NewsFeedAdapter(getActivity(), datanewsFeed);
             // list_newsfeed.setIndicatorBounds(Util.getDisplay(getActivity()).widthPixels - GetDipsFromPixel(50), Util.getDisplay(getActivity()).widthPixels - GetDipsFromPixel(10));
-            list_newsfeed.setAdapter(adapter);
+
             session = new SessionManager(getActivity());
             Gson gson = new Gson();
             userObj = gson.fromJson(session.getSession(), User.class);
@@ -79,6 +80,7 @@ public class NewsFeedFragment extends Fragment {
             list_newsfeed.addHeaderView(headerlayout, null, false);
             View view1 = View.inflate(getActivity(), R.layout.footer_layout, null);
             list_newsfeed.addFooterView(view1, null, false);
+            list_newsfeed.setAdapter(adapter);
             // View headerlayout= rootView.findViewById(R.id.header);
             userProfileImg = (CircleImageView) headerlayout.findViewById(R.id.profileImg);
             user = (TextView) headerlayout.findViewById(R.id.user);
@@ -102,26 +104,7 @@ public class NewsFeedFragment extends Fragment {
                 return true;
             }
         });
-     /*   list_newsfeed.setOnTouchListener(new View.OnTouchListener() {
-            // Setting on Touch Listener for handling the touch inside ScrollView
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-// Disallow the touch request for parent scroll on touch of child view
-                v.getParent().requestDisallowInterceptTouchEvent(true);
-                return false;
-            }
-        });*/
-       /* list_newsfeed.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                int len = adapter.getGroupCount();
-                for (int i = 0; i < len; i++) {
-                    if (i != groupPosition) {
-                        list_newsfeed.collapseGroup(i);
-                    }
-                }
-            }
-        });*/
+
 
         return rootView;
     }

@@ -64,7 +64,7 @@ public class MessageFragment extends Fragment {
         DashBoardActivity.actiontitle.setText("MESSAGES");
         list_message=(ListView)rootView.findViewById(R.id.list_message);
         adapter=new MessageAdapter(getActivity());
-        list_message.setAdapter(adapter);
+
         session=new SessionManager(getActivity());
         Gson gson=new Gson();
         userObj=gson.fromJson(session.getSession(),User.class);
@@ -74,6 +74,7 @@ public class MessageFragment extends Fragment {
         user = (TextView)headerlayout.findViewById(R.id.user);
         account_type = (TextView)headerlayout.findViewById(R.id.account_type);
         level = (TextView)headerlayout.findViewById(R.id.level);
+        list_message.setAdapter(adapter);
         Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
         user.setText(userObj.getFirstName() + "" + userObj.getLastName());
         account_type.setText(userObj.getAccountType());
