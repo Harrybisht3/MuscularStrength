@@ -79,7 +79,7 @@ public class MultipartUtility {
     {
         String fileName = uploadFile.getName();
        writer.append("--" + boundary).append(LINE_FEED);
-       writer.append("Content-Disposition: form-data; name=\"" + fieldName+ "\"; filename=\"" + fileName + "\"")
+       writer.append("Content-Disposition: form-data; name=\"" + fieldName+ "\"; filename=\"" + "filename.jpg" + "\"")
         .append(LINE_FEED);
         writer.append("Content-Type: "+ URLConnection.guessContentTypeFromName(fileName)).append(LINE_FEED);
         writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
@@ -113,8 +113,9 @@ public class MultipartUtility {
 
 
 
-    public List<String> finish() throws IOException {
+    public String finish() throws IOException {
         List<String> response = new ArrayList<String>();
+        StringBuilder rep=new StringBuilder();
 
        writer.append(LINE_FEED).flush();
        writer.append("--" + boundary + "--").append(LINE_FEED);
@@ -126,7 +127,7 @@ public class MultipartUtility {
             BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
             String line = null;
            while ((line = reader.readLine()) != null) {
-                response.add(line);
+               rep.append(line);
               }
             reader.close();
            httpConn.disconnect();
@@ -134,6 +135,6 @@ public class MultipartUtility {
           throw new IOException("Server returned non-OK status: " + status);
            }
 
-        return response;
+        return rep.toString();
        }
 }
