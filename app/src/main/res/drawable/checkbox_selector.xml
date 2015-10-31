@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_checked="true"
-        android:drawable="@android:drawable/checkbox_on_background" /> <!-- checked -->
+        
+        android:drawable="@drawable/thumb_check" /> <!-- checked -->
     <item android:state_checked="false"
-        android:drawable="@android:drawable/checkbox_off_background" /> <!-- unchecked-->
+        android:drawable="@drawable/thumb_uncheck" /> <!-- unchecked-->
 </selector>
