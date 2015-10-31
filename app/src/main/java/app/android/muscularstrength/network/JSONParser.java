@@ -105,7 +105,9 @@ public class JSONParser {
                 conn.connect();
 
             } catch (IOException e) {
+
                 e.printStackTrace();
+                return null;
             }
 
         }
@@ -127,6 +129,7 @@ public class JSONParser {
 
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
 
         conn.disconnect();
@@ -136,6 +139,7 @@ public class JSONParser {
             jObj = new JSONObject(result.toString());
         } catch (JSONException e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
+            return null;
         }
 
         // return JSON Object
