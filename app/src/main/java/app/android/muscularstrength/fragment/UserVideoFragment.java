@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -142,19 +143,24 @@ public class UserVideoFragment extends Fragment {
             @Override
             public void run() {
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("userid", "" + 2);
+                params.put("userid", "" + userObj.getUserId());
                  /* params.put("display","15");*/
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.videos, "GET", params);
-                Gson gson = new Gson();
-                UserVideoParser data = gson.fromJson(json.toString(), UserVideoParser.class);
-                if (data.getResult().equalsIgnoreCase("SUCCESS")) {
-                    Video=new ArrayList<UserVideoMaster>();
-                    Video.addAll(data.getData().getVideo());
-                    //datanewsFeed.addAll(data.getData().getNewsfeed());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                } else {
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                try {
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")){
+                    Gson gson = new Gson();
+                    UserVideoParser data = gson.fromJson(json.toString(), UserVideoParser.class);
+                   // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                        Video=new ArrayList<UserVideoMaster>();
+                        Video.addAll(data.getData().getVideo());
+                        //datanewsFeed.addAll(data.getData().getNewsfeed());
+                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    } else {
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();

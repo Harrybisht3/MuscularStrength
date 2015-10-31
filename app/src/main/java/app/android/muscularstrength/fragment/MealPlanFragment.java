@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -104,17 +105,22 @@ public class MealPlanFragment extends Fragment {
             public void run() {
                // mainHandler.sendMessage(mainHandler.obtainMessage(1));
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("userid", "" + 2);
+                params.put("userid", "" + userObj.getUserId());
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.meal_plan, "GET", params);
-                Gson gson = new Gson();
-                MealPlanParser data = gson.fromJson(json.toString(), MealPlanParser.class);
-                if (data.getResult().equalsIgnoreCase("SUCCESS")) {
-                    dataMealplan=new ArrayList<MealPlanMaster>();
-                    dataMealplan.addAll(data.getData().getData());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                } else {
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                try {
+                    if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                    Gson gson = new Gson();
+                    MealPlanParser data = gson.fromJson(json.toString(), MealPlanParser.class);
+                   // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                        dataMealplan=new ArrayList<MealPlanMaster>();
+                        dataMealplan.addAll(data.getData().getData());
+                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    } else {
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();

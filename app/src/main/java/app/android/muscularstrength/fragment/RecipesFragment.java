@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class RecipesFragment extends Fragment {
     ArrayList<Recipe> dataRecipe;
     private int page_no=1;
     ProgressDialog pDialog;
+    String errorMessage;
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
     @Nullable
@@ -62,25 +64,7 @@ public class RecipesFragment extends Fragment {
         // DashBoardActivity. mainView.setBackgroundColor(getResources().getColor(R.color.tansparent));
         Bundle args = getArguments();
         from=args.getInt("from");
-       /* rootView.setFocusableInTouchMode(true);
-        rootView.requestFocus();
-        rootView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == event.ACTION_UP
-                        && keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (from == 1) {
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fragmentManager.beginTransaction();
-                        ft.replace(R.id.contentframe, new DashBoardFragment());
-                        ft.commit();
-                    } else {
-                        getActivity().getSupportFragmentManager().popBackStack();
-                    }
-                }
-                return true;
-            }
-        });*/
+
         list_recipe.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
@@ -89,11 +73,8 @@ public class RecipesFragment extends Fragment {
             }
         });
 
-
-
-
         getRecipe(page_no);
-        return  rootView;
+     return  rootView;
     }
 
     //get articles
@@ -107,15 +88,21 @@ public class RecipesFragment extends Fragment {
                 params.put("display","10");
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.Recipes,"GET",params);
-                Gson gson = new Gson();
-                RecipeParser data=gson.fromJson(json.toString(),RecipeParser.class);
-                if(data.getResult().equalsIgnoreCase("SUCCESS")){
-                    dataRecipe=new ArrayList<Recipe>();
-                    dataRecipe.addAll(data.getData().getRecipes());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                }
-                else{
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                try {
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")){
+                    Gson gson = new Gson();
+                    RecipeParser data=gson.fromJson(json.toString(),RecipeParser.class);
+                    //if(data.getResult().equalsIgnoreCase("SUCCESS")){
+                        dataRecipe=new ArrayList<Recipe>();
+                        dataRecipe.addAll(data.getData().getRecipes());
+                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    }
+                    else{
+                        errorMessage=json.getJSONObject("").getString("");
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();

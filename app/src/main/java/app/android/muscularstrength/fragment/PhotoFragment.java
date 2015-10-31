@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -129,16 +130,21 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
                  /* params.put("display","15");*/
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.photos, "GET", params);
-                Gson gson = new Gson();
-                data = gson.fromJson(json.toString(), PhotoParser.class);
-                if (data.getResult().equalsIgnoreCase("SUCCESS")) {
-                    //datanewsFeed.addAll(data.getData().getNewsfeed());
-                    album = new ArrayList<Album>();
-                    album.clear();
-                    album.addAll(data.getData().getData());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                } else {
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                try {
+                    if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                        Gson gson = new Gson();
+                        data = gson.fromJson(json.toString(), PhotoParser.class);
+                        //if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                        //datanewsFeed.addAll(data.getData().getNewsfeed());
+                        album = new ArrayList<Album>();
+                        album.clear();
+                        album.addAll(data.getData().getData());
+                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    } else {
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -191,9 +197,9 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
                     albumname.add(alb.getTitle());
                 }*/
                 Intent it = new Intent(getActivity(), AddPhotoActivity.class);
-               // it.putStringArrayListExtra("AlbumID", id);
+                // it.putStringArrayListExtra("AlbumID", id);
                 //it.putStringArrayListExtra("AlbumName", albumname);
-                it.putExtra("ParcelableList",data);
+                it.putExtra("ParcelableList", data);
                 startActivity(it);
                 break;
 

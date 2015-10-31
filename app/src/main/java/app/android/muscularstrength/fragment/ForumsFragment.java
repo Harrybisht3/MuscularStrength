@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -226,14 +227,22 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                 params.put("display","15");*/
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.Forums, "GET", params);
-                Gson gson = new Gson();
-                ForumParser data = gson.fromJson(json.toString(), ForumParser.class);
-                if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                try {
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                        Gson gson = new Gson();
+                        ForumParser data = gson.fromJson(json.toString(), ForumParser.class);
+                       // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
 
-                    dataforum.addAll(data.getForums());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                } else {
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                            dataforum.addAll(data.getForums());
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                       /* } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }*/
+                    } else {
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -249,18 +258,24 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                 params.put("search", quary);
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.Forums, "GET", params);
-                Gson gson = new Gson();
-                ForumParser data = gson.fromJson(json.toString(), ForumParser.class);
-                if (data.getResult().equalsIgnoreCase("SUCCESS")) {
-                    // dataforum=new ArrayList<Article>();
-                    dataforum.clear();
-                    dataforum.addAll(data.getForums());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(2));
-                } else {
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                try {
+                    if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                        Gson gson = new Gson();
+                        ForumParser data = gson.fromJson(json.toString(), ForumParser.class);
+                        // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                        // dataforum=new ArrayList<Article>();
+                        dataforum.clear();
+                        dataforum.addAll(data.getForums());
+                        mainHandler.sendMessage(mainHandler.obtainMessage(2));
+
+                    } else {
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
-        }).start();
+            }).start();
     }
 
     private void setListAdapter() {

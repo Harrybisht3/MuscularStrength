@@ -23,6 +23,7 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -166,15 +167,23 @@ public class ArticleFragment extends Fragment {
                 params.put("display","15");
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.article,"GET",params);
-                Gson gson = new Gson();
-                ArticleParser data=gson.fromJson(json.toString(),ArticleParser.class);
-                if(data.getResult().equalsIgnoreCase("SUCCESS")){
-                dataArticle=new ArrayList<Article>();
-                    dataArticle.addAll(data.getData().getArticles());
+                try {
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                        Gson gson = new Gson();
+                        ArticleParser data = gson.fromJson(json.toString(), ArticleParser.class);
+                       // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                            dataArticle = new ArrayList<Article>();
+                            dataArticle.addAll(data.getData().getArticles());
+                         mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                       /* } else {
 
-                }
-                else{
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }*/
+                    }
+                    else{
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -191,15 +200,23 @@ public class ArticleFragment extends Fragment {
                 params.put("search",quary);
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.article,"GET",params);
-                Gson gson = new Gson();
-                ArticleParser data=gson.fromJson(json.toString(),ArticleParser.class);
-                if(data.getResult().equalsIgnoreCase("SUCCESS")){
-                    dataArticle=new ArrayList<Article>();
-                    dataArticle.addAll(data.getData().getArticles());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(2));
-                }
-                else{
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                try {
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                        Gson gson = new Gson();
+                        ArticleParser data = gson.fromJson(json.toString(), ArticleParser.class);
+                       // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                            dataArticle = new ArrayList<Article>();
+                            dataArticle.addAll(data.getData().getArticles());
+                            mainHandler.sendMessage(mainHandler.obtainMessage(2));
+                       /* } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }*/
+                    }
+                    else{
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();

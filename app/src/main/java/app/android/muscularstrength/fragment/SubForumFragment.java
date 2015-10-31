@@ -18,9 +18,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -41,12 +43,13 @@ public class SubForumFragment extends Fragment implements AdapterView.OnItemClic
     View rootView;
     String id;
     ListView list_subForum;
-    TextView txtheading,txtcategories;
-    String heading,category;
+    TextView txtheading, txtcategories;
+    String heading, category;
     SubForumAdapter adapter;
     ArrayList<app.android.muscularstrength.model.Thread> dataSubForum;
-    private int page_no=1;
+    private int page_no = 1;
     ProgressDialog pDialog;
+    String errorMessage;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
@@ -59,10 +62,10 @@ public class SubForumFragment extends Fragment implements AdapterView.OnItemClic
         DashBoardActivity.actiontitle.setText("FORUM");
         DashBoardActivity.actionbarmenu.setVisibility(View.GONE);
         DashBoardActivity.back_Btn.setVisibility(View.VISIBLE);
-        if(rootView==null) {
+        if (rootView == null) {
             rootView = inflater.inflate(R.layout.subforum_fragment, container, false);
             // getActivity().getActionBar().show();
-           // DashBoardActivity.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            // DashBoardActivity.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             list_subForum = (ListView) rootView.findViewById(R.id.list_subforum);
             txtheading = (TextView) rootView.findViewById(R.id.txtheading);
             txtcategories = (TextView) rootView.findViewById(R.id.txtcategories);
@@ -112,41 +115,46 @@ public class SubForumFragment extends Fragment implements AdapterView.OnItemClic
             }
         });
 
-        return  rootView;
+        return rootView;
     }
 
     //get articles
-    private void getSubForum(final String subForumID){
+    private void getSubForum(final String subForumID) {
         pDialog.show();
         new java.lang.Thread(new Runnable() {
             @Override
             public void run() {
-                HashMap<String,String> params=new HashMap<String, String>();
-                params.put("subForumID",subForumID);
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("subForumID", subForumID);
                 JSONParser parser = new JSONParser();
-                JSONObject json=parser.makeHttpRequest(WebServices.Forums,"GET",params);
-                Gson gson = new Gson();
-                SubForumParser data=gson.fromJson(json.toString(),SubForumParser.class);
-                if(data.getResult().equalsIgnoreCase("SUCCESS")){
-                    dataSubForum=new ArrayList<Thread>();
-                    //System.out.println("SIZE="+data.getForum().size());
-                    dataSubForum.addAll(data.getForum().get(0).getTh());
-                   heading=data.getForum().get(0).getHeading();
-                   category=data.getForum().get(0).getCategories();
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                }
-                else{
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                JSONObject json = parser.makeHttpRequest(WebServices.Forums, "GET", params);
+                try {
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                        Gson gson = new Gson();
+                        SubForumParser data = gson.fromJson(json.toString(), SubForumParser.class);
+                        // if(data.getResult().equalsIgnoreCase("SUCCESS")){
+                        dataSubForum = new ArrayList<Thread>();
+                        //System.out.println("SIZE="+data.getForum().size());
+                        dataSubForum.addAll(data.getForum().get(0).getTh());
+                        heading = data.getForum().get(0).getHeading();
+                        category = data.getForum().get(0).getCategories();
+                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    } else {
+                        errorMessage=json.getJSONObject("forum").getString("data");
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
     }
 
 
-    private void setListAdapter(){
+    private void setListAdapter() {
         txtheading.setText(heading);
         txtcategories.setText(category);
-        for(int i=0;i<dataSubForum.size();i++){
+        for (int i = 0; i < dataSubForum.size(); i++) {
             adapter.add(dataSubForum.get(i));
         }
         adapter.notifyDataSetChanged();
@@ -162,6 +170,7 @@ public class SubForumFragment extends Fragment implements AdapterView.OnItemClic
                     pDialog.cancel();
                     switch (message.what) {
                         case 0:
+                            Toast.makeText(getActivity(),""+errorMessage,Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             setListAdapter();
@@ -176,14 +185,15 @@ public class SubForumFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    switch (parent.getId()){
-        case R.id.list_subforum:
-            Thread data=adapter.getItem(position);
-            showSubForum(data.getId());
-            break;
+        switch (parent.getId()) {
+            case R.id.list_subforum:
+                Thread data = adapter.getItem(position);
+                showSubForum(data.getId());
+                break;
 
+        }
     }
-    }
+
     private void showSubForum(String id) {
         /*ThreadFragment kBDetailFragment = new ThreadFragment();
         Bundle args = new Bundle();
@@ -199,17 +209,18 @@ public class SubForumFragment extends Fragment implements AdapterView.OnItemClic
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putString("threadID", id);
-        Fragment fragment=new ThreadFragment();
+        Fragment fragment = new ThreadFragment();
         fragment.setArguments(bundle);
         replaceFragment(fragment);
         ft.commit();
 
     }
-    private void replaceFragment (Fragment fragment){
+
+    private void replaceFragment(Fragment fragment) {
         String backStateName = fragment.getClass().getName();
         FragmentManager manager = getActivity().getSupportFragmentManager();
-        boolean fragmentPopped = manager.popBackStackImmediate (backStateName, 0);
-        if (!fragmentPopped){ //fragment not in back stack, create it.
+        boolean fragmentPopped = manager.popBackStackImmediate(backStateName, 0);
+        if (!fragmentPopped) { //fragment not in back stack, create it.
             FragmentTransaction ft = manager.beginTransaction();
             ft.replace(R.id.contentframe, fragment);
             ft.addToBackStack(backStateName);

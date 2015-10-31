@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -69,29 +71,8 @@ public class ExclusiveVideoFragment extends Fragment implements AdapterView.OnIt
             // DashBoardActivity. mainView.setBackgroundColor(getResources().getColor(R.color.tansparent));
             Bundle args = getArguments();
             id = args.getString("id");
-      /*  rootView.setFocusableInTouchMode(true);
-        rootView.requestFocus();
-        rootView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == event.ACTION_UP
-                        && keyCode == KeyEvent.KEYCODE_BACK) {
-                   *//* if (from == 1) {
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fragmentManager.beginTransaction();
-                        ft.replace(R.id.contentframe, new DashBoardFragment());
-                        ft.commit();
-                    } else {
-                        getActivity().getSupportFragmentManager().popBackStack();
-                    }*//*
-                    DashBoardActivity.actionbarmenu.setVisibility(View.VISIBLE);
-                    DashBoardActivity.back_Btn.setVisibility(View.GONE);
-                    getActivity().getSupportFragmentManager().popBackStack();
-                    DashBoardActivity.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                }
-                return true;
-            }
-        });*/
+            Log.i("Cat ID",""+id);
+
 
             getVideos(id);
         }
@@ -117,15 +98,23 @@ public class ExclusiveVideoFragment extends Fragment implements AdapterView.OnIt
                 params.put("categoryID",cat_id);
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.Exclusive_Videos,"GET",params);
-                Gson gson = new Gson();
-                VideoParse data=gson.fromJson(json.toString(),VideoParse.class);
-                if(data.getResult().equalsIgnoreCase("SUCCESS")){
-                    dataVideos=new ArrayList<Video>();
-                    dataVideos.addAll(data.getVideos());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                }
-                else{
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                try {
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                        Gson gson = new Gson();
+                        VideoParse data = gson.fromJson(json.toString(), VideoParse.class);
+                       // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                            dataVideos = new ArrayList<Video>();
+                            dataVideos.addAll(data.getVideos());
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                       /* } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }*/
+                    }
+                    else{
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();

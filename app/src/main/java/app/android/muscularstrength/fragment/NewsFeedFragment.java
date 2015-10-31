@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -141,18 +142,23 @@ public class NewsFeedFragment extends Fragment {
                  /* params.put("display","15");*/
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.newsFeed, "GET", params);
-                Gson gson = new Gson();
-                NewsFeedParser data = gson.fromJson(json.toString(), NewsFeedParser.class);
-                if (data.getResult().equalsIgnoreCase("SUCCESS")) {
-                    if(data.getData().getNewsfeed()!=null) {
-                        datanewsFeed.addAll(data.getData().getNewsfeed());
-                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                    }
-                    else{
+                try {
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")){
+                    Gson gson = new Gson();
+                    NewsFeedParser data = gson.fromJson(json.toString(), NewsFeedParser.class);
+                   // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                        if(data.getData().getNewsfeed()!=null) {
+                            datanewsFeed.addAll(data.getData().getNewsfeed());
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                        }
+                        else{
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }
+                    } else {
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
-                } else {
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();

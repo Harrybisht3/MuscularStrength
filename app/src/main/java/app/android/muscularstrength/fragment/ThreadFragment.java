@@ -13,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -42,6 +44,7 @@ public class ThreadFragment extends Fragment {
     ArrayList<Post> datathread;
     private int page_no=1;
     ProgressDialog pDialog;
+    String errorMessage;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
@@ -116,18 +119,24 @@ public class ThreadFragment extends Fragment {
                 params.put("threadID",threadID);
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.Forums,"GET",params);
-                Gson gson = new Gson();
-                ThreadParser data=gson.fromJson(json.toString(),ThreadParser.class);
-                if(data.getResult().equalsIgnoreCase("SUCCESS")){
-                    datathread=new ArrayList<Post>();
-                    //System.out.println("SIZE="+data.getForum().size());
-                    datathread.addAll(data.getPosts());
-                   // heading=data.getForum().get(0).getHeading();
-                   // category=data.getForum().get(0).getCategories();
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                }
-                else{
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                try {
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")){
+                    Gson gson = new Gson();
+                    ThreadParser data=gson.fromJson(json.toString(),ThreadParser.class);
+                   // if(data.getResult().equalsIgnoreCase("SUCCESS")){
+                        datathread=new ArrayList<Post>();
+                        //System.out.println("SIZE="+data.getForum().size());
+                        datathread.addAll(data.getPosts());
+                       // heading=data.getForum().get(0).getHeading();
+                       // category=data.getForum().get(0).getCategories();
+                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    }
+                    else{
+                        errorMessage=json.getJSONObject("posts").getString("data");
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -153,6 +162,7 @@ public class ThreadFragment extends Fragment {
                     pDialog.cancel();
                     switch (message.what) {
                         case 0:
+                            Toast.makeText(getActivity(), "" + errorMessage, Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             setListAdapter();

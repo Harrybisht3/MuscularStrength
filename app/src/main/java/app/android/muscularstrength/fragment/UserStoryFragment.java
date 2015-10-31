@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -51,7 +52,6 @@ public class UserStoryFragment extends Fragment {
     String story;
 
 
-
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
     @Nullable
@@ -64,16 +64,16 @@ public class UserStoryFragment extends Fragment {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.userstoryfragment, container, false);
             density = Util.getDensity(getActivity());
-           storyTxt=(TextView)rootView.findViewById(R.id.story_txt);
-            session=new SessionManager(getActivity());
-            Gson gson=new Gson();
-            userObj=gson.fromJson(session.getSession(),User.class);
+            storyTxt = (TextView) rootView.findViewById(R.id.story_txt);
+            session = new SessionManager(getActivity());
+            Gson gson = new Gson();
+            userObj = gson.fromJson(session.getSession(), User.class);
             //header View
-            View headerlayout= rootView.findViewById(R.id.header);
-            userProfileImg=(CircleImageView)headerlayout.findViewById(R.id.profileImg);
-            user = (TextView)headerlayout.findViewById(R.id.user);
-            account_type = (TextView)headerlayout.findViewById(R.id.account_type);
-            level = (TextView)headerlayout.findViewById(R.id.level);
+            View headerlayout = rootView.findViewById(R.id.header);
+            userProfileImg = (CircleImageView) headerlayout.findViewById(R.id.profileImg);
+            user = (TextView) headerlayout.findViewById(R.id.user);
+            account_type = (TextView) headerlayout.findViewById(R.id.account_type);
+            level = (TextView) headerlayout.findViewById(R.id.level);
             Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
             user.setText(userObj.getFirstName() + "" + userObj.getLastName());
             account_type.setText(userObj.getAccountType());
@@ -93,8 +93,6 @@ public class UserStoryFragment extends Fragment {
     }
 
 
-
-
     //get stroy
     private void getStroy() {
         pDialog.show();
@@ -102,18 +100,23 @@ public class UserStoryFragment extends Fragment {
             @Override
             public void run() {
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("userid", "" + 2);
+                params.put("userid", "" + userObj.getUserId());
                  /* params.put("display","15");*/
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.story, "GET", params);
-                Gson gson = new Gson();
-                StoryParser data = gson.fromJson(json.toString(), StoryParser.class);
-                if (data.getResult().equalsIgnoreCase("SUCCESS")) {
-                    //datanewsFeed.addAll(data.getData().getNewsfeed());
-                    story=data.getData().getData();
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                } else {
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                try {
+                    if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                        Gson gson = new Gson();
+                        StoryParser data = gson.fromJson(json.toString(), StoryParser.class);
+                        // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                        //datanewsFeed.addAll(data.getData().getNewsfeed());
+                        story = data.getData().getData();
+                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    } else {
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -86,32 +87,7 @@ public class NotificationFragment extends Fragment {
         // DashBoardActivity. mainView.setBackgroundColor(getResources().getColor(R.color.tansparent));
         Bundle args = getArguments();
         from=args.getInt("from");
-      /*  rootView.setFocusableInTouchMode(true);
-        rootView.requestFocus();
-        rootView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == event.ACTION_UP
-                        && keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (from == 0) {
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fragmentManager.beginTransaction();
-                        ft.replace(R.id.contentframe, new DashBoardFragment());
-                        ft.commit();
-                    } else {
-                        getActivity().getSupportFragmentManager().popBackStack();
-                    }
-                }
-                return true;
-            }
-        });*/
-       /* list_articles.setOnScrollListener(new EndlessScrollListener() {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                page_no = page;
-                getArticle(page_no);
-            }
-        });*/
+
 
 
 
@@ -127,18 +103,23 @@ public class NotificationFragment extends Fragment {
             @Override
             public void run() {
                 HashMap<String,String> params=new HashMap<String, String>();
-                params.put("userid","135953");
+                params.put("userid",userObj.getUserId());
                 JSONParser parser = new JSONParser();
                 JSONObject json=parser.makeHttpRequest(WebServices.notification,"GET",params);
-                Gson gson = new Gson();
-                NotificationParser data=gson.fromJson(json.toString(),NotificationParser.class);
-                if(data.getResult().equalsIgnoreCase("SUCCESS")){
-                    dataNotification=new ArrayList<Notification>();
-                    dataNotification.addAll(data.getData().getNotification());
-                    mainHandler.sendMessage(mainHandler.obtainMessage(1));
-                }
-                else{
-                    mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                try {
+                    if(json.getString("result").equalsIgnoreCase("SUCCESS")){
+                    Gson gson = new Gson();
+                    NotificationParser data=gson.fromJson(json.toString(),NotificationParser.class);
+                   // if(data.getResult().equalsIgnoreCase("SUCCESS")){
+                        dataNotification=new ArrayList<Notification>();
+                        dataNotification.addAll(data.getData().getNotification());
+                        mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                    }
+                    else{
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
