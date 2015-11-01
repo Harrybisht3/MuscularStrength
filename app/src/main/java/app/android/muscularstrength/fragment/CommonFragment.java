@@ -72,11 +72,12 @@ public class CommonFragment extends Fragment {
             list_common = (ExpandableListView) rootView.findViewById(R.id.list_option);
             density = Util.getDensity(getActivity());
             adapter = new CommonViewAdapter(getActivity(), getResources().getStringArray(R.array.comman_arrays));
-            list_common.setAdapter(adapter);
+
             View view = View.inflate(getActivity(), R.layout.headerview_common, null);
             list_common.addHeaderView(view, null, false);
             View view1 = View.inflate(getActivity(), R.layout.footerview_common, null);
             list_common.addFooterView(view1, null, false);
+            list_common.setAdapter(adapter);
             session = new SessionManager(getActivity());
             Gson gson = new Gson();
             userObj = gson.fromJson(session.getSession(), User.class);
