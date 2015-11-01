@@ -15,7 +15,7 @@
                 </shape>
             </item>
             <item>
-                <bitmap android:gravity="center|right" android:src="@drawable/membership_option_btn_arrow" />
+                <bitmap android:gravity="center|right" android:src="@drawable/white_sp" />
                 // you can use any other image here, instead of default_holo_dark_am
             </item>
         </layer-list>
