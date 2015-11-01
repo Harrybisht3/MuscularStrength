@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.android.muscularstrength.R;
+import app.android.muscularstrength.Util.BitmapHelper;
 import app.android.muscularstrength.Util.MultipartUtility;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.adapter.SelectedImageAdapter;
@@ -69,7 +70,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     private ImageAdapter imageAdapter;
     int countthumb;
     private List<String> fileList = new ArrayList<String>();
-    List<Bitmap> selectedImages;
+   // List<Bitmap> selectedImages;
     List<String> selectedFiles;
     RelativeLayout selectView, selectionView;
     TextView textselect;
@@ -168,7 +169,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
 
     private void init_data() {
         textselect.setText("0");
-        selectedImages = new ArrayList<Bitmap>();
+       // selectedImages = new ArrayList<Bitmap>();
         selectedFiles = new ArrayList<String>();
 
         pDialog.show();
@@ -189,10 +190,12 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                     imagecursor.moveToPosition(i);
                     int id = imagecursor.getInt(image_column_index);
                     int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
-                    thumbnails[i] = MediaStore.Images.Thumbnails.getThumbnail(
+
+                    /*thumbnails[i] = MediaStore.Images.Thumbnails.getThumbnail(
                             getApplicationContext().getContentResolver(), id,
-                            MediaStore.Images.Thumbnails.MICRO_KIND, null);
+                            MediaStore.Images.Thumbnails.MICRO_KIND, null);*/
                     arrPath[i] = imagecursor.getString(dataColumnIndex);
+                    thumbnails[i]=BitmapHelper.decodeFile(new File(imagecursor.getString(dataColumnIndex)),100,100,false);
                 }
                 imagecursor.close();
                 mainHandler.sendMessage(mainHandler.obtainMessage(2));
@@ -338,7 +341,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
 
                     if (thumbnailsselection[id]) {
                         countthumb--;
-                        selectedImages.remove(thumbnails[position]);
+                        //selectedImages.remove(thumbnails[position]);
                         selectedFiles.remove(arrPath[position]);
                         cb.setChecked(false);
                         thumbnailsselection[id] = false;
@@ -346,7 +349,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                     } else {
                         if (countthumb < 10) {
                             countthumb++;
-                            selectedImages.add(thumbnails[position]);
+                            //selectedImages.add(thumbnails[position]);
                             selectedFiles.add(arrPath[position]);
                             cb.setChecked(true);
                             thumbnailsselection[id] = true;
@@ -369,7 +372,10 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                     startActivity(intent);
                 }
             });
-            holder.imageview.setImageBitmap(thumbnails[position]);
+
+           // Glide.with(AddPhotoActivity.this).load(Uri.parse(arrPath[position])).asBitmap().into(holder.imageview);
+          holder.imageview.setImageBitmap(thumbnails[position]);
+           // holder.imageview.setImageBitmap(BitmapHelper.decodeFile(new File(arrPath[position]),100,100,false));
             holder.checkbox.setChecked(thumbnailsselection[position]);
             holder.id = position;
             return convertView;
