@@ -1,172 +1,228 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="@color/bg"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ExpandableListView
-        android:layout_below="@+id/text_way"
-        android:id="@+id/list_option"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+    <!-- <ExpandableListView
+         android:layout_below="@+id/text_way"
+         android:id="@+id/list_option"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
 
-    </ExpandableListView>
-   <!-- <ScrollView
+     </ExpandableListView>-->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <RelativeLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/header"
+                layout="@layout/header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></include>
+
+            <Button
+                android:id="@+id/edit_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_gravity="end"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/red"
+                android:paddingLeft="@dimen/_20sdp"
+                android:paddingRight="@dimen/_20sdp"
+                android:text="Edit Profile"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
 
             <RelativeLayout
-                android:layout_below="@+id/header"
                 android:id="@+id/profile_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/header">
+
                 <ImageView
                     android:id="@+id/imgprofile"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
+                    android:layout_height="@dimen/_250sdp"
                     android:src="@drawable/slide_1"
-                    android:layout_height="@dimen/_250sdp" />
+                    android:visibility="gone" />
+
                 <LinearLayout
                     android:id="@+id/infobody"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/imgprofile"
+                    android:layout_margin="@dimen/_10sdp"
                     android:orientation="vertical">
+
                     <LinearLayout
                         android:layout_width="match_parent"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:layout_height="0dp">
+
+                        android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/goalTxt"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Goal:"
+                            android:layout_weight="1"
+
                             android:padding="@dimen/padding_text"
-                            android:textSize="@dimen/_12sdp"
-                            android:layout_weight="1"/>
+                            android:text="Goal:"
+                            android:textSize="@dimen/_12sdp" />
+
                         <TextView
                             android:id="@+id/gendertxt"
                             android:layout_width="0dp"
+
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:padding="@dimen/_10sdp"
                             android:text="Gender:"
-                            android:textSize="@dimen/_12sdp"
-                            android:layout_weight="1"/>
+                            android:textSize="@dimen/_12sdp" />
+
                         <TextView
                             android:id="@+id/ageTxt"
                             android:layout_width="0dp"
+
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:text="Age:"
+                            android:layout_weight="1"
                             android:padding="@dimen/padding_text"
-                            android:layout_weight="1"/>
+                            android:text="Age:"
+                            android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:layout_height="0dp">
+                        android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/heightTxt"
                             android:layout_width="0dp"
-                            android:text="Height:"
                             android:layout_height="wrap_content"
+
+                            android:layout_weight="1"
                             android:padding="@dimen/padding_text"
-                            android:textSize="@dimen/_12sdp"
-                            android:layout_weight="1"/>
+                            android:text="Height:"
+                            android:textSize="@dimen/_12sdp" />
+
                         <TextView
                             android:id="@+id/weightTxt"
                             android:layout_width="0dp"
+
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:padding="@dimen/_10sdp"
-                            android:textSize="@dimen/_12sdp"
                             android:text="Weig:"
-                            android:layout_weight="1"/>
+                            android:textSize="@dimen/_12sdp" />
+
                         <TextView
                             android:id="@+id/neckTxt"
                             android:layout_width="0dp"
+
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
+                            android:layout_weight="1"
                             android:padding="@dimen/padding_text"
                             android:text="Neck:"
-                            android:layout_weight="1"/>
+                            android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:layout_height="0dp">
+                        android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/forearmTxt"
                             android:layout_width="0dp"
+
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:padding="@dimen/padding_text"
-                            android:textSize="@dimen/_12sdp"
                             android:text="Forearm:"
-                            android:layout_weight="1"/>
+                            android:textSize="@dimen/_12sdp" />
+
                         <TextView
-                            android:id="@+id/calve"
+                            android:id="@+id/calveTxt"
                             android:layout_width="0dp"
+
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:padding="@dimen/padding_text"
-                            android:textSize="@dimen/_12sdp"
                             android:text="Calve:"
-                            android:layout_weight="1"/>
-                        <TextView
-                            android:id="@+id/calve1Txt"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:padding="@dimen/_10sdp"
-                            android:text="Neck:"
-                            android:layout_weight="1"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:layout_height="0dp">
+                            android:textSize="@dimen/_12sdp" />
+
                         <TextView
                             android:id="@+id/armTxt"
                             android:layout_width="0dp"
+
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/padding_text"
-                            android:textSize="@dimen/_12sdp"
+                            android:layout_weight="1"
+                            android:padding="@dimen/_10sdp"
                             android:text="Arm:"
-                            android:layout_weight="1"/>
+                            android:textSize="@dimen/_12sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/thighTxt"
+
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:padding="@dimen/padding_text"
-                            android:textSize="@dimen/_12sdp"
                             android:text="Thigh:"
-                            android:layout_weight="1"/>
+                            android:textSize="@dimen/_12sdp" />
+
                         <TextView
                             android:id="@+id/chestTxt"
                             android:layout_width="0dp"
+
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/_12sdp"
+                            android:layout_weight="1"
+                            android:padding="@dimen/padding_text"
+                            android:text="Chest:"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/blank"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+
+                            android:layout_weight="1"
                             android:padding="@dimen/_10sdp"
                             android:text="Chest:"
-                            android:layout_weight="1"/>
+                            android:textSize="@dimen/_12sdp"
+                            android:visibility="invisible" />
                     </LinearLayout>
                 </LinearLayout>
-                <TextView
-                    android:id="@+id/text_way"
-                    android:layout_width="wrap_content"
-                    android:layout_below="@+id/infobody"
-                    android:padding="@dimen/_10sdp"
-                    android:textSize="@dimen/_12sdp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/view_content"
-                    android:textColor="@color/red"/>
+                <!-- <TextView
+                     android:id="@+id/text_way"
+                     android:layout_width="wrap_content"
+                     android:layout_below="@+id/infobody"
+                     android:padding="@dimen/_10sdp"
+                     android:textSize="@dimen/_12sdp"
+                     android:layout_height="wrap_content"
+                     android:text="@string/view_content"
+                     android:textColor="@color/red"/>-->
 
-                <Button
+                <!--<Button
                     android:layout_below="@+id/list_option"
                     android:id="@+id/hideOptionBtn"
                     android:layout_marginTop="@dimen/_30sdp"
@@ -174,17 +230,18 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:background="@drawable/edittext_bg"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content" />-->
             </RelativeLayout>
-            <include layout="@layout/footer_layout"
+
+            <include
                 android:id="@+id/profilefooter"
+                layout="@layout/footer_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_below="@+id/profile_content"></include>
-        </RelativeLayout>
+                android:layout_below="@+id/profile_content"
+                android:layout_marginBottom="@dimen/_10sdp"></include>
+        </LinearLayout>
     </ScrollView>
--->
 
 
 </RelativeLayout>

@@ -69,8 +69,9 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     private String[] arrPath;
     private ImageAdapter imageAdapter;
     int countthumb;
+    boolean loaded=false;
     private List<String> fileList = new ArrayList<String>();
-   // List<Bitmap> selectedImages;
+    List<Bitmap> selectedImages;
     List<String> selectedFiles;
     RelativeLayout selectView, selectionView;
     TextView textselect;
@@ -84,6 +85,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     TextView title;
     Spinner sp_album,selection_sp;
     Button upload;
+
     public static List<ImageModel>imagesmodel;
     String errorMessage;
 
@@ -155,7 +157,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         sp_album.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedalbum=position;
+                selectedalbum = position;
                 ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.cat_color));
             }
 
@@ -169,35 +171,36 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
 
     private void init_data() {
         textselect.setText("0");
-       // selectedImages = new ArrayList<Bitmap>();
-        selectedFiles = new ArrayList<String>();
-
         pDialog.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
-                final String orderBy = MediaStore.Images.Media._ID;
-                Cursor imagecursor = AddPhotoActivity.this.getContentResolver().query(
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
-                        null, orderBy);
-                int image_column_index = imagecursor.getColumnIndex(MediaStore.Images.Media._ID);
-                count = imagecursor.getCount();
-                thumbnails = new Bitmap[count];
-                arrPath = new String[count];
-                thumbnailsselection = new boolean[count];
-                for (int i = 0; i < count; i++) {
-                    imagecursor.moveToPosition(i);
-                    int id = imagecursor.getInt(image_column_index);
-                    int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                if(!loaded) {
+                    selectedImages = new ArrayList<Bitmap>();
+                    selectedFiles = new ArrayList<String>();
+                    final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
+                    final String orderBy = MediaStore.Images.Media._ID;
+                    Cursor imagecursor = AddPhotoActivity.this.getContentResolver().query(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
+                            null, orderBy);
+                    int image_column_index = imagecursor.getColumnIndex(MediaStore.Images.Media._ID);
+                    count = imagecursor.getCount();
+                    thumbnails = new Bitmap[count];
+                    arrPath = new String[count];
+                    thumbnailsselection = new boolean[count];
+                    for (int i = 0; i < count; i++) {
+                        imagecursor.moveToPosition(i);
+                        int id = imagecursor.getInt(image_column_index);
+                        int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
 
                     /*thumbnails[i] = MediaStore.Images.Thumbnails.getThumbnail(
                             getApplicationContext().getContentResolver(), id,
                             MediaStore.Images.Thumbnails.MICRO_KIND, null);*/
-                    arrPath[i] = imagecursor.getString(dataColumnIndex);
-                    thumbnails[i]=BitmapHelper.decodeFile(new File(imagecursor.getString(dataColumnIndex)),100,100,false);
+                        arrPath[i] = imagecursor.getString(dataColumnIndex);
+                        thumbnails[i] = BitmapHelper.decodeFile(new File(imagecursor.getString(dataColumnIndex)), 100, 100, false);
+                    }
+                    imagecursor.close();
                 }
-                imagecursor.close();
                 mainHandler.sendMessage(mainHandler.obtainMessage(2));
                 // uploadFile(selectedFiles.get(countUpload), WebServices.addPhotos,params);
             }
@@ -286,7 +289,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
             model.setpath(path);
             imagesmodel.add(model);
         }
-        SelectedImageAdapter adapter = new SelectedImageAdapter(AddPhotoActivity.this, selectedFiles);
+        SelectedImageAdapter adapter = new SelectedImageAdapter(AddPhotoActivity.this, selectedImages);
         selectedgallery.setAdapter(adapter);
     }
 
@@ -341,7 +344,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
 
                     if (thumbnailsselection[id]) {
                         countthumb--;
-                        //selectedImages.remove(thumbnails[position]);
+                        selectedImages.remove(thumbnails[position]);
                         selectedFiles.remove(arrPath[position]);
                         cb.setChecked(false);
                         thumbnailsselection[id] = false;
@@ -349,7 +352,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                     } else {
                         if (countthumb < 10) {
                             countthumb++;
-                            //selectedImages.add(thumbnails[position]);
+                            selectedImages.add(thumbnails[position]);
                             selectedFiles.add(arrPath[position]);
                             cb.setChecked(true);
                             thumbnailsselection[id] = true;
@@ -581,6 +584,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                     case 2:
                         pDialog.dismiss();
                         pDialog.cancel();
+                        loaded=true;
                         imageAdapter = new ImageAdapter();
                         imageGallery.setAdapter(imageAdapter);
                         break;
@@ -591,4 +595,18 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
             }
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        loaded=false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(loaded){
+
+        }
+    }
 }

@@ -69,7 +69,7 @@ public class CommonFragment extends Fragment {
         DashBoardActivity.actiontitle.setText("VIDEOS");
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.profile_fragment, container, false);
-            list_common = (ExpandableListView) rootView.findViewById(R.id.list_option);
+           // list_common = (ExpandableListView) rootView.findViewById(R.id.list_option);
             density = Util.getDensity(getActivity());
             adapter = new CommonViewAdapter(getActivity(), getResources().getStringArray(R.array.comman_arrays));
 

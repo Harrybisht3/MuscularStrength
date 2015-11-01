@@ -121,7 +121,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/edittext_bg"
+                android:background="@drawable/text_bg"
                 android:drawableRight="@drawable/selectedcheck"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"

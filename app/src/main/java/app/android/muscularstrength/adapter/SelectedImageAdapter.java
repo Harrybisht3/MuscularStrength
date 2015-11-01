@@ -2,6 +2,7 @@ package app.android.muscularstrength.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -14,11 +15,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.List;
 
 import app.android.muscularstrength.R;
-import app.android.muscularstrength.Util.BitmapHelper;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.AddPhotoActivity;
 
@@ -30,11 +29,13 @@ public class SelectedImageAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     DisplayMetrics display;
     int height,width;
-    List<String>medifiles;
+    //List<String>medifiles;
+    List<Bitmap>bitmaplist;
 
-    public SelectedImageAdapter(Context context,List<String> medifiles) {
+    public SelectedImageAdapter(Context context,List<Bitmap>bitmaplist) {
         this.context=context;
-        this.medifiles=medifiles;
+       // this.medifiles=medifiles;
+        this.bitmaplist=bitmaplist;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         display= Util.getDisplay((Activity)context);
         height=display.heightPixels;
@@ -42,11 +43,11 @@ public class SelectedImageAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        return medifiles.size();
+        return bitmaplist.size();
     }
 
     public Object getItem(int position) {
-        return medifiles.get(position);
+        return bitmaplist.get(position);
     }
 
     public long getItemId(int position) {
@@ -104,47 +105,23 @@ public class SelectedImageAdapter extends BaseAdapter {
         //AddPhotoActivity.imagesmodel.add(position, model);
        // holder.checkbox.setId(position);
         holder.imageview.setId(position);
-   /*     holder.checkbox.setOnClickListener(new View.OnClickListener() {
+
+       /* holder.imageview.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                CheckBox cb = (CheckBox) v;
-                int id = cb.getId();
-                if (thumbnailsselection[id]){
-                    countthumb--;
-                    selectedImages.remove(thumbnails[position]);
-                    cb.setChecked(false);
-                    thumbnailsselection[id] = false;
-
-                } else {
-                    if(countthumb<10) {
-                        countthumb++;
-                        selectedImages.add(thumbnails[position]);
-                        cb.setChecked(true);
-                        thumbnailsselection[id] = true;
-                    }
-                    else{
-                        cb.setChecked(false);
-                        showAlertMax();
-                    }
-                }
-            }
-        });*/
-        holder.imageview.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-              /*  int id = v.getId();
+              *//*  int id = v.getId();
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse("file://" + arrPath[id]), "image*//*");
-                startActivity(intent);*/
+                intent.setDataAndType(Uri.parse("file://" + arrPath[id]), "image*//**//*");
+                startActivity(intent);*//*
             }
-        });
+        });*/
        // holder.imageview.setImageURI(Uri.parse(medifiles.get(position)));
-        holder.imageview.setImageBitmap(BitmapHelper.decodeFile(new File(medifiles.get(position)), 100, 100, false));
+        holder.imageview.setImageBitmap(bitmaplist.get(position));
       //  Glide.with(context).
                 //Glide.with(context).load(Uri.parse(medifiles.get(position))).asBitmap().into(holder.imageview);
+
        // holder.checkbox.setChecked(thumbnailsselection[position]);
        // holder.id = position;
         return convertView;

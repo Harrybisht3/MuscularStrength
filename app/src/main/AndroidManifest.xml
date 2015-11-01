@@ -49,6 +49,9 @@
         <activity
             android:name=".activity.CreateAlbumActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.EditProfileActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

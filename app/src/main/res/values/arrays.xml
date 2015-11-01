@@ -25,5 +25,15 @@
         <item>LIFTS</item>
         <item>PROGRESS</item>
     </string-array>
+    <string-array name="goal_arrays">
+        <item>Goals</item>
+        <item>Gain Muscle</item>
+        <item>Lose Fat</item>
+        <item>Bodybuilding</item>
+        <item>Maintain</item>
+        <item>Train for a sport</item>
+        <item>Injury Recovery</item>
+        <item>Strength Gain</item>
+    </string-array>
 
 </resources>
