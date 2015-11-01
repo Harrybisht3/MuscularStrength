@@ -2,7 +2,6 @@ package app.android.muscularstrength.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -15,9 +14,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.List;
 
 import app.android.muscularstrength.R;
+import app.android.muscularstrength.Util.BitmapHelper;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.AddPhotoActivity;
 
@@ -140,7 +141,10 @@ public class SelectedImageAdapter extends BaseAdapter {
                 startActivity(intent);*/
             }
         });
-        holder.imageview.setImageURI(Uri.parse(medifiles.get(position)));
+       // holder.imageview.setImageURI(Uri.parse(medifiles.get(position)));
+        holder.imageview.setImageBitmap(BitmapHelper.decodeFile(new File(medifiles.get(position)), 100, 100, false));
+      //  Glide.with(context).
+                //Glide.with(context).load(Uri.parse(medifiles.get(position))).asBitmap().into(holder.imageview);
        // holder.checkbox.setChecked(thumbnailsselection[position]);
        // holder.id = position;
         return convertView;
