@@ -9,7 +9,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.SpannableStringBuilder;
-import android.text.method.LinkMovementMethod;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
@@ -197,15 +197,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         SpannableStringBuilder finalString = new SpannableStringBuilder();
         finalString.append(firstString);
         finalString.setSpan(new ForegroundColorSpan(getResources()
-                .getColor(R.color.cat_color)), 0, finalString.length(), 0);
+                .getColor(R.color.cat_color)), 0, finalString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         int start = finalString.length();
         finalString.append(lastString);
         finalString.setSpan(new ForegroundColorSpan(getResources()
-                .getColor(R.color.white)), start, finalString.length(), 0);
+                .getColor(R.color.white)), start, finalString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         finalString.setSpan(new StyleSpan(Typeface.BOLD), start,
-                finalString.length(), 0);
-        txtSpan.setText(finalString.toString());
-        txtSpan.setMovementMethod(LinkMovementMethod.getInstance());
+                finalString.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        txtSpan.setText(finalString);
+       // txtSpan.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
 }

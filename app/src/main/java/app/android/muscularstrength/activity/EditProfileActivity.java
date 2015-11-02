@@ -1,11 +1,13 @@
 package app.android.muscularstrength.activity;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import app.android.muscularstrength.R;
@@ -83,13 +86,28 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         w_unit=new ArrayList<String>();
         init();
 
-        settingSpinner(goals, goal_sp);
-       /* settingSpinner(gender,gender_sp);
-        settingSpinner(year,year_sp);
-        settingSpinner(months,month_sp);
-        settingSpinner(days,day_sp);
-        settingSpinner(inch,inch_sp);
-        settingSpinner(w_unit,weight_sp);*/
+        settingSpinner(goals, goal_sp,1);
+        gender.add("Gender");
+        gender.add("Male");
+        gender.add("Female");
+        settingSpinner(gender,gender_sp,2);
+        inch.add("in");
+        inch.add("m");
+        w_unit.add("lbs");
+        w_unit.add("kg");
+        w_unit.add("st");
+        settingSpinner(inch, inch_sp,3);
+        settingSpinner(w_unit, weight_sp,4);
+        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = 1925; i <= thisYear-1; i++) {
+            year.add(Integer.toString(i));
+        }
+        settingSpinner(year,year_sp,5);
+        setMonthDays();
+        settingSpinner(months, month_sp,6);
+        settingSpinner(days, day_sp,7);
+
+
 
     }
 
@@ -107,32 +125,39 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         }
 
 
-       /* int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+       /*
         //adding years
-        gender.add("Gender");
-        gender.add("Male");
-        gender.add("Female");
-        inch.add("in");
-        inch.add("m");
-        w_unit.add("lbs");
-        w_unit.add("kg");
-        w_unit.add("st");
 
-        for (int i = 2010; i <= thisYear-1; i++) {
-            year.add(Integer.toString(i));
-        }
+
+
         //adding days and months
-        for (int i=1;1<32;i++){
+       */
+    }
+    private void setMonthDays(){
+        for (int i=1;i<32;i++){
             if(i<13) {
                 months.add(Integer.toString(i));
             }
             days.add(Integer.toString(i));
-        }*/
+        }
+
     }
-    private void settingSpinner(List<String> list,Spinner spinner){
+    private void settingSpinner(List<String> list,Spinner spinner,int value){
         ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.myspinner_style, list);
         adapter.setDropDownViewResource(R.layout.myspinner_style);
         spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+               // pos = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override

@@ -1,6 +1,7 @@
 package app.android.muscularstrength.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ import app.android.muscularstrength.adapter.MenuListAdapter;
 import app.android.muscularstrength.fragment.ArticleFragment;
 import app.android.muscularstrength.fragment.FragmentHome;
 import app.android.muscularstrength.fragment.FriendRequestFragment;
+import app.android.muscularstrength.fragment.FriendsFragment;
 import app.android.muscularstrength.fragment.MessageFragment;
 import app.android.muscularstrength.fragment.NewsFeedFragment;
 import app.android.muscularstrength.fragment.NotificationFragment;
@@ -66,7 +68,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
     public static DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     public static TextView actiontitle;
-    ImageView menu_icon, help_icon, addfriend_icon, profile_icon, message_icon, notification_icon;
+    ImageView menu_icon, help_icon, addfriend_icon, friends_icon, message_icon, notification_icon;
     public static ImageView actionbarmenu, back_Btn;
     CircleImageView userProfileImg;
     TextView user;
@@ -89,7 +91,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
         menuView = (RelativeLayout) findViewById(R.id.actionbar_layout);
         menu_icon = (ImageView) findViewById(R.id.menu_icon);
         help_icon = (ImageView) findViewById(R.id.help_icon);
-        profile_icon = (ImageView) findViewById(R.id.profile_icon);
+        friends_icon = (ImageView) findViewById(R.id.profile_icon);
         addfriend_icon = (ImageView) findViewById(R.id.addfriend_icon);
         message_icon = (ImageView) findViewById(R.id.message_icon);
         notification_icon = (ImageView) findViewById(R.id.notification_icon);
@@ -110,7 +112,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
         actionBar = getSupportActionBar();
         actionBar.hide();
         //Quick cheat: Add Fragment 1 to default view
-        onItemClick(null, null, 1, 0);
+
 
         menu_icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,10 +140,10 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
             }
         });
 
-        profile_icon.setOnClickListener(new View.OnClickListener() {
+        friends_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClick(null, null, 15, 0);
+                onItemClick(null, null, 10, 0);
             }
         });
 
@@ -178,6 +180,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
     @Override
     protected void onResume() {
         super.onResume();
+        onItemClick(null, null, 1, 0);
 
     }
 
@@ -338,7 +341,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
         } else if (position == 9) {
 
         } else if (position == 10) {
-
+            fragment = new FriendsFragment();
         } else if (position == 11) {
 
         } else if (position == 13) {
@@ -351,8 +354,12 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
             fragment = new FriendRequestFragment();
             fragment.setArguments(bundle);
         }
-        replaceFragment(fragment);
-        ftx.commit();
+        if(position!=8) {
+            replaceFragment(fragment);
+            ftx.commit();
+        }
+        else
+            editProfile();
     }
 
 
@@ -523,6 +530,11 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
                 Toast.makeText(DashBoardActivity.this, err, Toast.LENGTH_LONG).show();
             }
         });
+    }
+    private void editProfile(){
+        Intent it=new Intent(DashBoardActivity.this, EditProfileActivity.class);
+        startActivity(it);
+
     }
 
 }
