@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -132,7 +133,7 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
         textreply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCommentAlert(headerInfo.getId());
+                showCommentAlert(headerInfo.getId(),headerInfo);
             }
         });
         return convertView;
@@ -141,7 +142,7 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final Childcomment childinfo = (Childcomment) getChild(groupPosition, childPosition);
-
+        final Newsfeed headerInfo = (Newsfeed) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater inf = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inf.inflate(R.layout.newsfeed_parent, null);
@@ -173,7 +174,7 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
         textreply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCommentAlert(childinfo.getId());
+                showCommentAlert(childinfo.getId(),headerInfo);
             }
         });
         return convertView;
@@ -214,7 +215,7 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
         }).start();
     }
 
-    private void replyPost(final String postid, final String comment) {
+    private void replyPost(final String postid, final String comment,final String postwoner) {
         // pDialog.show();
         new Thread(new Runnable() {
             @Override
@@ -222,7 +223,7 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("userid", "" + userObj.getUserId());
                 params.put("id", postid);
-                params.put("postowner", "147430");
+                params.put("postowner", postwoner);
                 params.put("comment", comment);
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.newsFeedReply, "GET", params);
@@ -270,7 +271,7 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
         }
     };
 
-    public void showCommentAlert(final String postid) {
+    public void showCommentAlert(final String postid,final Newsfeed header) {
         final Dialog dialog = new Dialog(_context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -278,26 +279,35 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
         Window window = dialog.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
         wlp.width = RelativeLayout.LayoutParams.MATCH_PARENT;
-        wlp.gravity = Gravity.BOTTOM;
+        wlp.gravity = Gravity.CENTER;
         window.setAttributes(wlp);
         dialog.show();
         final EditText comment_txt = (EditText) dialog
                 .findViewById(R.id.comment_txt);
-        ImageView add_comment = (ImageView) dialog
-                .findViewById(R.id.add_comment);
-        add_comment.setOnClickListener(new View.OnClickListener() {
+        ImageView close = (ImageView) dialog
+                .findViewById(R.id.close);
+        Button submit=(Button)dialog.findViewById(R.id.add_comment);
+        submit.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 if (comment_txt.getText().toString().length() != 0) {
                     dialog.dismiss();
                     //  new SendComment().execute(comment_txt.getText().toString());
-                    replyPost(postid, comment_txt.getText().toString().trim());
+                    replyPost(postid, comment_txt.getText().toString().trim(),header.getId());
 
                 } else {
                     comment_txt.setError(Html
                             .fromHtml("<font color='#ff0000'> Please Add Comment.</font>"));
                 }
+            }
+        });
+        close.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
             }
         });
     }
