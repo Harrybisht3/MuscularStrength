@@ -38,61 +38,72 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by laxman singh on 11/2/2015.
  */
-public class FriendsFragment extends Fragment{
+public class FriendsFragment extends Fragment {
     View rootView;
+
+
     int from;
     SessionManager session;
     User userObj;
     ProgressDialog pDialog;
     CircleImageView userProfileImg;
-    TextView user,account_type,level;
+    TextView user, account_type, level;
     String errorMessage;
     ListView list_friends;
     ArrayList<Friend> dataFriend;
     FriendAdapter adapter;
+    Fragment fragmentcontext;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.friends_fragment, container, false);
+
         // getActivity().getActionBar().show();
         DashBoardActivity.actionBar.show();
         DashBoardActivity.menuView.setVisibility(View.GONE);
-        DashBoardActivity. mainView.setBackground(null);
+        DashBoardActivity.mainView.setBackground(null);
         DashBoardActivity.actiontitle.setText("FRIENDS");
-        session=new SessionManager(getActivity());
-        Gson gson=new Gson();
-        userObj=gson.fromJson(session.getSession(),User.class);
-        //header View
-        list_friends=(ListView)rootView.findViewById(R.id.list_friend);
-        adapter=new FriendAdapter(getActivity());
-        list_friends.setAdapter(adapter);
-        View headerlayout= rootView.findViewById(R.id.header);
-        userProfileImg=(CircleImageView)headerlayout.findViewById(R.id.profileImg);
-        user = (TextView)headerlayout.findViewById(R.id.user);
-        account_type = (TextView)headerlayout.findViewById(R.id.account_type);
-        level = (TextView)headerlayout.findViewById(R.id.level);
-        Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
-        user.setText(userObj.getFirstName() + "" + userObj.getLastName());
-        account_type.setText(userObj.getAccountType());
-        pDialog=new ProgressDialog(getActivity());
-        pDialog.setMessage("loading...");
-        getFriends();
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.friends_fragment, container, false);
+
+            session = new SessionManager(getActivity());
+            fragmentcontext = FriendsFragment.this;
+            Gson gson = new Gson();
+            userObj = gson.fromJson(session.getSession(), User.class);
+            //header View
+            list_friends = (ListView) rootView.findViewById(R.id.list_friend);
+            adapter = new FriendAdapter(getActivity(), fragmentcontext);
+            list_friends.setAdapter(adapter);
+            //list_friends.setOnItemClickListener(this);
+            View headerlayout = rootView.findViewById(R.id.header);
+            userProfileImg = (CircleImageView) headerlayout.findViewById(R.id.profileImg);
+            user = (TextView) headerlayout.findViewById(R.id.user);
+            account_type = (TextView) headerlayout.findViewById(R.id.account_type);
+            level = (TextView) headerlayout.findViewById(R.id.level);
+            Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
+            user.setText(userObj.getFirstName() + "" + userObj.getLastName());
+            account_type.setText(userObj.getAccountType());
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("loading...");
+            getFriends();
+        }
         return rootView;
     }
+
     //get friendRequest
-    private void getFriends(){
+    private void getFriends() {
         pDialog.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                HashMap<String,String> params=new HashMap<String, String>();
-                params.put("userid",userObj.getUserId());
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("userid", userObj.getUserId());
                 JSONParser parser = new JSONParser();
-                JSONObject json=parser.makeHttpRequest(WebServices.friends,"GET",params);
+                JSONObject json = parser.makeHttpRequest(WebServices.friends, "GET", params);
                 try {
-                    if(json!=null){
-                        if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                    if (json != null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
                             Gson gson = new Gson();
                             FriendParser data = gson.fromJson(json.toString(), FriendParser.class);
                             // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
@@ -102,9 +113,8 @@ public class FriendsFragment extends Fragment{
                             // } else {
                             //mainHandler.sendMessage(mainHandler.obtainMessage(0));
                             //}
-                        }
-                        else{
-                            errorMessage=json.getJSONObject("data").getString("friend");
+                        } else {
+                            errorMessage = json.getJSONObject("data").getString("friend");
                             mainHandler.sendMessage(mainHandler.obtainMessage(0));
                         }
                     } else {
@@ -117,6 +127,7 @@ public class FriendsFragment extends Fragment{
             }
         }).start();
     }
+
     private Handler mainHandler = new Handler() {
         public void handleMessage(Message message) {
             try {
@@ -138,13 +149,36 @@ public class FriendsFragment extends Fragment{
             }
         }
     };
-    private void setListAdapter(){
-        for(int i=0;i<dataFriend.size();i++){
+
+    private void setListAdapter() {
+        for (int i = 0; i < dataFriend.size(); i++) {
             adapter.add(dataFriend.get(i));
         }
         adapter.notifyDataSetChanged();
         Util.setListViewHeight(list_friends);
 
     }
+   /* @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+       switch (view.getId()){
+           case R.id.list_friend:
+
+               final TextView viewProfile= (TextView)((View)view.getParent()).findViewById(R.id.accept_txt);
+               final Friend user=adapter.getItem(position);
+               Log.i("LOG", "" + user.getId());
+               //String txt2 = txt.getText().toString();
+               viewProfile.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       showProfile(user.getId());
+                   }
+               });
+              //
+               break;
+           default:
+               break;
+       }
+    }*/
+
 
 }

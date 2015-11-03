@@ -50,6 +50,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     String errorMessage;
     ProgressDialog pDialog;
     JSONObject json;
+    String user_id;
 
     @Nullable
     @Override
@@ -76,10 +77,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         user = (TextView) headerlayout.findViewById(R.id.user);
         account_type = (TextView) headerlayout.findViewById(R.id.account_type);
         level = (TextView) headerlayout.findViewById(R.id.level);
-        Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
-        user.setText(userObj.getFirstName() + "" + userObj.getLastName());
-        account_type.setText(userObj.getAccountType());
-        level.setText(userObj.getUserLevel());
+
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("loading...");
         goal = (TextView) rootView.findViewById(R.id.goalTxt);
@@ -95,6 +93,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         chest = (TextView) rootView.findViewById(R.id.chestTxt);
         edit_Profile = (Button) rootView.findViewById(R.id.edit_profile);
         edit_Profile.setOnClickListener(this);
+        Bundle args = getArguments();
+        int from=args.getInt("from");
+        String userId=args.getString("userid");
+        if(userId.equalsIgnoreCase(userObj.getUserId())){
+            user_id=userObj.getUserId();
+            user.setText(userObj.getFirstName() + "" + userObj.getLastName());
+            account_type.setText(userObj.getAccountType());
+            level.setText(userObj.getUserLevel());
+        }
+        else{
+            user_id=userId;
+            edit_Profile.setVisibility(View.GONE);
+        }
+        //Log.i(TAG, "FROM=" + from);
 
     }
 
@@ -116,7 +128,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void run() {
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("userid", userObj.getUserId());
+                params.put("userid", user_id);
                 JSONParser parser = new JSONParser();
                 JSONObject json1 = parser.makeHttpRequest(WebServices.userProfile, "GET", params);
                 try {
@@ -163,7 +175,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private void setValues() {
         Log.i("TAG", "HERE COMES");
+
         try {
+            Glide.with(getActivity()).load(json.getString("avtar_image")).into(userProfileImg);
             doColorSpanForFirstString("Goal: ",json.getString("goal"),goal);
             doColorSpanForFirstString("Gender: :",json.getString("gender"),gender);
             doColorSpanForFirstString("Age: ",json.getString("age"),age);
