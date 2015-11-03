@@ -45,14 +45,17 @@ import java.net.URL;
 import app.android.muscularstrength.R;
 import app.android.muscularstrength.adapter.MenuListAdapter;
 import app.android.muscularstrength.fragment.ArticleFragment;
+import app.android.muscularstrength.fragment.CustomizeAvatarFragment;
 import app.android.muscularstrength.fragment.FragmentHome;
 import app.android.muscularstrength.fragment.FriendRequestFragment;
 import app.android.muscularstrength.fragment.FriendsFragment;
 import app.android.muscularstrength.fragment.MessageFragment;
 import app.android.muscularstrength.fragment.NewsFeedFragment;
 import app.android.muscularstrength.fragment.NotificationFragment;
+import app.android.muscularstrength.fragment.PhotoFragment;
 import app.android.muscularstrength.fragment.ProfileFragment;
 import app.android.muscularstrength.fragment.RecipesFragment;
+import app.android.muscularstrength.fragment.UserVideoFragment;
 import app.android.muscularstrength.model.User;
 import app.android.muscularstrength.session.SessionManager;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -75,7 +78,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
     SessionManager session;
     User userObj;
 
-    int[] icons = {R.drawable.icon_home,R.drawable.icon_newsfeeds,R.drawable.icon_profile,R.drawable.dash_icon_articles,R.drawable.dash_icon_recipes,R.drawable.icon_lifts,R.drawable.icon_customize_avatar,R.drawable.icon_edit_profile,R.drawable.icon_account_setting,R.drawable.icon_friends,R.drawable.icon_manage_photos,R.drawable.icon_manage_videos, R.drawable.icon_logout};
+    int[] icons = {R.drawable.icon_home,R.drawable.icon_newsfeeds,R.drawable.icon_profile,R.drawable.icon_my_account,R.drawable.icon_my_content,R.drawable.icon_lifts,R.drawable.icon_customize_avatar,R.drawable.icon_edit_profile,R.drawable.icon_account_setting,R.drawable.icon_friends,R.drawable.icon_manage_photos,R.drawable.icon_manage_videos, R.drawable.icon_logout};
 
     // private ActionBarDrawerToggle mDrawerToggle;
 //Toolbar toolbar;
@@ -146,6 +149,12 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
                 onItemClick(null, null, 10, 0);
             }
         });
+        addfriend_icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClick(null, null, 15, 0);
+            }
+        });
 
       /*  moreOption.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,12 +184,13 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
                 }).start();
             }
         });
+        onItemClick(null, null, 1, 0);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        onItemClick(null, null, 1, 0);
+
 
     }
 
@@ -311,6 +321,8 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
         bundle.putInt("from", 0);
         if (position == 0) {
             fragment = new ProfileFragment();
+            bundle.putString("userid",userObj.getUserId());
+            fragment.setArguments(bundle);
         } else if (position == 1) {
             DashBoardActivity.actionBar.hide();
             DashBoardActivity.menuView.setVisibility(View.VISIBLE);
@@ -324,7 +336,8 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
             fragment.setArguments(bundle);
         } else if (position == 3) {
             fragment = new ProfileFragment();
-            //fragment.setArguments(bundle);
+            bundle.putString("userid",userObj.getUserId());
+            fragment.setArguments(bundle);
         } else if (position == 4) {
             fragment=new ArticleFragment();
             fragment.setArguments(bundle);
@@ -335,18 +348,25 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
           //  fragment=new Lif();
             //fragment.setArguments(bundle);
         } else if (position == 7) {
-
+         fragment=new CustomizeAvatarFragment();
         } else if (position == 8) {
+            editProfile();
 
         } else if (position == 9) {
 
         } else if (position == 10) {
             fragment = new FriendsFragment();
         } else if (position == 11) {
-
-        } else if (position == 13) {
-            fragment = new NotificationFragment();
+            fragment=new PhotoFragment();
             fragment.setArguments(bundle);
+        }
+        else if (position == 12) {
+            fragment = new UserVideoFragment();
+            fragment.setArguments(bundle);
+        }else if (position == 13) {
+            logout();
+            /*fragment = new NotificationFragment();
+            fragment.setArguments(bundle);*/
         } else if (position == 14) {
             fragment = new MessageFragment();
             fragment.setArguments(bundle);
@@ -354,12 +374,15 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
             fragment = new FriendRequestFragment();
             fragment.setArguments(bundle);
         }
-        if(position!=8) {
+        if(position!=8||position!=13) {
             replaceFragment(fragment);
             ftx.commit();
         }
-        else
-            editProfile();
+      /*  if(position==13){
+
+        }
+        else*/
+
     }
 
 
@@ -534,6 +557,13 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
     private void editProfile(){
         Intent it=new Intent(DashBoardActivity.this, EditProfileActivity.class);
         startActivity(it);
+
+    }
+    private void logout(){
+        session.logoutUser();
+       /* Intent it=new Intent(DashBoardActivity.this, LoginActivity.class);
+        startActivity(it);*/
+        finish();
 
     }
 

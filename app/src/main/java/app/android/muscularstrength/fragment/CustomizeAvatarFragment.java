@@ -40,7 +40,7 @@ public class CustomizeAvatarFragment extends Fragment{
         userObj = gson.fromJson(session.getSession(), User.class);
         webView=(WebView)rootView.findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
-        startWebView(WebServices.customize_avatar+userObj.getUserId());
+        startWebView(WebServices.customize_avatar + userObj.getUserId());
         //webView.loadUrl(WebServices.customize_avatar+userObj.getUserId());
         return rootView;
     }
@@ -74,6 +74,7 @@ public class CustomizeAvatarFragment extends Fragment{
                         progressDialog = null;
                     }
                 }catch(Exception exception){
+                    progressDialog.dismiss();
                     exception.printStackTrace();
                 }
             }

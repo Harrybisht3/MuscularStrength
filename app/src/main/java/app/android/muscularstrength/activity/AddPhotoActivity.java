@@ -250,6 +250,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.back_icon:
                 finish();
+                break;
                 case R.id.cancelBtn:
                     hideShow(false);
                     break;
@@ -606,7 +607,10 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     public void onBackPressed() {
         super.onBackPressed();
         if(loaded){
-
+            hideShow(false);
+        }
+        else{
+            finish();
         }
     }
 }
