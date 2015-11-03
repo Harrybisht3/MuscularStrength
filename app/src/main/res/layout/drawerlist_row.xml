@@ -17,7 +17,7 @@
         android:layout_marginLeft="@dimen/_10sdp"
         android:padding="@dimen/_10sdp"
         android:textSize="@dimen/_12sdp"
-        android:textColor="@color/menutxt"
+        android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"/>
 
