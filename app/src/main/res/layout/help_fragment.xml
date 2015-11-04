@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/bg"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:background="@color/help_top"
+                android:layout_height="@dimen/_40sdp">
+                <TextView
+                    android:id="@+id/back_txt"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/cat_color"
+                    android:text="Back to Lorium Ipsum"
+                    android:gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_toLeftOf="@+id/back_txt"
+                    android:src="@drawable/previous_btn"
+                    android:layout_centerVertical="true"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_25sdp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:padding="@dimen/_5sdp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/help_back"
+                    android:layout_width="40dp"
+                    android:src="@drawable/videos_album_back"
+                    android:layout_height="40dp" />
+                <TextView
+                    android:id="@+id/help_txt"
+                    android:text="SITE WALK-THROUGH"
+                    android:layout_centerVertical="true"
+                    android:maxLength="80"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/_14sdp"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/help_next"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="40dp"
+                    android:src="@drawable/videos_album_next"
+                    android:layout_height="40dp" />
+            </RelativeLayout>
+            <app.android.muscularstrength.custom.HorizontalListView
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:id="@+id/list_help"
+                android:visibility="visible"
+                android:layout_height="@dimen/_100sdp">
+            </app.android.muscularstrength.custom.HorizontalListView>
+            <TextView
+                android:id="@+id/contact_txt"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15sdp"
+                android:text="Contact"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Spinner
+                android:id="@+id/sp_option"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:background="@drawable/spwhite_bg"
+                android:layout_height="@dimen/_40sdp"></Spinner>
+            <EditText
+                android:id="@+id/name"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/rect_bg"
+                android:layout_width="match_parent"
+                android:hint="Name"
+                android:textSize="@dimen/_12sdp"
+                android:padding="@dimen/_10sdp"
+                android:textColorHint="@color/cat_color"
+                android:textColor="@color/cat_color"
+                android:layout_height="@dimen/_40sdp" />
+            <EditText
+                android:id="@+id/email"
+                android:textSize="@dimen/_12sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:background="@drawable/rect_bg"
+                android:hint="Email"
+                android:padding="@dimen/_10sdp"
+                android:textColorHint="@color/cat_color"
+                android:textColor="@color/cat_color"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp" />
+            <EditText
+                android:id="@+id/issue"
+                android:textSize="@dimen/_12sdp"
+                android:visibility="visible"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@drawable/rect_bg"
+                android:layout_width="match_parent"
+                android:hint="Issue"
+                android:gravity="start"
+                android:padding="@dimen/_10sdp"
+                android:textColorHint="@color/cat_color"
+                android:textColor="@color/cat_color"
+                android:layout_height="@dimen/_100sdp" />
+            <TextView
+                android:id="@+id/note"
+                android:textSize="@dimen/_12sdp"
+                android:text=""
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:textColor="@color/cat_color"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/submitBtn"
+                android:layout_width="wrap_content"
+                android:text="SUBMIT"
+                android:background="@color/red"
+               android:layout_margin="@dimen/_10sdp"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"
+                android:layout_height="@dimen/_35sdp" />
+            <include layout="@layout/footer_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"></include>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

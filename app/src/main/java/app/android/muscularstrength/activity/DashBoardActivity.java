@@ -49,6 +49,7 @@ import app.android.muscularstrength.fragment.CustomizeAvatarFragment;
 import app.android.muscularstrength.fragment.FragmentHome;
 import app.android.muscularstrength.fragment.FriendRequestFragment;
 import app.android.muscularstrength.fragment.FriendsFragment;
+import app.android.muscularstrength.fragment.HelpFragment;
 import app.android.muscularstrength.fragment.MessageFragment;
 import app.android.muscularstrength.fragment.NewsFeedFragment;
 import app.android.muscularstrength.fragment.NotificationFragment;
@@ -133,7 +134,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
         notification_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClick(null, null, 13, 0);
+                onItemClick(null, null, 17, 0);
             }
         });
         message_icon.setOnClickListener(new View.OnClickListener() {
@@ -177,11 +178,12 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
         help_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
+               /* new Thread(new Runnable() {
                     public void run() {
                         downloadFile();
                     }
-                }).start();
+                }).start();*/
+                onItemClick(null, null, 16, 0);
             }
         });
         onItemClick(null, null, 1, 0);
@@ -365,8 +367,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
             fragment.setArguments(bundle);
         }else if (position == 13) {
             logout();
-            /*fragment = new NotificationFragment();
-            fragment.setArguments(bundle);*/
+            /**/
         } else if (position == 14) {
             fragment = new MessageFragment();
             fragment.setArguments(bundle);
@@ -374,6 +375,14 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
             fragment = new FriendRequestFragment();
             fragment.setArguments(bundle);
         }
+        else if(position==16){
+            fragment=new HelpFragment();
+        }
+        else if(position==17){
+            fragment = new NotificationFragment();
+            fragment.setArguments(bundle);
+        }
+
         if(position!=8||position!=13) {
             replaceFragment(fragment);
             ftx.commit();

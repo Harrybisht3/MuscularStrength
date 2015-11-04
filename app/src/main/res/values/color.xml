@@ -6,6 +6,7 @@
     <color name="tansparent">#99000000</color>
     <color name="black">#000000</color>
     <color name="red">#FF0000</color>
+    <color name="help_top">#1F1F1F</color>
     <color name="actionbar_color">#D20502</color>
     <color name="green">#00FF00</color>
     <color name="blue">#0000FF</color>

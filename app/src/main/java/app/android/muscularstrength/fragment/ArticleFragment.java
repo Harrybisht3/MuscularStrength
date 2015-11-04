@@ -76,25 +76,7 @@ public class ArticleFragment extends Fragment {
         Bundle args = getArguments();
         from=args.getInt("from");
         Log.i(TAG,"FROM="+from);
-        /*rootView.setFocusableInTouchMode(true);
-        rootView.requestFocus();
-        rootView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == event.ACTION_UP
-                        && keyCode == KeyEvent.KEYCODE_BACK) {
-                    if (from == 0) {
-                      *//*  FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fragmentManager.beginTransaction();
-                        ft.replace(R.id.contentframe, new DashBoardFragment());
-                        ft.commit();*//*
-                    } else {
-                        getActivity().getSupportFragmentManager().popBackStack();
-                    }
-                }
-                return true;
-            }
-        });*/
+
         list_articles.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {

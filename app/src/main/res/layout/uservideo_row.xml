@@ -21,7 +21,7 @@
             android:id="@+id/playbtn"
             android:layout_width="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@android:drawable/ic_media_play"
+            android:src="@drawable/videos_album_play"
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
@@ -48,6 +48,7 @@
             android:padding="@dimen/_5sdp"
             android:visibility="gone"
             android:text=""
+            android:textSize="@dimen/_12sdp"
             android:textColor="@color/white"
             android:textColorHint="@color/cat_color"
             android:hint="Add a caption..."
