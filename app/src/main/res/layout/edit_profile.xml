@@ -14,6 +14,7 @@
             android:orientation="vertical">
             <include layout="@layout/header_layout"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:id="@+id/header"></include>
             <TextView
@@ -83,6 +84,7 @@
                         android:layout_width="match_parent"
                         android:hint="Location"
                         android:padding="@dimen/_10sdp"
+                        android:textSize="@dimen/_12sdp"
                         android:textColorHint="@color/cat_color"
                         android:layout_height="@dimen/_40sdp"
                         android:background="@drawable/rect_bg"></EditText>
@@ -151,6 +153,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_weight="1"
                         android:hint="Feet"
+                        android:textSize="@dimen/_12sdp"
                         android:padding="@dimen/_10sdp"
                         android:textColorHint="@color/cat_color"
                         android:background="@drawable/rect_bg"></EditText>
@@ -158,6 +161,7 @@
                     <EditText
                         android:id="@+id/month"
                         android:layout_width="0dp"
+                        android:textSize="@dimen/_12sdp"
                         android:layout_height="@dimen/_40sdp"
                         android:hint="inch"
                         android:padding="@dimen/_10sdp"
@@ -188,6 +192,7 @@
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_weight="2"
+                        android:textSize="@dimen/_12sdp"
                         android:hint="weight"
                         android:padding="@dimen/_10sdp"
                         android:textColorHint="@color/cat_color"
@@ -211,6 +216,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/splayout3"
                     android:layout_margin="@dimen/_10sdp"
+                    android:textSize="@dimen/_12sdp"
                     android:background="@color/actionbar_color"
                     android:text="@string/save"
                     android:textColor="@color/white" />
