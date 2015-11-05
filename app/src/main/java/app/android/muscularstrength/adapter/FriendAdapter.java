@@ -75,7 +75,7 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
         holder.text_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showProfile(data.getId());
+                showProfile(data);
                // Toast.makeText(_context,"Clicked",Toast.LENGTH_SHORT).show();
             }
         });
@@ -103,11 +103,12 @@ public class FriendAdapter extends ArrayAdapter<Friend> {
         // txtSpan.setMovementMethod(LinkMovementMethod.getInstance());
 
     }
-    private void showProfile(String id) {
+    private void showProfile(final Friend data) {
         FragmentTransaction ft = fragmentcontext.getChildFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putInt("from", 1);
-        bundle.putString("userid", id);
+        bundle.putString("userid", data.getId());
+        bundle.putString("username", data.getName());
         Fragment fragment = new ProfileFragment();
         fragment.setArguments(bundle);
         replaceFragment(fragment);
