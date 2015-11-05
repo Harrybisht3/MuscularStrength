@@ -331,8 +331,8 @@ public class FragmentHome extends Fragment implements View.OnClickListener {
             case 12:
                 //POS=5;
                 bundle.putInt("from", 6);
-                fragment=new CommonFragment();
-                fragment.setArguments(bundle);
+                fragment=new LiftFragment();
+               // fragment.setArguments(bundle);
                 // ft.replace(frame.getId(),fragment).addToBackStack(null);
                 break;
             case 13:

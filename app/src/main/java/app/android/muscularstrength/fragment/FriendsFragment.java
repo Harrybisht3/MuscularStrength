@@ -1,7 +1,9 @@
 package app.android.muscularstrength.fragment;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -55,6 +57,7 @@ public class FriendsFragment extends Fragment {
     Fragment fragmentcontext;
 
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

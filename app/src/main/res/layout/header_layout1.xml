@@ -166,6 +166,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/_45sdp"
             android:layout_weight=".9"
+            android:alpha=".5"
             android:src="@drawable/icon_pending" />
         <View
             android:layout_width="@dimen/_1sdp"
@@ -178,6 +179,7 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/_45sdp"
             android:layout_weight=".9"
+            android:alpha=".5"
             android:src="@drawable/icon_sent" />
         <View
             android:layout_width="@dimen/_1sdp"
@@ -188,6 +190,7 @@
         <ImageView
             android:id="@+id/block"
             android:layout_width="0dp"
+            android:alpha=".5"
             android:layout_height="@dimen/_45sdp"
             android:layout_weight=".9"
             android:src="@drawable/icon_blocked" />

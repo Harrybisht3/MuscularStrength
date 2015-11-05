@@ -72,30 +72,27 @@
                         <TextView
                             android:id="@+id/goalTxt"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-
-                            android:padding="@dimen/padding_text"
+                            android:gravity="center_vertical"
                             android:text="Goal:"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
                             android:id="@+id/gendertxt"
                             android:layout_width="0dp"
-
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-                            android:padding="@dimen/_10sdp"
+                            android:gravity="center_vertical"
                             android:text="Gender:"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
                             android:id="@+id/ageTxt"
                             android:layout_width="0dp"
-
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-                            android:padding="@dimen/padding_text"
+                            android:gravity="center_vertical"
                             android:text="Age:"
                             android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
@@ -109,30 +106,27 @@
                         <TextView
                             android:id="@+id/heightTxt"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-                            android:padding="@dimen/padding_text"
+                            android:gravity="center_vertical"
                             android:text="Height:"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
                             android:id="@+id/weightTxt"
                             android:layout_width="0dp"
-
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-                            android:padding="@dimen/_10sdp"
-                            android:text="Weig:"
+                            android:gravity="center_vertical"
+                            android:text="Weight:"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
                             android:id="@+id/neckTxt"
                             android:layout_width="0dp"
-
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-                            android:padding="@dimen/padding_text"
+                            android:gravity="center_vertical"
                             android:text="Neck:"
                             android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
@@ -146,10 +140,9 @@
                         <TextView
                             android:id="@+id/forearmTxt"
                             android:layout_width="0dp"
-
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-                            android:padding="@dimen/padding_text"
+                            android:gravity="center_vertical"
                             android:text="Forearm:"
                             android:textSize="@dimen/_12sdp" />
 
@@ -157,19 +150,18 @@
                             android:id="@+id/calveTxt"
                             android:layout_width="0dp"
 
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-                            android:padding="@dimen/padding_text"
+                            android:gravity="center_vertical"
                             android:text="Calve:"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
                             android:id="@+id/armTxt"
                             android:layout_width="0dp"
-
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-                            android:padding="@dimen/_10sdp"
+                            android:gravity="center_vertical"
                             android:text="Arm:"
                             android:textSize="@dimen/_12sdp" />
                     </LinearLayout>
@@ -182,31 +174,28 @@
 
                         <TextView
                             android:id="@+id/thighTxt"
-
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-                            android:padding="@dimen/padding_text"
+                            android:gravity="center_vertical"
                             android:text="Thigh:"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
                             android:id="@+id/chestTxt"
                             android:layout_width="0dp"
-
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-                            android:padding="@dimen/padding_text"
+                            android:gravity="center_vertical"
                             android:text="Chest:"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
                             android:id="@+id/blank"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-                            android:padding="@dimen/_10sdp"
+                            android:gravity="center_vertical"
                             android:text="Chest:"
                             android:textSize="@dimen/_12sdp"
                             android:visibility="invisible" />

@@ -9,7 +9,7 @@
         android:orientation="vertical"
         android:layout_height="match_parent">
         <!-- Header aligned to top -->
-        <include layout="@layout/header_layout"
+        <include layout="@layout/header_layout1"
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

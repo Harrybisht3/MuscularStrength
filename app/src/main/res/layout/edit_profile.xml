@@ -14,7 +14,7 @@
             android:orientation="vertical">
             <include layout="@layout/header_layout"
                 android:layout_width="match_parent"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_height="wrap_content"
                 android:id="@+id/header"></include>
             <TextView

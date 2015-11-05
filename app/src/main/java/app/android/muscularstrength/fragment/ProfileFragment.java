@@ -1,9 +1,11 @@
 package app.android.muscularstrength.fragment;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -52,6 +54,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     JSONObject json;
     String user_id;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,6 +99,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         Bundle args = getArguments();
         int from=args.getInt("from");
         String userId=args.getString("userid");
+
         if(userId.equalsIgnoreCase(userObj.getUserId())){
             user_id=userObj.getUserId();
             user.setText(userObj.getFirstName() + "" + userObj.getLastName());
@@ -103,8 +107,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             level.setText(userObj.getUserLevel());
         }
         else{
+            String userName=args.getString("username");
+            user.setText(userName);
             user_id=userId;
             edit_Profile.setVisibility(View.GONE);
+            account_type.setVisibility(View.GONE);
+                    level.setVisibility(View.GONE);
         }
         //Log.i(TAG, "FROM=" + from);
 
@@ -115,6 +123,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.edit_profile:
                 Intent it=new Intent(getActivity(), EditProfileActivity.class);
+                it.putExtra("Type","Fragment");
                 startActivity(it);
                 break;
             default:
@@ -179,7 +188,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         try {
             Glide.with(getActivity()).load(json.getString("avtar_image")).into(userProfileImg);
             doColorSpanForFirstString("Goal: ",json.getString("goal"),goal);
-            doColorSpanForFirstString("Gender: :",json.getString("gender"),gender);
+            doColorSpanForFirstString("Gender:",json.getString("gender"),gender);
             doColorSpanForFirstString("Age: ",json.getString("age"),age);
             doColorSpanForFirstString("Height: ",json.getString("height"),height);
             doColorSpanForFirstString("Weight: ",json.getString("weight"),weight);
@@ -190,18 +199,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             doColorSpanForFirstString("Thigh: ",json.getString("thigh"),thigh);
             doColorSpanForFirstString("Chest: ",json.getString("chest"),chest);
 
-          /* // goal.setText(Html.fromHtml("<font color=" + getResources().getColor(R.color.cat_color) + ">Goal: </font> <b style=\"color:" + getResources().getColor(R.color.white) + "\">" + json.getString("goal") + "</b>"));
-            //gender.setText(Html.fromHtml("<font color=" + getResources().getColor(R.color.cat_color) + ">Gender: </font> <b style=\"color:" + getResources().getColor(R.color.white) + "\">" + json.getString("gender") + "</b>"));
-            //age.setText(Html.fromHtml("<font color=" + getResources().getColor(R.color.cat_color) + ">Age: </font> <b style=\"color:" + getResources().getColor(R.color.white) + "\">" + json.getString("age") + "</b>"));
-            height.setText(Html.fromHtml("<font color=" + getResources().getColor(R.color.cat_color) + ">Height: </font> <b style=\"color:" + getResources().getColor(R.color.white) + "\">" + json.getString("height") + "</b>"));
-            weight.setText(Html.fromHtml("<font color=" + getResources().getColor(R.color.cat_color) + ">Weight: </font> <b style=\"color:" + getResources().getColor(R.color.white) + "\">" + json.getString("weight") + "</b>"));
-            neck.setText(Html.fromHtml("<font color=" + getResources().getColor(R.color.cat_color) + ">Neck: </font> <b style=\"color:" + getResources().getColor(R.color.white) + "\">" + json.getString("neck") + "</b>"));
-            forearm.setText(Html.fromHtml("<font color=" + getResources().getColor(R.color.cat_color) + ">Forearm: </font> <b style=\"color:" + getResources().getColor(R.color.white) + "\">" + json.getString("forearm") + "</b>"));
-            clave.setText(Html.fromHtml("<font color=" + getResources().getColor(R.color.cat_color) + ">Clave: </font> <b style=\"color:" + getResources().getColor(R.color.white) + "\">" + json.getString("calve") + "</b>"));
-            arm.setText(Html.fromHtml("<font color=" + getResources().getColor(R.color.cat_color) + ">Arm: </font> <b style=\"color:" + getResources().getColor(R.color.white) + "\">" + json.getString("arm") + "</b>"));
-            thigh.setText(Html.fromHtml("<font color=" + getResources().getColor(R.color.cat_color) + ">Thigh: </font> <b style=\"color:" + getResources().getColor(R.color.white) + "\">" + json.getString("thigh") + "</b>"));
-            chest.setText(Html.fromHtml("<font color=" + getResources().getColor(R.color.cat_color) + ">Chest: </font> <b style=\"color:" + getResources().getColor(R.color.white) + "\">" + json.getString("chest") + "</b>"));
-            //goal.setText("GOAL:"+json.get("goal"));*/
+
         } catch (Exception e) {
             e.printStackTrace();
         }

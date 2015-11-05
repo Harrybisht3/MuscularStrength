@@ -1,17 +1,22 @@
 package app.android.muscularstrength.activity;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -53,6 +58,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     EditText location, feet, inchs, weight;
     private static final int PICKFILE_RESULT_CODE = 1;
     private File selectedFile;
+    String type;
 
     //String[]gender={"Gender","Male","Female"};
     List<String> goals, gender, year, months, days, inch, w_unit;
@@ -87,7 +93,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         pDialog.setMessage("loading...");
         actionbarmenu.setVisibility(View.GONE);
         back_Btn.setVisibility(View.VISIBLE);
-
+        type=getIntent().getStringExtra("Type");
         goals = new ArrayList<String>();
         gender = new ArrayList<String>();
         year = new ArrayList<String>();
@@ -179,7 +185,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_icon:
-                finish();
+                onBackPressed();
                 break;
             case R.id.browseBtn:
                 chooseFile();
@@ -215,69 +221,161 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 // This gets the URI of the image the user selected:
                 Uri selectedFileURI = data.getData();
                 System.out.println("SELECTED URI======" + selectedFileURI);
-                if (!TextUtils.equals(selectedFileURI.getAuthority(),
-                        MediaStore.AUTHORITY)) {
+                System.out.println("SELECTED URI======" + getPath(this,selectedFileURI));
 
-                    // Handle content URIs for other content providers
-
-                    // For a MediaStore content URI
-                } else {
-                    selectedFile = new File(getRealPathFromURI(selectedFileURI));
-                    if (selectedFile != null) {
-                        System.out.println("SELECTED FILE----->>"
-                                + selectedFile.toString());
-                        // Create a new Intent to send to the next Activity:
-                       /* String[] image = selectedFile.toString().split("/");
-                         String selected_image = image[image.length - 1];
-
-                        Stringextension1 = selected_image
-                                .substring(selected_image.lastIndexOf(".") + 1);
-                        // System.out.println("SELECTED IMAGE Extension" +
-                        // extension1);
-                        // String[] extension = selected_image.split("\\.");
-                        try {
-                            if (extension1.equalsIgnoreCase("gif")) {
-                                //file_name.setText("" + image[image.length - 1]);
-                            } else {
-                                Utility.showMessage(getActivity()," Please Select  gif Image");
-                                file_name.setText("No file choosen");
-                                selectedFile = null;
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    } else {
-                        file_name.setText("No file choosen");
-                        selectedFile = null;
-                    }*/
-                    }
-                }
 
             }
 
         }
     }
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static String getPath(final Context context, final Uri uri) {
 
-    private String getRealPathFromURI(Uri contentURI) {
-        String result = null;
-        try {
-            Cursor cursor = this.getContentResolver().query(
-                    contentURI, null, null, null, null);
-            // System.out.println("CURSOR------>>>"+cursor.toString());
-            if (cursor == null) { // Source is Dropbox or other similar local
-                // file
-                // path
-                result = contentURI.getPath();
-            } else {
-                cursor.moveToFirst();
-                int idx = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-                result = cursor.getString(idx);
-                cursor.close();
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+
+        // DocumentProvider
+        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            // ExternalStorageProvider
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+
+                // TODO handle non-primary volumes
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            // DownloadsProvider
+            else if (isDownloadsDocument(uri)) {
+
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+                return getDataColumn(context, contentUri, null, null);
+            }
+            // MediaProvider
+            else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[] {
+                        split[1]
+                };
+
+                return getDataColumn(context, contentUri, selection, selectionArgs);
+            }
         }
-        return result;
+        // MediaStore (and general)
+        else if ("content".equalsIgnoreCase(uri.getScheme())) {
+
+            // Return the remote address
+            if (isGooglePhotosUri(uri))
+                return uri.getLastPathSegment();
+
+            return getDataColumn(context, uri, null, null);
+        }
+        // File
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the value of the data column for this Uri. This is useful for
+     * MediaStore Uris, and other file-based ContentProviders.
+     *
+     * @param context The context.
+     * @param uri The Uri to query.
+     * @param selection (Optional) Filter used in the query.
+     * @param selectionArgs (Optional) Selection arguments used in the query.
+     * @return The value of the _data column, which is typically a file path.
+     */
+    public static String getDataColumn(Context context, Uri uri, String selection,
+                                       String[] selectionArgs) {
+
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {
+                column
+        };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                    null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is ExternalStorageProvider.
+     */
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is DownloadsProvider.
+     */
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is MediaProvider.
+     */
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is Google Photos.
+     */
+    public static boolean isGooglePhotosUri(Uri uri) {
+        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(type.equalsIgnoreCase("Fragment")){
+
+        }else{
+           callDashBoard();
+        }
+        finish();
+    }
+    private void callDashBoard(){
+        Intent it=new Intent(EditProfileActivity.this, DashBoardActivity.class);
+        startActivity(it);
+
+
     }
 }

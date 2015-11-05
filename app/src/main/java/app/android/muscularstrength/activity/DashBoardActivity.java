@@ -50,6 +50,7 @@ import app.android.muscularstrength.fragment.FragmentHome;
 import app.android.muscularstrength.fragment.FriendRequestFragment;
 import app.android.muscularstrength.fragment.FriendsFragment;
 import app.android.muscularstrength.fragment.HelpFragment;
+import app.android.muscularstrength.fragment.LiftFragment;
 import app.android.muscularstrength.fragment.MessageFragment;
 import app.android.muscularstrength.fragment.NewsFeedFragment;
 import app.android.muscularstrength.fragment.NotificationFragment;
@@ -347,7 +348,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
             fragment=new RecipesFragment();
             fragment.setArguments(bundle);
         } else if (position == 6) {
-          //  fragment=new Lif();
+           fragment=new LiftFragment();
             //fragment.setArguments(bundle);
         } else if (position == 7) {
          fragment=new CustomizeAvatarFragment();
@@ -565,6 +566,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
     }
     private void editProfile(){
         Intent it=new Intent(DashBoardActivity.this, EditProfileActivity.class);
+        it.putExtra("Type","Activity");
         startActivity(it);
 
     }
