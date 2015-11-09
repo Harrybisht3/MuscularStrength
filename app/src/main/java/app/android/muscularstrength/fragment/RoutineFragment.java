@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListView;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,10 +30,12 @@ import java.util.List;
 import app.android.muscularstrength.R;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.DashBoardActivity;
-import app.android.muscularstrength.adapter.RoutineAdapter;
+import app.android.muscularstrength.adapter.MemberRoutineAdapter;
 import app.android.muscularstrength.model.Routine;
 import app.android.muscularstrength.model.RoutineParser;
 import app.android.muscularstrength.model.User;
+import app.android.muscularstrength.model.Video;
+import app.android.muscularstrength.model.VideoParse;
 import app.android.muscularstrength.network.JSONParser;
 import app.android.muscularstrength.session.SessionManager;
 import app.android.muscularstrength.webservice.WebServices;
@@ -53,10 +55,12 @@ public class RoutineFragment extends Fragment {
     TextView user, account_type, level;
     SessionManager session;
     User userObj;
-    ExpandableListView list_routine;
-    RoutineAdapter adapter;
+   // ExpandableListView list_routine;
+    MemberRoutineAdapter adapter;
     List<Routine> dataRoutine;
+    List<Video>dataVideo;
     String errorMessage;
+    GridView list_memberRoutine;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -69,18 +73,21 @@ public class RoutineFragment extends Fragment {
         DashBoardActivity.mainView.setBackground(null);
         DashBoardActivity.actiontitle.setText("ROUTINES");
         if (rootView == null) {
-            rootView = inflater.inflate(R.layout.routine_fragment, container, false);
-            list_routine = (ExpandableListView) rootView.findViewById(R.id.list_routine);
+            rootView = inflater.inflate(R.layout.new_routine_fragment, container, false);
+           // list_routine = (ExpandableListView) rootView.findViewById(R.id.list_routine);
+            list_memberRoutine=(GridView)rootView.findViewById(R.id.gridRoutine);
             density = Util.getDensity(getActivity());
             dataRoutine = new ArrayList<Routine>();
-            adapter = new RoutineAdapter(getActivity(), dataRoutine);
+            dataVideo=new ArrayList<Video>();
+            adapter = new MemberRoutineAdapter(getActivity());
 
             //header View
-            View headerlayout = View.inflate(getActivity(), R.layout.header_layout, null);
-            list_routine.addHeaderView(headerlayout, null, false);
-            View view1 = View.inflate(getActivity(), R.layout.footer_layout, null);
-            list_routine.addFooterView(view1, null, false);
-            list_routine.setAdapter(adapter);
+            View headerlayout= rootView.findViewById(R.id.header);
+           // list_routine.addHeaderView(headerlayout, null, false);
+           // View view1 = View.inflate(getActivity(), R.layout.footer_layout, null);
+          //  list_routine.addFooterView(view1, null, false);
+            //list_routine.setAdapter(adapter);
+            list_memberRoutine.setAdapter(adapter);
             density = Util.getDensity(getActivity());
             session = new SessionManager(getActivity());
             Gson gson = new Gson();
@@ -100,15 +107,16 @@ public class RoutineFragment extends Fragment {
             Bundle args = getArguments();
             from = args.getInt("from");
             Log.i(TAG, "called From=" + from);
-            getRoutine();
-            list_routine.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            //getRoutine();
+            getMemberRoutine();
+           /* list_routine.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
                 @Override
                 public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                     //Util.setExpendableListViewHeight(parent, groupPosition);
                     //return false;
                     return true;
                 }
-            });
+            });*/
 
             //getNewsfeed();
         }
@@ -135,6 +143,38 @@ public class RoutineFragment extends Fragment {
                             //if (data.getResult().equalsIgnoreCase("SUCCESS")) {
                             dataRoutine.clear();
                             dataRoutine.addAll(data.getRoutines());
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                        } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }
+                    } else {
+                        errorMessage = getResources().getString(R.string.errorMessage);
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+    private void getMemberRoutine() {
+        pDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                HashMap<String, String> params = new HashMap<String, String>();
+               // params.put("userid", "" + userObj.getUserId());
+                JSONParser parser = new JSONParser();
+                JSONObject json = parser.makeHttpRequest(WebServices.member_routine, "GET", params);
+                try {
+                    if (json != null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                            Gson gson = new Gson();
+                            VideoParse data = gson.fromJson(json.toString(), VideoParse.class);
+                            //if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                            dataVideo.clear();
+                            dataVideo.addAll(data.getVideos());
                             mainHandler.sendMessage(mainHandler.obtainMessage(1));
                         } else {
                             mainHandler.sendMessage(mainHandler.obtainMessage(0));
@@ -176,7 +216,7 @@ public class RoutineFragment extends Fragment {
 
     private void setListAdapter() {
         adapter.notifyDataSetChanged();
-        list_routine.setSelection(0);
+        //list_memberRoutine.setSelection(0);
         // Util.setExpendableListViewHeight(list_newsfeed, 0);
     }
 }

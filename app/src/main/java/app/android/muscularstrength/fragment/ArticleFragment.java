@@ -42,17 +42,18 @@ import app.android.muscularstrength.webservice.WebServices;
  * Created by logan on 12/7/15.
  */
 public class ArticleFragment extends Fragment {
-    private static final String TAG="ArticleFragment";
+    private static final String TAG = "ArticleFragment";
     View rootView;
     int from;
     EditText search_article;
     ListView list_articles;
     ArticleAdapter adapter;
-    ArrayList<Article>dataArticle;
-    private int page_no=1;
+    ArrayList<Article> dataArticle;
+    private int page_no = 1;
     ProgressDialog pDialog;
-    boolean isSearch=false;
-    String quary,errorMessage;
+    boolean isSearch = false;
+    String quary, errorMessage;
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
 
@@ -60,40 +61,40 @@ public class ArticleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.article_fragment, container, false);
-       // getActivity().getActionBar().show();
+        // getActivity().getActionBar().show();
         DashBoardActivity.actionBar.show();
         DashBoardActivity.menuView.setVisibility(View.GONE);
-        DashBoardActivity. mainView.setBackground(null);
+        DashBoardActivity.mainView.setBackground(null);
         DashBoardActivity.actiontitle.setText("ARTICLES");
-        list_articles=(ListView)rootView.findViewById(R.id.list_article);
-        search_article=(EditText)rootView.findViewById(R.id.article_search);
-        adapter=new ArticleAdapter(getActivity());
+        list_articles = (ListView) rootView.findViewById(R.id.list_article);
+        search_article = (EditText) rootView.findViewById(R.id.article_search);
+        adapter = new ArticleAdapter(getActivity());
         list_articles.setAdapter(adapter);
-        pDialog=new ProgressDialog(getActivity());
+        pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("loading...");
 
-      // DashBoardActivity. mainView.setBackgroundColor(getResources().getColor(R.color.tansparent));
+        // DashBoardActivity. mainView.setBackgroundColor(getResources().getColor(R.color.tansparent));
         Bundle args = getArguments();
-        from=args.getInt("from");
-        Log.i(TAG,"FROM="+from);
+        from = args.getInt("from");
+        Log.i(TAG, "FROM=" + from);
 
         list_articles.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 page_no = page;
-                if(!isSearch) {
+                if (!isSearch) {
                     getArticle(page_no);
-                }else{
-                    getSearchArticle(page_no,quary);
+                } else {
+                    getSearchArticle(page_no, quary);
                 }
             }
         });
         search_article.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
                     ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(search_article, InputMethodManager.SHOW_FORCED);
-                }else{
+                } else {
                     ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(search_article.getWindowToken(), 0);
                 }
             }
@@ -114,9 +115,9 @@ public class ArticleFragment extends Fragment {
                             return false;
                         }
                         if (event.getX() > search_article.getWidth() - search_article.getPaddingRight() - x.getIntrinsicWidth()) {
-                           // search_article.setCompoundDrawables(null, null, null, null);
-                            quary=search_article.getText().toString().trim();
-                           // hideSoftKeyboard(search_article);
+                            // search_article.setCompoundDrawables(null, null, null, null);
+                            quary = search_article.getText().toString().trim();
+                            // hideSoftKeyboard(search_article);
                             setEditTextFocus(false);
                             getSearchArticle(1, quary);
 
@@ -126,8 +127,9 @@ public class ArticleFragment extends Fragment {
                 });
 
         getArticle(page_no);
-        return  rootView;
+        return rootView;
     }
+
     public void setEditTextFocus(boolean isFocused) {
         search_article.setCursorVisible(isFocused);
         search_article.setFocusable(isFocused);
@@ -138,30 +140,34 @@ public class ArticleFragment extends Fragment {
         }
     }
 
-//get articles
-    private void getArticle(final int page){
+    //get articles
+    private void getArticle(final int page) {
         pDialog.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                HashMap<String,String>params=new HashMap<String, String>();
-                params.put("page",""+page);
-                params.put("display","15");
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("page", "" + page);
+                params.put("display", "15");
                 JSONParser parser = new JSONParser();
-                JSONObject json=parser.makeHttpRequest(WebServices.article,"GET",params);
+                JSONObject json = parser.makeHttpRequest(WebServices.article, "GET", params);
                 try {
-                    if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
-                        Gson gson = new Gson();
-                        ArticleParser data = gson.fromJson(json.toString(), ArticleParser.class);
-                       // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                    if (json != null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                            Gson gson = new Gson();
+                            ArticleParser data = gson.fromJson(json.toString(), ArticleParser.class);
+                            // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
                             dataArticle = new ArrayList<Article>();
                             dataArticle.addAll(data.getData().getArticles());
-                         mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
                        /* } else {
 
                         }*/
-                    }
-                    else{
+                        } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }
+                    } else {
+                        errorMessage = getResources().getString(R.string.errorMessage);
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
                 } catch (JSONException e) {
@@ -170,36 +176,36 @@ public class ArticleFragment extends Fragment {
             }
         }).start();
     }
+
     //search Artciles
-    private void getSearchArticle(final int page,final String quary){
+    private void getSearchArticle(final int page, final String quary) {
         pDialog.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                HashMap<String,String>params=new HashMap<String, String>();
-                params.put("page",""+page);
-                params.put("display","10");
-                params.put("search",quary);
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("page", "" + page);
+                params.put("display", "10");
+                params.put("search", quary);
                 JSONParser parser = new JSONParser();
-                JSONObject json=parser.makeHttpRequest(WebServices.article,"GET",params);
+                JSONObject json = parser.makeHttpRequest(WebServices.article, "GET", params);
                 try {
-                    if(json!=null){
-                    if(json.getString("result").equalsIgnoreCase("SUCCESS")) {
-                        Gson gson = new Gson();
-                        ArticleParser data = gson.fromJson(json.toString(), ArticleParser.class);
-                       // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                    if (json != null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                            Gson gson = new Gson();
+                            ArticleParser data = gson.fromJson(json.toString(), ArticleParser.class);
+                            // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
                             dataArticle = new ArrayList<Article>();
                             dataArticle.addAll(data.getData().getArticles());
                             mainHandler.sendMessage(mainHandler.obtainMessage(2));
                        /* } else {
                             mainHandler.sendMessage(mainHandler.obtainMessage(0));
                         }*/
-                    }
-                    else{
-                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
-                    }
-                    } else{
-                        errorMessage=getResources().getString(R.string.errorMessage);
+                        } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }
+                    } else {
+                        errorMessage = getResources().getString(R.string.errorMessage);
                         mainHandler.sendMessage(mainHandler.obtainMessage(0));
                     }
                 } catch (JSONException e) {
@@ -209,21 +215,22 @@ public class ArticleFragment extends Fragment {
         }).start();
     }
 
-    private void setListAdapter(){
-        for(int i=0;i<dataArticle.size();i++){
+    private void setListAdapter() {
+        for (int i = 0; i < dataArticle.size(); i++) {
             adapter.add(dataArticle.get(i));
         }
-       // Toast.makeText(getActivity(),"COUNT A="+adapter.getCount(),Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getActivity(),"COUNT A="+adapter.getCount(),Toast.LENGTH_SHORT).show();
         adapter.notifyDataSetChanged();
 
     }
-    private void setSearchedListAdapter(){
-        for(int i=0;i<dataArticle.size();i++){
+
+    private void setSearchedListAdapter() {
+        for (int i = 0; i < dataArticle.size(); i++) {
             adapter.add(dataArticle.get(i));
         }
         adapter.notifyDataSetChanged();
         list_articles.setSelection(0);
-      //  Toast.makeText(getActivity(),"COUNT S="+adapter.getCount(),Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(getActivity(),"COUNT S="+adapter.getCount(),Toast.LENGTH_SHORT).show();
 
     }
 
@@ -238,12 +245,12 @@ public class ArticleFragment extends Fragment {
                         case 0:
                             break;
                         case 1:
-                            isSearch=false;
+                            isSearch = false;
                             setListAdapter();
                             break;
                         case 2:
                             adapter.clear();
-                            isSearch=true;
+                            isSearch = true;
                             setSearchedListAdapter();
                             break;
                     }
