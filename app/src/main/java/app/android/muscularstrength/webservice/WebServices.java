@@ -32,6 +32,8 @@ public class WebServices {
     public static final String addPhotos=host+"creat_album.php";//userid,album_id,caption,imgefile
     public static final String userProfile=host+"profile_json.php";
     public static final String customize_avatar=host+"single_avatar.php?userid=";//userid
+    public static final String help=host+"help_json.php";//userid
+    public static final String member_routine=host+"member_routine_json.php";
 
 
 
