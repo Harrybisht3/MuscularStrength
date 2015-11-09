@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:id="@+id/list_help"
                 android:visibility="visible"
-                android:layout_height="@dimen/_100sdp">
+                android:layout_height="@dimen/_160sdp">
             </app.android.muscularstrength.custom.HorizontalListView>
             <TextView
                 android:id="@+id/contact_txt"
@@ -78,7 +78,9 @@
                 android:textAllCaps="true"
                 android:textStyle="bold"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <Spinner

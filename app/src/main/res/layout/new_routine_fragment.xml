@@ -1,7 +1,301 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/header"
+                layout="@layout/header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></include>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_5sdp"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rect_bg"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:id="@+id/abd_chk"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="@dimen/_25sdp" />
+                    <TextView
+                        android:id="@+id/text_abd"
+                        android:layout_toRightOf="@+id/abd_chk"
+                        android:layout_width="wrap_content"
+                        android:text="Abdominals"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rect_bg"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:id="@+id/bck_chk"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="@dimen/_25sdp" />
+                    <TextView
+                        android:id="@+id/text_bck"
+                        android:layout_toRightOf="@+id/bck_chk"
+                        android:layout_width="wrap_content"
+                        android:text="Back"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rect_bg"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:id="@+id/cal_chk"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="@dimen/_25sdp" />
+                    <TextView
+                        android:id="@+id/text_cal"
+                        android:layout_toRightOf="@+id/cal_chk"
+                        android:layout_width="wrap_content"
+                        android:text="Calve"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/rect_bg"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:id="@+id/fora_chk"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="@dimen/_25sdp" />
+                    <TextView
+                        android:id="@+id/text_fora"
+                        android:layout_toRightOf="@+id/fora_chk"
+                        android:layout_width="wrap_content"
+                        android:text="Forearms"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rect_bg"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:id="@+id/gm_chk"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="@dimen/_25sdp" />
+                    <TextView
+                        android:id="@+id/text_gm"
+                        android:layout_toRightOf="@+id/gm_chk"
+                        android:layout_width="wrap_content"
+                        android:text="Galutes maximus"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_5sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rect_bg"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:id="@+id/abdu_chk"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="@dimen/_25sdp" />
+                    <TextView
+                        android:id="@+id/text_abdu"
+                        android:layout_toRightOf="@+id/abdu_chk"
+                        android:layout_width="wrap_content"
+                        android:text="Abductors"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rect_bg"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:id="@+id/bic_chk"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="@dimen/_25sdp" />
+                    <TextView
+                        android:id="@+id/text_bic"
+                        android:layout_toRightOf="@+id/bic_chk"
+                        android:layout_width="wrap_content"
+                        android:text="Biceps"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rect_bg"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:id="@+id/chst_chk"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="@dimen/_25sdp" />
+                    <TextView
+                        android:id="@+id/text_chst"
+                        android:layout_toRightOf="@+id/chst_chk"
+                        android:layout_width="wrap_content"
+                        android:text="Chest"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/rect_bg"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:id="@+id/hms_chk"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="@dimen/_25sdp" />
+                    <TextView
+                        android:id="@+id/text_hms"
+                        android:layout_toRightOf="@+id/hms_chk"
+                        android:layout_width="wrap_content"
+                        android:text="Hamstrings"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:background="@drawable/rect_bg"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="wrap_content">
+                    <CheckBox
+                        android:id="@+id/obs_chk"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="@dimen/_25sdp" />
+                    <TextView
+                        android:id="@+id/text_obs"
+                        android:layout_toRightOf="@+id/obs_chk"
+                        android:layout_width="wrap_content"
+                        android:text="Obliques serratus"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+            <EditText
+                android:id="@+id/search"
+                android:layout_margin="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:padding="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/white"
+                android:hint="Search"
+                android:textColorHint="@color/white"
+                android:background="@drawable/rect_bg"
+                android:drawableRight="@android:drawable/ic_menu_search"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/top_txt"
+                android:textSize="@dimen/_18sdp"
+                android:layout_gravity="center_horizontal"
+                android:text="TOP ROUTINES"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:gravity="center_horizontal"
+                android:layout_width="@dimen/_200sdp"
+                android:layout_height="wrap_content" />
+            <View
+                android:layout_width="@dimen/_130sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/red"
+                android:layout_height="@dimen/_2sdp"/>
+            <GridView
+                android:id="@+id/gridRoutine"
+                android:layout_width="match_parent"
+                android:numColumns="2"
+                android:layout_height="@dimen/_150sdp"></GridView>
+            <include layout="@layout/footer_layout"></include>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
