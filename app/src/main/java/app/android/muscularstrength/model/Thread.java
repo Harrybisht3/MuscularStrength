@@ -1,12 +1,15 @@
 package app.android.muscularstrength.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by sa on 8/11/2015.
  */
-public class Thread {
+public class Thread implements Parcelable{
 
     @Expose
     private String id;
@@ -26,6 +29,29 @@ public class Thread {
     @SerializedName("user image")
     @Expose
     private String userImage;
+
+    protected Thread(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        description = in.readString();
+        Views = in.readString();
+        Posts = in.readString();
+        PostBy = in.readString();
+        time = in.readString();
+        userImage = in.readString();
+    }
+
+    public static final Creator<Thread> CREATOR = new Creator<Thread>() {
+        @Override
+        public Thread createFromParcel(Parcel in) {
+            return new Thread(in);
+        }
+
+        @Override
+        public Thread[] newArray(int size) {
+            return new Thread[size];
+        }
+    };
 
     /**
      *
@@ -171,4 +197,20 @@ public class Thread {
         this.userImage = userImage;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(Views);
+        dest.writeString(Posts);
+        dest.writeString(PostBy);
+        dest.writeString(time);
+        dest.writeString(userImage);
+    }
 }

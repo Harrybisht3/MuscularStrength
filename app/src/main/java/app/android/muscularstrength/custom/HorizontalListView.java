@@ -340,8 +340,28 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
         }
     };
 
+   /* @Override
+    public void setSelection(int position) {
+        mCurrentlySelectedAdapterIndex = position;
+    }
+*/
+   private int mChildWidth;
     @Override
     public void setSelection(int position) {
+        if(mChildWidth == 0) {
+            mChildWidth = getSelectedView().getWidth();
+        }
+
+        int positionX = position * mChildWidth;
+        if (positionX <= 0) {
+            positionX  = 0;
+        }
+        int maxWidth = mAdapter.getCount() * mChildWidth;
+        if (positionX > maxWidth) {
+            positionX = maxWidth;
+        }
+
+        scrollTo(positionX);
         mCurrentlySelectedAdapterIndex = position;
     }
 

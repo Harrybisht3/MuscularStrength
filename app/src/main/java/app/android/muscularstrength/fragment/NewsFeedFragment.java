@@ -123,7 +123,8 @@ public class NewsFeedFragment extends Fragment {
             @Override
             public void run() {
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("userid", "" + userObj.getUserId());
+               // params.put("userid", "" + userObj.getUserId());
+                params.put("userid", "" + "2");
                  /* params.put("display","15");*/
                 JSONParser parser = new JSONParser();
                 JSONObject json = parser.makeHttpRequest(WebServices.newsFeed, "GET", params);

@@ -171,13 +171,13 @@ public class SubForumFragment extends Fragment implements AdapterView.OnItemClic
         switch (parent.getId()) {
             case R.id.list_subforum:
                 Thread data = adapter.getItem(position);
-                showSubForum(data.getId());
+                showSubForum(data);
                 break;
 
         }
     }
 
-    private void showSubForum(String id) {
+    private void showSubForum(Thread data) {
         /*ThreadFragment kBDetailFragment = new ThreadFragment();
         Bundle args = new Bundle();
         args.putString("threadID", id);
@@ -191,7 +191,8 @@ public class SubForumFragment extends Fragment implements AdapterView.OnItemClic
                 .commit();  FragmentTransaction ft = getChildFragmentManager().beginTransaction();*/
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
-        bundle.putString("threadID", id);
+        bundle.putParcelable("threadBundle", data);
+
         Fragment fragment = new ThreadFragment();
         fragment.setArguments(bundle);
         replaceFragment(fragment);

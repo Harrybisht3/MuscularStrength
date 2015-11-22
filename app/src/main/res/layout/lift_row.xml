@@ -1,79 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@color/lift_bg"
-    android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/title"
-        android:textColor="@color/red"
-        android:text="Bench"
-        android:textSize="@dimen/_15sdp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <ImageView
-        android:id="@+id/image"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <RelativeLayout
-        android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg"
+    android:padding="@dimen/_10sdp">
 
-        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/lift_bg">
+
         <TextView
-            android:id="@+id/weight"
-            android:text="Weight:"
-            android:padding="@dimen/_10sdp"
-            android:textColor="@color/cat_color"
-            android:textSize="@dimen/_12sdp"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/date"
-            android:text="Date:"
-            android:padding="@dimen/_10sdp"
-            android:textColor="@color/cat_color"
-            android:textSize="@dimen/_12sdp"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Bench"
+            android:textColor="@color/red"
+            android:textSize="@dimen/_15sdp" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp" />
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_below="@+id/weight"
+
             android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/motivate_value"
-            android:text="0"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:background="@drawable/rect_bg"
-            android:textSize="@dimen/_14sdp"
-            android:layout_alignParentBottom="true"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp" />
-        <TextView
-            android:id="@+id/motivate"
-            android:text="Motivate"
-            android:layout_toRightOf="@+id/motivate_value"
-            android:textColor="@color/level"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:textSize="@dimen/_12sdp"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-            <ImageView
-                android:id="@+id/edit"
-                android:src="@drawable/abc_btn_radio_material"
-                android:layout_width="@dimen/_20sdp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
+
+            <TextView
+                android:id="@+id/weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                android:text="Weight:"
+                android:textColor="@color/cat_color"
+                android:textSize="@dimen/_12sdp" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_height="@dimen/_20sdp" />
+                android:padding="@dimen/_10sdp"
+                android:text="Date:"
+                android:textColor="@color/cat_color"
+                android:textSize="@dimen/_12sdp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/weight"
+                android:layout_marginTop="@dimen/_5sdp">
+
+                <TextView
+                    android:id="@+id/motivate_txt"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/rect_bg"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/motivate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_toRightOf="@id/motivate_txt"
+                    android:text="Motivate"
+                    android:textColor="@color/level"
+                    android:textSize="@dimen/_12sdp" />
+
+                <ImageView
+                    android:id="@+id/edit"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:src="@drawable/lifts_icon_edit1" />
+            </RelativeLayout>
         </RelativeLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

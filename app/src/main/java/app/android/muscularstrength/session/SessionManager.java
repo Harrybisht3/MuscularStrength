@@ -14,10 +14,10 @@ import app.android.muscularstrength.activity.LoginActivity;
 
 public class SessionManager {
     // Shared Preferences
-    SharedPreferences pref;
+    SharedPreferences pref,pref1;
 
     // Editor for Shared preferences
-    SharedPreferences.Editor editor;
+    SharedPreferences.Editor editor,editor1;
 
     // Context
     Context _context;
@@ -26,7 +26,7 @@ public class SessionManager {
     int PRIVATE_MODE = 0;
 
     // Sharedpref file name
-    private static final String PREF_NAME = "AndroidHivePref";
+    private static final String PREF_NAME = "MuscularPref";
 
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
@@ -38,12 +38,16 @@ public class SessionManager {
     public static final String KEY_EMAIL = "email";
     // Email address (make variable public to access from outside)
     public static final String KEY_USEROBJECT = "userObj";
+    public static final String KEY_REMEMBER = "remember";
+    public static final String KEY_USER = "user";
 
     // Constructor
     public SessionManager(Context context){
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+        pref1 = _context.getSharedPreferences("Muscular1", PRIVATE_MODE);
+        editor1 = pref1.edit();
     }
 
     /**
@@ -132,5 +136,18 @@ public class SessionManager {
     // Get Login State
     public boolean isLoggedIn(){
         return pref.getBoolean(IS_LOGIN, false);
+    }
+    public boolean isRemember(){
+
+        return pref1.getBoolean(KEY_REMEMBER, false);
+    }
+    public String getUser(){
+        return pref1.getString(KEY_USER, "");
+    }
+    public void setRemember(boolean value,String userid){
+
+        editor1.putBoolean(KEY_REMEMBER,value);
+        editor1.putString(KEY_USER, userid);
+        editor1.commit();
     }
 }

@@ -88,8 +88,8 @@ public class JSONParser {
             if (sbParams.length() != 0) {
                 url += "?" + sbParams.toString();
             }
-
-            try {
+Log.i("URL","url="+url);
+           try {
                 urlObj = new URL(url);
 
                 conn = (HttpURLConnection) urlObj.openConnection();

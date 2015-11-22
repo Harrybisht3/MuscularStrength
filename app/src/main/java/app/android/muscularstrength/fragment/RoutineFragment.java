@@ -2,7 +2,10 @@ package app.android.muscularstrength.fragment;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,9 +14,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +38,7 @@ import java.util.List;
 import app.android.muscularstrength.R;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.DashBoardActivity;
+import app.android.muscularstrength.activity.YouTubePlayerActivity;
 import app.android.muscularstrength.adapter.MemberRoutineAdapter;
 import app.android.muscularstrength.model.Routine;
 import app.android.muscularstrength.model.RoutineParser;
@@ -61,6 +70,8 @@ public class RoutineFragment extends Fragment {
     List<Video>dataVideo;
     String errorMessage;
     GridView list_memberRoutine;
+    ScrollView scroll;
+    EditText search_routine;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -75,7 +86,9 @@ public class RoutineFragment extends Fragment {
         if (rootView == null) {
             rootView = inflater.inflate(R.layout.new_routine_fragment, container, false);
            // list_routine = (ExpandableListView) rootView.findViewById(R.id.list_routine);
+            scroll=(ScrollView)rootView.findViewById(R.id.scrollView);
             list_memberRoutine=(GridView)rootView.findViewById(R.id.gridRoutine);
+            search_routine = (EditText) rootView.findViewById(R.id.search_routine);
             density = Util.getDensity(getActivity());
             dataRoutine = new ArrayList<Routine>();
             dataVideo=new ArrayList<Video>();
@@ -87,7 +100,7 @@ public class RoutineFragment extends Fragment {
            // View view1 = View.inflate(getActivity(), R.layout.footer_layout, null);
           //  list_routine.addFooterView(view1, null, false);
             //list_routine.setAdapter(adapter);
-            list_memberRoutine.setAdapter(adapter);
+
             density = Util.getDensity(getActivity());
             session = new SessionManager(getActivity());
             Gson gson = new Gson();
@@ -109,20 +122,79 @@ public class RoutineFragment extends Fragment {
             Log.i(TAG, "called From=" + from);
             //getRoutine();
             getMemberRoutine();
-           /* list_routine.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            list_memberRoutine.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                    //Util.setExpendableListViewHeight(parent, groupPosition);
-                    //return false;
-                    return true;
-                }
-            });*/
+                public boolean onTouch(View v, MotionEvent event) {
+                    scroll.requestDisallowInterceptTouchEvent(true);
 
-            //getNewsfeed();
+                    int action = event.getActionMasked();
+
+                    switch (action) {
+                        case MotionEvent.ACTION_UP:
+                            scroll.requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+
+                    return false;
+                }
+            });
         }
+        list_memberRoutine.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent ii = new Intent(getActivity(), YouTubePlayerActivity.class);
+                Video data = adapter.getItem(position);
+                ii.putExtra("videoUrl", "" + data.getVideoLink());
+                startActivity(ii);
+            }
+        });
+        search_routine.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).showSoftInput(search_routine, InputMethodManager.SHOW_FORCED);
+                } else {
+                    ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(search_routine.getWindowToken(), 0);
+                }
+            }
+        });
+
+
+        final Drawable x = getResources().getDrawable(android.R.drawable.ic_menu_search);
+        x.setBounds(0, 0, x.getIntrinsicWidth(), x.getIntrinsicHeight());
+        search_routine.setOnTouchListener(
+                new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        setEditTextFocus(true);
+                        if (search_routine.getCompoundDrawables()[2] == null) {
+                            return false;
+                        }
+                        if (event.getAction() != MotionEvent.ACTION_UP) {
+                            return false;
+                        }
+                        if (event.getX() > search_routine.getWidth() - search_routine.getPaddingRight() - x.getIntrinsicWidth()) {
+                            // search_article.setCompoundDrawables(null, null, null, null);
+                            // hideSoftKeyboard(search_article);
+                            setEditTextFocus(false);
+                            getSearchMemberRoutine(search_routine.getText().toString().trim());
+
+                        }
+                        return false;
+                    }
+                });
 
 
         return rootView;
+    }
+    public void setEditTextFocus(boolean isFocused) {
+        search_routine.setCursorVisible(isFocused);
+        search_routine.setFocusable(isFocused);
+        search_routine.setFocusableInTouchMode(isFocused);
+
+        if (isFocused) {
+            search_routine.requestFocus();
+        }
     }
 
     private void getRoutine() {
@@ -189,6 +261,41 @@ public class RoutineFragment extends Fragment {
             }
         }).start();
     }
+    private void getSearchMemberRoutine( final String quary) {
+        pDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("search", quary);
+                JSONParser parser = new JSONParser();
+                JSONObject json = parser.makeHttpRequest(WebServices.member_routine, "GET", params);
+                try {
+                    if (json != null) {
+                        if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
+                            Gson gson = new Gson();
+                            VideoParse data = gson.fromJson(json.toString(), VideoParse.class);
+                            // if (data.getResult().equalsIgnoreCase("SUCCESS")) {
+                            dataVideo.clear();
+                            dataVideo.addAll(data.getVideos());
+                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                       /* } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }*/
+                        } else {
+                            mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        }
+                    } else {
+                        errorMessage = getResources().getString(R.string.errorMessage);
+                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
 
     private Handler mainHandler = new Handler() {
         public void handleMessage(Message message) {
@@ -215,7 +322,12 @@ public class RoutineFragment extends Fragment {
     };
 
     private void setListAdapter() {
-        adapter.notifyDataSetChanged();
+        adapter.clear();
+        for (Video video:dataVideo) {
+           adapter.add(video);
+        }
+        list_memberRoutine.setAdapter(adapter);
+       // adapter.notifyDataSetChanged();
         //list_memberRoutine.setSelection(0);
         // Util.setExpendableListViewHeight(list_newsfeed, 0);
     }

@@ -3,6 +3,7 @@ package app.android.muscularstrength.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,8 +45,9 @@ public class MemberRoutineAdapter extends ArrayAdapter<Video> {
             row = inflater.inflate(R.layout.uservideo_row, parent, false);
             holder = new HolderView();
             holder.image_video = (ImageView) row.findViewById(R.id.thumbVideo);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(((width / 2) - (int) _context.getResources().getDimension(R.dimen._12sdp)), (width / 2) - (int) _context.getResources().getDimension(R.dimen._12sdp));
-            //  lp.setMargins((int) _context.getResources().getDimension(R.dimen._50sdp), (int) _context.getResources().getDimension(R.dimen._50sdp), 0, 0);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(((width / 2) - (int) _context.getResources().getDimension(R.dimen._25sdp)), (width / 2) - (int) _context.getResources().getDimension(R.dimen._25sdp));
+             lp.setMargins(0, (int) _context.getResources().getDimension(R.dimen._10sdp), 0, 0);
+
             holder.image_video.setLayoutParams(lp);
             holder.image_play = (ImageView) row.findViewById(R.id.playbtn);
             //RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(((width/2)-(int)_context.getResources().getDimension(R.dimen._12sdp)), RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -60,7 +62,7 @@ public class MemberRoutineAdapter extends ArrayAdapter<Video> {
         // String lasturl=data.getVideoLink().substring(data.getVideoLink().lastIndexOf("/"));
 
         //String img_url="http://img.youtube.com/vi/"+data.getVideoLink().substring(data.getVideoLink().lastIndexOf("/")+1)+"/0.jpg";
-        // Log.i("URL THUMB", "utt=" + img_url);
+         Log.i("URL THUMB", "utt=" + data.getImageLink());
         Glide.with(_context).load(data.getImageLink()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.image_video);
         holder.video_title.setText(data.getTitle());
 

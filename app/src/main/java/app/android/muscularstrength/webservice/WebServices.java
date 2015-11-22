@@ -33,7 +33,10 @@ public class WebServices {
     public static final String userProfile=host+"profile_json.php";
     public static final String customize_avatar=host+"single_avatar.php?userid=";//userid
     public static final String help=host+"help_json.php";//userid
+    public static final String contact=host+ "contact_json.php";
     public static final String member_routine=host+"member_routine_json.php";
+    public static final String lift=host+"lifts_json.php";//userid
+    public static final String Update_lift=host+"liftedit_json.php";//userid
 
 
 

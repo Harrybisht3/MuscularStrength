@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -24,6 +25,25 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/frontimg"
+                android:layout_width="0dp"
+                android:src="@drawable/routine_man"
+                android:layout_weight="1"
+                android:layout_height="@dimen/_250sdp" />
+            <!--<ImageView
+                android:id="@+id/backimg"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />-->
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -34,10 +54,12 @@
                 <RelativeLayout
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_width="match_parent"
+                    android:padding="@dimen/_5sdp"
                     android:background="@drawable/rect_bg"
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:id="@+id/abd_chk"
+                       android:button="@drawable/lift_selector"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_centerVertical="true"
                         android:layout_height="@dimen/_25sdp" />
@@ -56,10 +78,12 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:background="@drawable/rect_bg"
+                    android:padding="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:id="@+id/bck_chk"
+                        android:button="@drawable/lift_selector"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_centerVertical="true"
                         android:layout_height="@dimen/_25sdp" />
@@ -78,10 +102,12 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:background="@drawable/rect_bg"
+                    android:padding="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:id="@+id/cal_chk"
+                        android:button="@drawable/lift_selector"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_centerVertical="true"
                         android:layout_height="@dimen/_25sdp" />
@@ -100,10 +126,12 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:padding="@dimen/_5sdp"
                     android:background="@drawable/rect_bg"
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:id="@+id/fora_chk"
+                        android:button="@drawable/lift_selector"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_centerVertical="true"
                         android:layout_height="@dimen/_25sdp" />
@@ -122,10 +150,12 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:background="@drawable/rect_bg"
+                    android:padding="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:id="@+id/gm_chk"
+                        android:button="@drawable/lift_selector"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_centerVertical="true"
                         android:layout_height="@dimen/_25sdp" />
@@ -152,10 +182,12 @@
                 <RelativeLayout
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_width="match_parent"
+                    android:padding="@dimen/_5sdp"
                     android:background="@drawable/rect_bg"
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:id="@+id/abdu_chk"
+                        android:button="@drawable/lift_selector"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_centerVertical="true"
                         android:layout_height="@dimen/_25sdp" />
@@ -174,11 +206,13 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:background="@drawable/rect_bg"
+                    android:padding="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:id="@+id/bic_chk"
                         android:layout_width="@dimen/_25sdp"
+                        android:button="@drawable/lift_selector"
                         android:layout_centerVertical="true"
                         android:layout_height="@dimen/_25sdp" />
                     <TextView
@@ -196,10 +230,12 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:background="@drawable/rect_bg"
+                    android:padding="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:id="@+id/chst_chk"
+                        android:button="@drawable/lift_selector"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_centerVertical="true"
                         android:layout_height="@dimen/_25sdp" />
@@ -218,10 +254,12 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:padding="@dimen/_5sdp"
                     android:background="@drawable/rect_bg"
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:id="@+id/hms_chk"
+                        android:button="@drawable/lift_selector"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_centerVertical="true"
                         android:layout_height="@dimen/_25sdp" />
@@ -240,10 +278,12 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:background="@drawable/rect_bg"
+                    android:padding="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_height="wrap_content">
                     <CheckBox
                         android:id="@+id/obs_chk"
+                        android:button="@drawable/lift_selector"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_centerVertical="true"
                         android:layout_height="@dimen/_25sdp" />
@@ -261,14 +301,27 @@
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
+            <Button
+                android:id="@+id/searchbtn"
+                android:layout_width="match_parent"
+                android:text="Search"
+                android:textSize="@dimen/_12sdp"
+                android:background="@color/red"
+                android:textColor="@color/white"
+android:textAllCaps="false"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:layout_marginLeft="@dimen/_30sdp"
+                android:layout_height="@dimen/_40sdp" />
             <EditText
-                android:id="@+id/search"
+                android:id="@+id/search_routine"
                 android:layout_margin="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:padding="@dimen/_10sdp"
                 android:textSize="@dimen/_12sdp"
                 android:textColor="@color/white"
                 android:hint="Search"
+                android:visibility="gone"
                 android:textColorHint="@color/white"
                 android:background="@drawable/rect_bg"
                 android:drawableRight="@android:drawable/ic_menu_search"
@@ -293,6 +346,8 @@
                 android:id="@+id/gridRoutine"
                 android:layout_width="match_parent"
                 android:numColumns="2"
+                android:verticalSpacing="@dimen/_2sdp"
+                android:horizontalSpacing="@dimen/_2sdp"
                 android:layout_height="@dimen/_150sdp"></GridView>
             <include layout="@layout/footer_layout"></include>
         </LinearLayout>

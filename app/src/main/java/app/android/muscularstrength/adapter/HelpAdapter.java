@@ -33,6 +33,7 @@ public class HelpAdapter extends ArrayAdapter<HelpData> {
         width=display.widthPixels;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;

@@ -59,6 +59,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     ProgressDialog pDialog;
     String userName,password;
     String message;
+    boolean isremember=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +76,16 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         copyrighttxt=(TextView)findViewById(R.id.copyrighttxt);
         userName_edit=(EditText)findViewById(R.id.userName);
         password_edit=(EditText)findViewById(R.id.password);
+        checkbox=(ImageView)findViewById(R.id.checkbox);
+
+        if(!session.isRemember()){
+            checkbox.setImageResource(R.drawable.icon_remember_me_deactive);
+            //session.setRemember(true,"");
+        }else{
+           // session.setRemember(false,userName_edit.getText().toString().trim());
+            checkbox.setImageResource(R.drawable.icon_remember_me_active);
+            userName_edit.setText(session.getUser());
+        }
 //set username drwable
         Drawable drawable = ContextCompat.getDrawable(this,R.drawable.icon_username);
         drawable.setBounds(0, 0, (int)(drawable.getIntrinsicWidth()*0.7),
@@ -97,6 +108,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
             }
 
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //boolean isSet=false;
@@ -116,6 +128,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
             }
 
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //boolean isSet=false;
@@ -127,6 +140,18 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+        checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!session.isRemember()){
+                    checkbox.setImageResource(R.drawable.icon_remember_me_active);
+                    session.setRemember(true,userName_edit.getText().toString().trim());
+                }else{
+                    session.setRemember(false,"");
+                    checkbox.setImageResource(R.drawable.icon_remember_me_deactive);
+                }
             }
         });
     }
