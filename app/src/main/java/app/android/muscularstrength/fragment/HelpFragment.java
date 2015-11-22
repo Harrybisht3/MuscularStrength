@@ -135,11 +135,7 @@ public class HelpFragment extends Fragment {
                 }, 200);
 
 
-               // list_help.setSelection(7);
 
-                // if(list_help.getLastVisiblePosition()<adapter.getCount()-1) {
-                // list_help.scrollTo((int) list_help.getScrollX() + ((width / 2) - (int) getResources().getDimension(R.dimen._20sdp)), (int) list_help.getScrollY());
-                //}
             }
         });
         help_back.setOnClickListener(new View.OnClickListener() {
@@ -158,9 +154,7 @@ public class HelpFragment extends Fragment {
                 }, 200);
 
 
-                //list_help.scrollTo((int) list_help.getScrollX() + 10, (int) list_help.getScrollY());
-                // if(list_help.getFirstVisiblePosition()>0 )
-                // list_help.scrollTo(list_help.getScrollX() - ((width/2)-(int)getResources().getDimension(R.dimen._20sdp)), 0);
+
             }
         });
         submitBtn.setOnClickListener(new View.OnClickListener() {
@@ -266,12 +260,7 @@ public class HelpFragment extends Fragment {
         }
         // Toast.makeText(getActivity(),"COUNT A="+adapter.getCount(),Toast.LENGTH_SHORT).show();
         adapter.notifyDataSetChanged();
-       /* list_help.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                list_help.setSelection(list_help.getAdapter().getCount()-1);
-            }
-        }, 500);*/
+
     }
 
     private class OnTouch implements View.OnTouchListener {
