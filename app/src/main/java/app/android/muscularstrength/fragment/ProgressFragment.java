@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
 import app.android.muscularstrength.R;
+import app.android.muscularstrength.Util.Constants;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.DashBoardActivity;
 import app.android.muscularstrength.custom.SemiCircleDrawable;
@@ -42,6 +44,8 @@ public class ProgressFragment extends Fragment {
     SessionManager session;
     User userObj;
     ImageView semcirle;
+    FragmentManager fragmentManager;
+    ImageView profile,message,notification;
 
 
 
@@ -68,6 +72,10 @@ public class ProgressFragment extends Fragment {
             user = (TextView)headerlayout.findViewById(R.id.user);
             account_type = (TextView)headerlayout.findViewById(R.id.account_type);
             level = (TextView)headerlayout.findViewById(R.id.level);
+            profile=(ImageView)headerlayout.findViewById(R.id.profile);
+            message=(ImageView)headerlayout.findViewById(R.id.message);
+            notification=(ImageView)headerlayout.findViewById(R.id.notification);
+            fragmentManager=getActivity().getSupportFragmentManager();
             Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
             user.setText(userObj.getFirstName() + "" + userObj.getLastName());
             account_type.setText(userObj.getAccountType());
@@ -81,6 +89,25 @@ public class ProgressFragment extends Fragment {
 
             //getNewsfeed();
         }
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.FRIEND);
+            }
+        });
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.MESSAGE);
+            }
+        });
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.NOTIFICATION);
+            }
+        });
+
 
 
         return rootView;

@@ -40,9 +40,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_width="@dimen/_90sdp"
-        android:layout_height="@dimen/_90sdp"
-        app:border_width="@dimen/_4sdp"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        app:border_width="@dimen/_3sdp"
         app:border_color="@color/img_border"/>
 
    <!-- <ImageView

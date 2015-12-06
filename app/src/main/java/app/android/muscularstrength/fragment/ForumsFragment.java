@@ -46,7 +46,9 @@ import app.android.muscularstrength.adapter.ForumAdapter;
 import app.android.muscularstrength.model.Forum;
 import app.android.muscularstrength.model.ForumParser;
 import app.android.muscularstrength.model.Forum_;
+import app.android.muscularstrength.model.User;
 import app.android.muscularstrength.network.JSONParser;
+import app.android.muscularstrength.session.SessionManager;
 import app.android.muscularstrength.webservice.WebServices;
 
 /**
@@ -73,6 +75,9 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
     DatePickerDialog datePickerDialog;
     boolean isSearch=false;
     String quary,errorMessage;
+    SessionManager session;
+    User userObj;
+    TextView nodatatxt;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
@@ -93,9 +98,13 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
             my_post = (TextView) rootView.findViewById(R.id.my_post);
             todays_post = (TextView) rootView.findViewById(R.id.todays_post);
             past_post = (TextView) rootView.findViewById(R.id.past_post);
+            nodatatxt= (TextView) rootView.findViewById(R.id.nodataTxt);
             my_post.setOnClickListener(this);
             todays_post.setOnClickListener(this);
             past_post.setOnClickListener(this);
+            session = new SessionManager(getActivity());
+            Gson gson = new Gson();
+            userObj = gson.fromJson(session.getSession(), User.class);
 
             //set drwavle right
             density = Util.getDensity(getActivity());
@@ -222,7 +231,8 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                             mainHandler.sendMessage(mainHandler.obtainMessage(0));
                         }*/
                     } else {
-                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        errorMessage=json.getJSONObject("forums").getString("data");
+                        mainHandler.sendMessage(mainHandler.obtainMessage(3));
                     }
                 } else{
                     errorMessage=getResources().getString(R.string.errorMessage);
@@ -257,7 +267,8 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                         mainHandler.sendMessage(mainHandler.obtainMessage(2));
 
                     } else {
-                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        errorMessage=json.getJSONObject("forums").getString("data");
+                        mainHandler.sendMessage(mainHandler.obtainMessage(3));
                     }
                 } else{
                     errorMessage=getResources().getString(R.string.errorMessage);
@@ -283,6 +294,8 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                 if (isAdded()) {
                     pDialog.dismiss();
                     pDialog.cancel();
+                    list_forum.setVisibility(View.VISIBLE);
+                    nodatatxt.setVisibility(View.GONE);
                     switch (message.what) {
                         case 0:
                             Toast.makeText(getActivity(),""+errorMessage,Toast.LENGTH_SHORT).show();
@@ -295,6 +308,12 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                         case 2:
                             isSearch=true;
                             setListAdapter();
+                            break;
+                        case 3:
+                            isSearch=false;
+                          list_forum.setVisibility(View.GONE);
+                            nodatatxt.setVisibility(View.VISIBLE);
+                            nodatatxt.setText(errorMessage);
                             break;
                     }
                 }
@@ -332,7 +351,7 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                 HashMap<String, String> params = new HashMap<String, String>();
                 if (viewPost == Constants.MYPOSTS) {
                     params.put("search", "mypost");
-                    params.put("user_id", "142338");
+                    params.put("user_id", userObj.getUserId());
                 } else if (viewPost == Constants.TODAYS) {
                     params.put("search", "today");
                 } else if (viewPost == Constants.PASTPOSTS) {
@@ -355,7 +374,8 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                         dataforum.addAll(data.getForums());
                         mainHandler.sendMessage(mainHandler.obtainMessage(1));
                     } else {
-                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        errorMessage=json.getJSONObject("forums").getString("data");
+                        mainHandler.sendMessage(mainHandler.obtainMessage(3));
                     }
                 } else{
                     errorMessage=getResources().getString(R.string.errorMessage);

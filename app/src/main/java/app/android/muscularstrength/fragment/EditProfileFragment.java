@@ -1,4 +1,4 @@
-package app.android.muscularstrength.activity;
+package app.android.muscularstrength.fragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -15,11 +15,12 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,18 +41,19 @@ import java.util.List;
 import app.android.muscularstrength.R;
 import app.android.muscularstrength.Util.Constants;
 import app.android.muscularstrength.Util.Util;
+import app.android.muscularstrength.activity.DashBoardActivity;
 import app.android.muscularstrength.model.User;
 import app.android.muscularstrength.session.SessionManager;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by laxman singh on 11/1/2015.
+ * Created by laxman singh on 12/5/2015.
  */
-public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditProfileFragment extends Fragment implements View.OnClickListener {
+    View rootView;
     User userObj;
     SessionManager session;
     String errorMessage;
-    ImageView actionbarmenu, back_Btn;
     CircleImageView userProfileImg;
     TextView user, account_type, level;
     TextView title;
@@ -64,28 +66,23 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     String type;
     FragmentManager fragmentManager;
     ImageView profile,message,notification;
-
     //String[]gender={"Gender","Male","Female"};
     List<String> goals, gender, year, months, days, inch, w_unit;
-
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.edit_profile);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.toolbar);
-        View v = getSupportActionBar().getCustomView();
-        Toolbar parent = (Toolbar) v.getParent();//first get parent toolbar of current action bar
-        parent.setContentInsetsAbsolute(0, 0);
-        actionbarmenu = (ImageView) v.findViewById(R.id.menu_icon);
-        back_Btn = (ImageView) v.findViewById(R.id.back_icon);
-        back_Btn.setOnClickListener(this);
-        title = (TextView) v.findViewById(R.id.titleactionbar);
-        title.setText("EDIT PROFILE");
-        session = new SessionManager(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.edit_profile, container, false);
+        DashBoardActivity.actionBar.show();
+        DashBoardActivity.menuView.setVisibility(View.GONE);
+        DashBoardActivity.mainView.setBackground(null);
+        DashBoardActivity.actiontitle.setText("EDIT PROFILE");
+        DashBoardActivity.actionbarmenu.setVisibility(View.GONE);
+        DashBoardActivity.back_Btn.setVisibility(View.VISIBLE);
+        session = new SessionManager(getActivity());
         Gson gson = new Gson();
         userObj = gson.fromJson(session.getSession(), User.class);
-        View headerlayout = (View) findViewById(R.id.header);
+        View headerlayout = (View)rootView. findViewById(R.id.header);
         userProfileImg = (CircleImageView) headerlayout.findViewById(R.id.profileImg);
         user = (TextView) headerlayout.findViewById(R.id.user);
         account_type = (TextView) headerlayout.findViewById(R.id.account_type);
@@ -93,16 +90,15 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         profile=(ImageView)headerlayout.findViewById(R.id.profile);
         message=(ImageView)headerlayout.findViewById(R.id.message);
         notification=(ImageView)headerlayout.findViewById(R.id.notification);
-        fragmentManager=getSupportFragmentManager();
+        fragmentManager=getActivity().getSupportFragmentManager();
         Glide.with(this).load(userObj.getFullImage()).into(userProfileImg);
         user.setText(userObj.getFirstName() + "" + userObj.getLastName());
         account_type.setText(userObj.getAccountType());
         level.setText(userObj.getUserLevel());
-        pDialog = new ProgressDialog(this);
+        pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("loading...");
-        actionbarmenu.setVisibility(View.GONE);
-        back_Btn.setVisibility(View.VISIBLE);
-        type=getIntent().getStringExtra("Type");
+        Bundle args = getArguments();
+        type=args.getString("Type");
         goals = new ArrayList<String>();
         gender = new ArrayList<String>();
         year = new ArrayList<String>();
@@ -111,7 +107,6 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         inch = new ArrayList<String>();
         w_unit = new ArrayList<String>();
         init();
-
         settingSpinner(goals, goal_sp, 1);
         gender.add("Gender");
         gender.add("Male");
@@ -132,7 +127,19 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         setMonthDays();
         settingSpinner(months, month_sp, 6);
         settingSpinner(days, day_sp, 7);
-
+        DashBoardActivity.back_Btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DashBoardActivity.actionbarmenu.setVisibility(View.VISIBLE);
+                DashBoardActivity.back_Btn.setVisibility(View.GONE);
+                if(type.equalsIgnoreCase("Fragment")){
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }else{
+                    Util.setFragment(fragmentManager,Constants.DASHHOME);
+                }
+                //DashBoardActivity.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
+        });
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,19 +160,18 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         });
 
 
-
+        return rootView;
     }
-
     private void init() {
-        goal_sp = (Spinner) findViewById(R.id.goal);
-        gender_sp = (Spinner) findViewById(R.id.gender);
-        year_sp = (Spinner) findViewById(R.id.syear);
-        month_sp = (Spinner) findViewById(R.id.smonth);
-        day_sp = (Spinner) findViewById(R.id.sday);
-        inch_sp = (Spinner) findViewById(R.id.inches);
-        weight_sp = (Spinner) findViewById(R.id.weight_unit);
-        browseBtn=(Button)findViewById(R.id.browseBtn);
-        saveBtn=(Button)findViewById(R.id.saveBtn);
+        goal_sp = (Spinner)rootView. findViewById(R.id.goal);
+        gender_sp = (Spinner)rootView.  findViewById(R.id.gender);
+        year_sp = (Spinner)rootView.  findViewById(R.id.syear);
+        month_sp = (Spinner)rootView.  findViewById(R.id.smonth);
+        day_sp = (Spinner)rootView.  findViewById(R.id.sday);
+        inch_sp = (Spinner) rootView. findViewById(R.id.inches);
+        weight_sp = (Spinner)rootView.  findViewById(R.id.weight_unit);
+        browseBtn=(Button)rootView. findViewById(R.id.browseBtn);
+        saveBtn=(Button)rootView. findViewById(R.id.saveBtn);
         browseBtn.setOnClickListener(this);
 
         for (int i = 0; i < getResources().getStringArray(R.array.goal_arrays).length; i++) {
@@ -193,7 +199,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void settingSpinner(List<String> list, Spinner spinner, int value) {
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.myspinner_style, list);
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.myspinner_style, list);
         adapter.setDropDownViewResource(R.layout.myspinner_style);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -214,7 +220,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_icon:
-                onBackPressed();
+               // onBackPressed();
                 break;
             case R.id.browseBtn:
                 chooseFile();
@@ -235,7 +241,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                     PICKFILE_RESULT_CODE);
         } catch (android.content.ActivityNotFoundException ex) {
             // Potentially direct the user to the Market with a Dialog
-            Toast.makeText(EditProfileActivity.this, "Please install a File Manager.",
+            Toast.makeText(getActivity(), "Please install a File Manager.",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -249,8 +255,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             if (resultCode == Activity.RESULT_OK) {
                 // This gets the URI of the image the user selected:
                 Uri selectedFileURI = data.getData();
-                System.out.println("SELECTED URI======" + selectedFileURI);
-                System.out.println("SELECTED URI======" + getPath(this,selectedFileURI));
+                System.out.println("SELECTED URI Fragment======" + selectedFileURI);
+
+                System.out.println("SELECTED URI======" + getPath(getActivity(),selectedFileURI));
 
 
             }
@@ -391,13 +398,13 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-    @Override
+   /* @Override
     public void onBackPressed() {
         super.onBackPressed();
         if(type.equalsIgnoreCase("Fragment")){
 
         }else{
-           callDashBoard();
+            callDashBoard();
         }
         finish();
     }
@@ -406,5 +413,5 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         startActivity(it);
 
 
-    }
+    }*/
 }

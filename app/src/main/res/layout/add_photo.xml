@@ -14,8 +14,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:background="@color/red">
+            android:background="@color/red"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/backBtn"
@@ -28,18 +28,18 @@
             android:id="@+id/rel_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar"
-            android:background="@color/bg">
+            android:layout_below="@+id/toolbar">
+
             <app.android.muscularstrength.custom.GridViewWithHeaderAndFooter
                 android:id="@+id/selectedgallery"
-                android:visibility="gone"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:horizontalSpacing="@dimen/_10sdp"
-                android:verticalSpacing="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:numColumns="2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></app.android.muscularstrength.custom.GridViewWithHeaderAndFooter>
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:horizontalSpacing="@dimen/_10sdp"
+                android:numColumns="2"
+                android:verticalSpacing="@dimen/_10sdp"
+                android:visibility="gone"></app.android.muscularstrength.custom.GridViewWithHeaderAndFooter>
 
             <Button
                 android:id="@+id/select_photos"
@@ -50,15 +50,16 @@
                 android:padding="@dimen/_10sdp"
                 android:text="Select Photos"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_12sdp"
+                android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/selectionGridlayout"
         android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
         <RelativeLayout
             android:id="@+id/rel_layout1"
@@ -73,24 +74,25 @@
 
             <Spinner
                 android:id="@+id/selection_sp"
-                android:layout_width="@dimen/_100sdp"
-                android:visibility="gone"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_35sdp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/spinner_bg"></Spinner>
+                android:background="@drawable/spwhite_bg"
+                android:visibility="visible"></Spinner>
         </RelativeLayout>
+
         <GridView
             android:id="@+id/imageGallery"
-            android:numColumns="4"
-            android:layout_below="@+id/rel_layout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_above="@+id/bottom"
-            android:verticalSpacing="@dimen/_2sdp"
-            android:horizontalSpacing="@dimen/_2sdp"
+            android:layout_below="@+id/rel_layout1"
             android:layout_marginLeft="@dimen/_2sdp"
             android:layout_marginRight="@dimen/_2sdp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </GridView>
+            android:horizontalSpacing="@dimen/_2sdp"
+            android:numColumns="4"
+            android:verticalSpacing="@dimen/_2sdp"></GridView>
+
         <RelativeLayout
             android:id="@+id/bottom"
             android:layout_width="match_parent"
@@ -119,14 +121,14 @@
                 android:id="@+id/selectedsize"
                 android:layout_width="@dimen/_60sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:layout_margin="@dimen/_5sdp"
                 android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/_5sdp"
                 android:background="@drawable/text_bg"
                 android:drawableRight="@drawable/selectedcheck"
-                android:paddingTop="@dimen/_5sdp"
                 android:paddingBottom="@dimen/_5sdp"
                 android:paddingLeft="@dimen/_15sdp"
                 android:paddingRight="@dimen/_10sdp"
+                android:paddingTop="@dimen/_5sdp"
                 android:text="10"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp" />

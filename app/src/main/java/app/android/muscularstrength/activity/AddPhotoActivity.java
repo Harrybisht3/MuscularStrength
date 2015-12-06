@@ -1,6 +1,7 @@
 package app.android.muscularstrength.activity;
 
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -8,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -39,7 +41,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import app.android.muscularstrength.R;
 import app.android.muscularstrength.Util.BitmapHelper;
@@ -69,8 +73,8 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     private String[] arrPath;
     private ImageAdapter imageAdapter;
     int countthumb;
-    boolean loaded=false;
-    private List<String> fileList = new ArrayList<String>();
+    boolean loaded = false;
+    private List<String> bucketIds, buketNames;
     List<Bitmap> selectedImages;
     List<String> selectedFiles;
     RelativeLayout selectView, selectionView;
@@ -81,31 +85,30 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     int selectedalbum;
     ProgressDialog pDialog;
     int countUpload = 0;
-    ImageView actionbarmenu,back_Btn;
+    ImageView actionbarmenu, back_Btn;
     TextView title;
-    Spinner sp_album,selection_sp;
+    Spinner sp_album, selection_sp;
     Button upload;
-
-    public static List<ImageModel>imagesmodel;
+    public static List<ImageModel> imagesmodel;
     String errorMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.add_photo);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setCustomView(R.layout.toolbar);
         View v = getSupportActionBar().getCustomView();
         actionbarmenu = (ImageView) v.findViewById(R.id.menu_icon);
         back_Btn = (ImageView) v.findViewById(R.id.back_icon);
-        title=(TextView)v.findViewById(R.id.titleactionbar);
+        title = (TextView) v.findViewById(R.id.titleactionbar);
         title.setText("ADD PHOTOS");
-        session=new SessionManager(this);
-        Gson gson=new Gson();
-        userObj=gson.fromJson(session.getSession(),User.class);
-        photoparser=getIntent().getParcelableExtra("ParcelableList");
-       // al_id= getIntent().getStringArrayListExtra("AlbumID");
+        session = new SessionManager(this);
+        Gson gson = new Gson();
+        userObj = gson.fromJson(session.getSession(), User.class);
+        photoparser = getIntent().getParcelableExtra("ParcelableList");
+        // al_id= getIntent().getStringArrayListExtra("AlbumID");
         //al_name=getIntent().getStringArrayListExtra("AlbumName");
         Log.i("DATA ALBUM", "" + photoparser.getResult());
         actionbarmenu.setVisibility(View.GONE);
@@ -113,13 +116,26 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         back_Btn.setOnClickListener(this);
         Toolbar parent = (Toolbar) v.getParent();//first get parent toolbar of current action bar
         parent.setContentInsetsAbsolute(0, 0);// set padding programmatically to 0dp
-       // moveDrawerToTop();
+        // moveDrawerToTop();
         init();
-        /*File root = new File(Environment
+        File root = new File(Environment
                 .getExternalStorageDirectory()
                 .getAbsolutePath());
-        ListDir(root);*/
+        // getfile(root);
+        ListDir();
+        selection_sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //String displayBucket=(String)parent.getSelectedItem();
+                ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.cat_color));
+                getPerBuketImages(AddPhotoActivity.this, bucketIds.get(position));
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
@@ -135,22 +151,22 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         imageGallery = (GridView) findViewById(R.id.imageGallery);
         textselect = (TextView) findViewById(R.id.selectedsize);
         textselect.setOnClickListener(this);
-        selection_sp=(Spinner)findViewById(R.id.selection_sp);
+        selection_sp = (Spinner) findViewById(R.id.selection_sp);
         selectedgallery = (GridViewWithHeaderAndFooter) findViewById(R.id.selectedgallery);
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View footerView = layoutInflater.inflate(R.layout.grid_footer, null);
         selectedgallery.addFooterView(footerView);
-        sp_album=(Spinner)footerView.findViewById(R.id.album_sp);
+        sp_album = (Spinner) footerView.findViewById(R.id.album_sp);
         //String[]list=new String[photoparser.getData().getData().size()];
-        List<String>list=new ArrayList<String>();
-        for (Album ab:photoparser.getData().getData()) {
-            list. add(ab.getTitle());
+        List<String> list = new ArrayList<String>();
+        for (Album ab : photoparser.getData().getData()) {
+            list.add(ab.getTitle());
         }
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.myspinner_style,list);
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.myspinner_style, list);
         adapter.setDropDownViewResource(R.layout.myspinner_style);
         sp_album.setAdapter(adapter);
         //selection_sp
-        upload=(Button)footerView.findViewById(R.id.addtoalbum);
+        upload = (Button) footerView.findViewById(R.id.addtoalbum);
         pDialog = new ProgressDialog(this);
         upload.setOnClickListener(this);
         pDialog.setMessage("loading...");
@@ -175,7 +191,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if(!loaded) {
+                if (!loaded) {
                     selectedImages = new ArrayList<Bitmap>();
                     selectedFiles = new ArrayList<String>();
                     final String[] columns = {MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID};
@@ -208,16 +224,126 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
         }).start();
 
     }
-   /* void ListDir(File f) {
-        File[] files = f.listFiles();
-        fileList.clear();
-        for (File file : files) {
-            fileList.add(file.getPath());
+
+    void ListDir() {
+
+        List<String> albums = new ArrayList<String>();
+        buketNames = new ArrayList<String>();
+        bucketIds = new ArrayList<String>();
+        //  albums=getAllShownImagesPath(AddPhotoActivity.this);
+        albums = getGalleryList();
+        Set<String> nondup = new HashSet<String>();
+        //remove duplicate buket Names;
+        nondup.addAll(albums);
+        albums.clear();
+        albums.addAll(nondup);
+
+        for (String bucket : albums) {
+            buketNames.add(bucket.split("@@")[0].trim());
+            bucketIds.add(bucket.split("@@")[1].trim());
         }
-        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.myspinner_style,fileList);
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.myspinner_style, buketNames);
         adapter.setDropDownViewResource(R.layout.myspinner_style);
         selection_sp.setAdapter(adapter);
-    }*/
+    }
+
+
+
+    private ArrayList<String> getGalleryList() {
+        ArrayList<String> listOfAllImages = new ArrayList<String>();
+        String[] projection = new String[]{
+                MediaStore.Images.Media._ID,
+                MediaStore.Images.Media.BUCKET_ID,
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
+                MediaStore.Images.Media.DATE_TAKEN
+        };
+
+// Get the base URI for the People table in the Contacts content provider.
+        Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+// Make the query.
+        ContentResolver cr = getContentResolver();
+        Cursor cur = cr.query(images,
+                projection, // Which columns to return
+                "",         // Which rows to return (all rows)
+                null,       // Selection arguments (none)
+                ""          // Ordering
+        );
+
+        Log.i("ListingImages", " query count=" + cur.getCount());
+
+        if (cur.moveToFirst()) {
+            String bucket;
+            String id;
+            String date;
+            int bucketColumn = cur.getColumnIndex(
+                    MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+            int bucketId = cur.getColumnIndex(
+                    MediaStore.Images.Media.BUCKET_ID);
+
+            int dateColumn = cur.getColumnIndex(
+                    MediaStore.Images.Media.DATE_TAKEN);
+
+            do {
+                // Get the field values
+                bucket = cur.getString(bucketColumn);
+                id = cur.getString(bucketId);
+                date = cur.getString(dateColumn);
+                listOfAllImages.add(bucket + "@@" + id);
+                // bucketIds.add(id);
+                // Do something with the values.
+                Log.i("ListingImages", " bucket=" + bucket
+                        + "  date_taken=" + date);
+            } while (cur.moveToNext());
+
+        }
+        return listOfAllImages;
+    }
+
+    public void getPerBuketImages(final Context context, final String CAMERA_BUCKET_ID) {
+        textselect.setText("0");
+        pDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                countthumb = 0;
+                selectedImages = new ArrayList<Bitmap>();
+                selectedFiles = new ArrayList<String>();
+                final String[] projection = {MediaStore.Images.Media.DATA};
+                final String selection = MediaStore.Images.Media.BUCKET_ID + " = ?";
+                final String[] selectionArgs = {CAMERA_BUCKET_ID};
+                final Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null);
+
+                // ArrayList<String> result = new ArrayList<String>(cursor.getCount());
+                count = cursor.getCount();
+                thumbnails = new Bitmap[count];
+                arrPath = new String[count];
+                thumbnailsselection = new boolean[count];
+                int i = 0;
+                if (cursor.moveToFirst()) {
+                    final int dataColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    do {
+                        final String data = cursor.getString(dataColumn);
+                        // result.add(data);
+                        arrPath[i] = data;
+                        thumbnails[i] = BitmapHelper.decodeFile(new File(cursor.getString(dataColumn)), 100, 100, false);
+                        i++;
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+
+                mainHandler.sendMessage(mainHandler.obtainMessage(2));
+                // uploadFile(selectedFiles.get(countUpload), WebServices.addPhotos,params);
+            }
+
+        }).start();
+
+    }
 
 
     @Override
@@ -231,29 +357,27 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                 hideShow(false);
                 break;
             case R.id.addtoalbum:
-                boolean alltrue=true;
-                Log.i("SIZE MODEL","SIZE="+imagesmodel.size());
-                for (ImageModel img:imagesmodel) {
-                    if(img.getCaption()!=null){
+                boolean alltrue = true;
+                Log.i("SIZE MODEL", "SIZE=" + imagesmodel.size());
+                for (ImageModel img : imagesmodel) {
+                    if (img.getCaption() != null) {
                         continue;
-                    }
-                    else{
-                        alltrue=false;
+                    } else {
+                        alltrue = false;
                         break;
                     }
                 }
-                if(alltrue){
-                   uploadImages();
-                }
-                else
-                    Toast.makeText(AddPhotoActivity.this,"Add  caption to all selected photos",Toast.LENGTH_LONG).show();
+                if (alltrue) {
+                    uploadImages();
+                } else
+                    Toast.makeText(AddPhotoActivity.this, "Add  caption to all selected photos", Toast.LENGTH_LONG).show();
                 break;
             case R.id.back_icon:
                 finish();
                 break;
-                case R.id.cancelBtn:
-                    hideShow(false);
-                    break;
+            case R.id.cancelBtn:
+                hideShow(false);
+                break;
             default:
                 break;
         }
@@ -271,10 +395,9 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
             selectphotos.setVisibility(View.GONE);
             selectedgallery.setVisibility(View.VISIBLE);
             selectionView.setVisibility(View.GONE);
-            if(selectedFiles.size()>0) {
+            if (selectedFiles.size() > 0) {
                 setSelectedgallery();
-            }
-            else {
+            } else {
                 selectphotos.setVisibility(View.VISIBLE);
             }
         }
@@ -282,10 +405,10 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void setSelectedgallery() {
-        imagesmodel=new ArrayList<ImageModel>();
+        imagesmodel = new ArrayList<ImageModel>();
         imagesmodel.clear();
-        for (String path:selectedFiles) {
-            ImageModel model=new ImageModel();
+        for (String path : selectedFiles) {
+            ImageModel model = new ImageModel();
             model.setCaption(null);
             model.setpath(path);
             imagesmodel.add(model);
@@ -377,9 +500,9 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                 }
             });
 
-           // Glide.with(AddPhotoActivity.this).load(Uri.parse(arrPath[position])).asBitmap().into(holder.imageview);
-          holder.imageview.setImageBitmap(thumbnails[position]);
-           // holder.imageview.setImageBitmap(BitmapHelper.decodeFile(new File(arrPath[position]),100,100,false));
+            // Glide.with(AddPhotoActivity.this).load(Uri.parse(arrPath[position])).asBitmap().into(holder.imageview);
+            holder.imageview.setImageBitmap(thumbnails[position]);
+            // holder.imageview.setImageBitmap(BitmapHelper.decodeFile(new File(arrPath[position]),100,100,false));
             holder.checkbox.setChecked(thumbnailsselection[position]);
             holder.id = position;
             return convertView;
@@ -405,15 +528,15 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
 
     //http://muscularstrength.com/creat_album.php?userid=135953&album_id=1281&caption=test&imgefile=$_FILES["frmFile"]
     private String uploadFile() {
-        String response =null;
+        String response = null;
 
         String charset = "UTF-8";
-       // String requestURL = "YOUR_URL";
+        // String requestURL = "YOUR_URL";
 
         MultipartUtility multipart = null;
         try {
             multipart = new MultipartUtility(WebServices.addPhotos, charset);
-            Log.i("USER ID","ID="+userObj.getUserId());
+            Log.i("USER ID", "ID=" + userObj.getUserId());
             multipart.addFormField("userid", userObj.getUserId());
             multipart.addFormField("album_id", photoparser.getData().getData().get(selectedalbum).getId());
             multipart.addFormField("caption", imagesmodel.get(countUpload).getCaption());
@@ -527,8 +650,8 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
 
     //upload images to server
     private void uploadImages() {
-        if(countUpload==0)
-        pDialog.show();
+        if (countUpload == 0)
+            pDialog.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -536,10 +659,10 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                 params.put("userid", "" + userObj.getUserId());
                 params.put("album_id", photoparser.getData().getData().get(selectedalbum).getId());
                 params.put("caption", imagesmodel.get(countUpload).getCaption());*/
-             String resp= uploadFile();
+                String resp = uploadFile();
                 try {
-                    JSONObject json=new JSONObject(resp);
-                    if(json!=null) {
+                    JSONObject json = new JSONObject(resp);
+                    if (json != null) {
                         if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
                             countUpload++;
                             mainHandler.sendMessage(mainHandler.obtainMessage(1));
@@ -554,7 +677,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Log.i("Response","R="+resp);
+                Log.i("Response", "R=" + resp);
             }
 
         }).start();
@@ -566,18 +689,16 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
             try {
 
 
-
                 switch (message.what) {
                     case 0:
                         pDialog.dismiss();
                         pDialog.cancel();
-                        Toast.makeText(AddPhotoActivity.this,""+errorMessage,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddPhotoActivity.this, "" + errorMessage, Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
                         if (countUpload < imagesmodel.size()) {
                             uploadImages();
-                        }
-                        else{
+                        } else {
                             pDialog.dismiss();
                             pDialog.cancel();
                         }
@@ -585,7 +706,7 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
                     case 2:
                         pDialog.dismiss();
                         pDialog.cancel();
-                        loaded=true;
+                        loaded = true;
                         imageAdapter = new ImageAdapter();
                         imageGallery.setAdapter(imageAdapter);
                         break;
@@ -600,16 +721,15 @@ public class AddPhotoActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        loaded=false;
+        loaded = false;
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(loaded){
+        if (loaded) {
             hideShow(false);
-        }
-        else{
+        } else {
             finish();
         }
     }

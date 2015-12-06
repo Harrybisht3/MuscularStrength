@@ -10,13 +10,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,11 +31,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import app.android.muscularstrength.R;
+import app.android.muscularstrength.Util.Constants;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.AddPhotoActivity;
 import app.android.muscularstrength.activity.CreateAlbumActivity;
 import app.android.muscularstrength.activity.DashBoardActivity;
 import app.android.muscularstrength.adapter.AlbumAdapter;
+import app.android.muscularstrength.custom.NonScrollableGridView;
 import app.android.muscularstrength.model.Album;
 import app.android.muscularstrength.model.PhotoParser;
 import app.android.muscularstrength.model.User;
@@ -53,7 +55,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
     int from;
     float density;
     private int page_no = 1;
-    private GridView gridAlbum;
+    private NonScrollableGridView gridAlbum;
     private Button addPhotos, createAlbum;
     ProgressDialog pDialog;
     CircleImageView userProfileImg;
@@ -64,6 +66,8 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
     List<Album> album;
     PhotoParser data;
     String errorMessage;
+    FragmentManager fragmentManager;
+    ImageView profile,message,notification;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -79,7 +83,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
             rootView = inflater.inflate(R.layout.photo_fragment, container, false);
             density = Util.getDensity(getActivity());
             session = new SessionManager(getActivity());
-            gridAlbum = (GridView) rootView.findViewById(R.id.albumGrid);
+            gridAlbum = (NonScrollableGridView) rootView.findViewById(R.id.albumGrid);
             createAlbum = (Button) rootView.findViewById(R.id.createAlbum);
             addPhotos = (Button) rootView.findViewById(R.id.addPhotos);
             createAlbum.setOnClickListener(this);
@@ -94,6 +98,10 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
             user = (TextView) headerlayout.findViewById(R.id.user);
             account_type = (TextView) headerlayout.findViewById(R.id.account_type);
             level = (TextView) headerlayout.findViewById(R.id.level);
+            profile=(ImageView)headerlayout.findViewById(R.id.profile);
+            message=(ImageView)headerlayout.findViewById(R.id.message);
+            notification=(ImageView)headerlayout.findViewById(R.id.notification);
+            fragmentManager=getActivity().getSupportFragmentManager();
             Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
             user.setText(userObj.getFirstName() + "" + userObj.getLastName());
             account_type.setText(userObj.getAccountType());
@@ -104,7 +112,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
             from = args.getInt("from");
             Log.i(TAG, "called From=" + from);
             getPhoto();
-            gridAlbum.setOnTouchListener(new View.OnTouchListener() {
+           /* gridAlbum.setOnTouchListener(new View.OnTouchListener() {
                 // Setting on Touch Listener for handling the touch inside ScrollView
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -112,10 +120,31 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
                     v.getParent().requestDisallowInterceptTouchEvent(true);
                     return false;
                 }
-            });
+            });*/
 
             //getNewsfeed();
         }
+
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.FRIEND);
+            }
+        });
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.MESSAGE);
+            }
+        });
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.NOTIFICATION);
+            }
+        });
+
 
 
         return rootView;
@@ -142,6 +171,7 @@ public class PhotoFragment extends Fragment implements View.OnClickListener {
                             album = new ArrayList<Album>();
                             album.clear();
                             album.addAll(data.getData().getData());
+                            Log.i(TAG,"ALBUM SIZE="+album.size());
                             mainHandler.sendMessage(mainHandler.obtainMessage(1));
                         } else {
                             mainHandler.sendMessage(mainHandler.obtainMessage(0));

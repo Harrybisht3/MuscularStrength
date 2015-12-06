@@ -124,7 +124,7 @@ public class CreateAlbumActivity extends AppCompatActivity implements View.OnCli
                 params.put("title", album_name.getText().toString().trim());
                 params.put("description", album_caption.getText().toString().trim());
                 JSONParser parser = new JSONParser();
-                JSONObject json = parser.makeHttpRequest(WebServices.addPhotos, "POST", params);
+                JSONObject json = parser.makeHttpRequest(WebServices.addPhotos, "GET", params);
                 try {
                     if (json != null) {
                         if (json.getString("result").equalsIgnoreCase("SUCCESS")) {

@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +39,7 @@ import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.DashBoardActivity;
 import app.android.muscularstrength.activity.YouTubePlayerActivity;
 import app.android.muscularstrength.adapter.MemberRoutineAdapter;
+import app.android.muscularstrength.custom.NonScrollableGridView;
 import app.android.muscularstrength.model.Routine;
 import app.android.muscularstrength.model.RoutineParser;
 import app.android.muscularstrength.model.User;
@@ -69,7 +69,7 @@ public class RoutineFragment extends Fragment {
     List<Routine> dataRoutine;
     List<Video>dataVideo;
     String errorMessage;
-    GridView list_memberRoutine;
+    NonScrollableGridView list_memberRoutine;
     ScrollView scroll;
     EditText search_routine;
 
@@ -87,7 +87,7 @@ public class RoutineFragment extends Fragment {
             rootView = inflater.inflate(R.layout.new_routine_fragment, container, false);
            // list_routine = (ExpandableListView) rootView.findViewById(R.id.list_routine);
             scroll=(ScrollView)rootView.findViewById(R.id.scrollView);
-            list_memberRoutine=(GridView)rootView.findViewById(R.id.gridRoutine);
+            list_memberRoutine=(NonScrollableGridView)rootView.findViewById(R.id.gridRoutine);
             search_routine = (EditText) rootView.findViewById(R.id.search_routine);
             density = Util.getDensity(getActivity());
             dataRoutine = new ArrayList<Routine>();
@@ -122,7 +122,7 @@ public class RoutineFragment extends Fragment {
             Log.i(TAG, "called From=" + from);
             //getRoutine();
             getMemberRoutine();
-            list_memberRoutine.setOnTouchListener(new View.OnTouchListener() {
+            /*list_memberRoutine.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     scroll.requestDisallowInterceptTouchEvent(true);
@@ -137,7 +137,7 @@ public class RoutineFragment extends Fragment {
 
                     return false;
                 }
-            });
+            });*/
         }
         list_memberRoutine.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

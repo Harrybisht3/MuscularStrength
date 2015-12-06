@@ -37,6 +37,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
 
             holder = new HolderView();
             holder.image_article = (ImageView)row.findViewById(R.id.image_article);
+           // holder.image_article  = (SimpleDraweeView)row. findViewById(R.id.image_article);
             holder.textHeading = (TextView)row.findViewById(R.id.textHeading);
             holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
             holder.textDesc = (TextView)row.findViewById(R.id.textDesc);
@@ -47,7 +48,9 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
         {
             holder = (HolderView)row.getTag();
         }
+       // Uri uri=Uri.parse(data.getImage());
         Glide.with(_context).load(data.getImage()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.image_article);
+       // holder.image_article.setImageURI(uri);
         holder.textHeading.setText(data.getHeading());
         holder.txtTitle.setText(data.getTitle());
         holder.textDesc.setText(data.getDescription());
@@ -57,6 +60,7 @@ public class ArticleAdapter extends ArrayAdapter<Article> {
     static class HolderView
     {
         ImageView image_article;
+       // SimpleDraweeView image_article;
         TextView textHeading,txtTitle,textDesc;
     }
 }

@@ -1,9 +1,11 @@
 package app.android.muscularstrength.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -32,6 +34,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -46,6 +49,7 @@ import app.android.muscularstrength.R;
 import app.android.muscularstrength.adapter.MenuListAdapter;
 import app.android.muscularstrength.fragment.ArticleFragment;
 import app.android.muscularstrength.fragment.CustomizeAvatarFragment;
+import app.android.muscularstrength.fragment.EditProfileFragment;
 import app.android.muscularstrength.fragment.FragmentHome;
 import app.android.muscularstrength.fragment.FriendRequestFragment;
 import app.android.muscularstrength.fragment.FriendsFragment;
@@ -108,10 +112,11 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
         actionbarmenu = (ImageView) v.findViewById(R.id.menu_icon);
         back_Btn = (ImageView) v.findViewById(R.id.back_icon);
         actiontitle = (TextView) v.findViewById(R.id.titleactionbar);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(R.color.actionbar_color));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionbar_color)));
         Toolbar parent = (Toolbar) v.getParent();//first get parent toolbar of current action bar
         parent.setContentInsetsAbsolute(0, 0);// set padding programmatically to 0dp
         moveDrawerToTop();
+        Fresco.initialize(this);
         //initActionBar() ;
         initDrawer();
         actionBar = getSupportActionBar();
@@ -353,7 +358,9 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
         } else if (position == 7) {
          fragment=new CustomizeAvatarFragment();
         } else if (position == 8) {
-            editProfile();
+          fragment=new EditProfileFragment();
+            bundle.putString("Type","Activity");
+            fragment.setArguments(bundle);
 
         } else if (position == 9) {
 
@@ -384,7 +391,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
             fragment.setArguments(bundle);
         }
 
-        if(position!=8||position!=13) {
+        if(position!=13) {
             replaceFragment(fragment);
             ftx.commit();
         }
@@ -460,6 +467,7 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
 
     @Override
     public void onBackPressed() {
+       mDrawerLayout.closeDrawers();
         FragmentManager manager = getSupportFragmentManager();
         if (manager.getBackStackEntryCount() == 1) {
             Log.i("Last", "backstack=" + manager.getBackStackEntryAt(0).getName());
@@ -578,4 +586,20 @@ public class DashBoardActivity extends AppCompatActivity implements OnItemClickL
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            // Check if the user actually selected an image:
+            if (resultCode == Activity.RESULT_OK) {
+                Uri selectedFileURI = data.getData();
+                System.out.println("SELECTED URI ACTIVITY======" + selectedFileURI);
+                /*FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction ftx = fragmentManager.beginTransaction();
+                Fragment fragment = null;*/
+               Fragment fragment =getSupportFragmentManager().findFragmentById(R.id.contentframe);
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+    }
 }

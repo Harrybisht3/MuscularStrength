@@ -9,9 +9,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import app.android.muscularstrength.R;
+import app.android.muscularstrength.Util.Constants;
+import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.DashBoardActivity;
 import app.android.muscularstrength.adapter.LiftAdapter;
 import app.android.muscularstrength.model.Lift;
@@ -51,6 +55,8 @@ public class LiftFragment extends Fragment{
     User userObj;
     List<Lift> data_lift;
     LiftAdapter adapter;
+    FragmentManager fragmentManager;
+    ImageView profile,message,notification;
     
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Nullable
@@ -87,6 +93,30 @@ public class LiftFragment extends Fragment{
         pDialog=new ProgressDialog(getActivity());
         pDialog.setMessage("loading...");
         getLift();
+
+        level = (TextView) headerlayout.findViewById(R.id.level);
+        profile=(ImageView)headerlayout.findViewById(R.id.profile);
+        message=(ImageView)headerlayout.findViewById(R.id.message);
+        notification=(ImageView)headerlayout.findViewById(R.id.notification);
+        fragmentManager=getActivity().getSupportFragmentManager();
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.FRIEND);
+            }
+        });
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.MESSAGE);
+            }
+        });
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.NOTIFICATION);
+            }
+        });
 
     }
     private void getLift(){

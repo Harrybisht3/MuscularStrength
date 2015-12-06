@@ -23,9 +23,21 @@
         android:id="@+id/list_subforum"
         android:layout_width="match_parent"
         android:layout_marginLeft="@dimen/_10sdp"
+        android:visibility="visible"
         android:layout_marginRight="@dimen/_10sdp"
         android:layout_height="match_parent">
-
     </ListView>
+    <TextView
+        android:id="@+id/nodataTxt"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:text="No data found"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:textSize="@dimen/_20sdp"
+        android:textColor="@color/white"
+        android:layout_margin="@dimen/padding_text"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

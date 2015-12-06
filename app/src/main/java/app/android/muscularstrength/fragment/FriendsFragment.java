@@ -9,9 +9,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import app.android.muscularstrength.R;
+import app.android.muscularstrength.Util.Constants;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.DashBoardActivity;
 import app.android.muscularstrength.adapter.FriendAdapter;
@@ -42,8 +45,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class FriendsFragment extends Fragment {
     View rootView;
-
-
     int from;
     SessionManager session;
     User userObj;
@@ -55,6 +56,8 @@ public class FriendsFragment extends Fragment {
     ArrayList<Friend> dataFriend;
     FriendAdapter adapter;
     Fragment fragmentcontext;
+    FragmentManager fragmentManager;
+    ImageView profile,message,notification;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -84,6 +87,11 @@ public class FriendsFragment extends Fragment {
             user = (TextView) headerlayout.findViewById(R.id.user);
             account_type = (TextView) headerlayout.findViewById(R.id.account_type);
             level = (TextView) headerlayout.findViewById(R.id.level);
+            profile=(ImageView)headerlayout.findViewById(R.id.profile);
+            message=(ImageView)headerlayout.findViewById(R.id.message);
+            notification=(ImageView)headerlayout.findViewById(R.id.notification);
+            profile.setAlpha(0.5f);
+            fragmentManager=getActivity().getSupportFragmentManager();
             Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
             user.setText(userObj.getFirstName() + "" + userObj.getLastName());
             account_type.setText(userObj.getAccountType());
@@ -91,6 +99,26 @@ public class FriendsFragment extends Fragment {
             pDialog.setMessage("loading...");
             getFriends();
         }
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Util.setFragment(fragmentManager, Constants.FRIEND);
+            }
+        });
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.MESSAGE);
+            }
+        });
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.NOTIFICATION);
+            }
+        });
+
         return rootView;
     }
 

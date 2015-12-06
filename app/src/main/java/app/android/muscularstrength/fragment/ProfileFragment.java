@@ -2,7 +2,6 @@ package app.android.muscularstrength.fragment;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
@@ -10,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -30,8 +31,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import app.android.muscularstrength.R;
+import app.android.muscularstrength.Util.Constants;
+import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.DashBoardActivity;
-import app.android.muscularstrength.activity.EditProfileActivity;
 import app.android.muscularstrength.model.User;
 import app.android.muscularstrength.network.JSONParser;
 import app.android.muscularstrength.session.SessionManager;
@@ -53,6 +55,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     ProgressDialog pDialog;
     JSONObject json;
     String user_id;
+    FragmentManager fragmentManager;
+    ImageView profile,message,notification;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Nullable
@@ -64,8 +68,27 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         DashBoardActivity.menuView.setVisibility(View.GONE);
         DashBoardActivity.mainView.setBackground(null);
         DashBoardActivity.actiontitle.setText("PROFILE");
+        fragmentManager=getActivity().getSupportFragmentManager();
         init();
         getProfile();
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.FRIEND);
+            }
+        });
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.MESSAGE);
+            }
+        });
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.NOTIFICATION);
+            }
+        });
 
         return rootView;
     }
@@ -80,7 +103,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         user = (TextView) headerlayout.findViewById(R.id.user);
         account_type = (TextView) headerlayout.findViewById(R.id.account_type);
         level = (TextView) headerlayout.findViewById(R.id.level);
-
+        profile=(ImageView)headerlayout.findViewById(R.id.profile);
+        message=(ImageView)headerlayout.findViewById(R.id.message);
+        notification=(ImageView)headerlayout.findViewById(R.id.notification);
         pDialog = new ProgressDialog(getActivity());
         pDialog.setMessage("loading...");
         goal = (TextView) rootView.findViewById(R.id.goalTxt);
@@ -122,9 +147,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.edit_profile:
-                Intent it=new Intent(getActivity(), EditProfileActivity.class);
+              /*  Intent it=new Intent(getActivity(), EditProfileActivity.class);
                 it.putExtra("Type","Fragment");
-                startActivity(it);
+                startActivity(it);*/
+                Util.setFragment(fragmentManager,Constants.EDITPROFILE);
                 break;
             default:
                 break;

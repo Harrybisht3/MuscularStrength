@@ -50,6 +50,7 @@ public class SubForumFragment extends Fragment implements AdapterView.OnItemClic
     private int page_no = 1;
     ProgressDialog pDialog;
     String errorMessage;
+    TextView nodatatxt;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
@@ -69,6 +70,7 @@ public class SubForumFragment extends Fragment implements AdapterView.OnItemClic
             list_subForum = (ListView) rootView.findViewById(R.id.list_subforum);
             txtheading = (TextView) rootView.findViewById(R.id.txtheading);
             txtcategories = (TextView) rootView.findViewById(R.id.txtcategories);
+            nodatatxt= (TextView) rootView.findViewById(R.id.nodataTxt);
             adapter = new SubForumAdapter(getActivity());
             list_subForum.setAdapter(adapter);
             pDialog = new ProgressDialog(getActivity());
@@ -120,7 +122,7 @@ public class SubForumFragment extends Fragment implements AdapterView.OnItemClic
                         mainHandler.sendMessage(mainHandler.obtainMessage(1));
                     } else {
                         errorMessage=json.getJSONObject("forum").getString("data");
-                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        mainHandler.sendMessage(mainHandler.obtainMessage(2));
                     }
                 } else {
                     errorMessage = getResources().getString(R.string.errorMessage);
@@ -151,12 +153,19 @@ public class SubForumFragment extends Fragment implements AdapterView.OnItemClic
                 if (isAdded()) {
                     pDialog.dismiss();
                     pDialog.cancel();
+                    list_subForum.setVisibility(View.VISIBLE);
+                    nodatatxt.setVisibility(View.GONE);
                     switch (message.what) {
                         case 0:
                             Toast.makeText(getActivity(),""+errorMessage,Toast.LENGTH_SHORT).show();
                             break;
                         case 1:
                             setListAdapter();
+                            break;
+                        case 2:
+                            list_subForum.setVisibility(View.GONE);
+                            nodatatxt.setVisibility(View.VISIBLE);
+                            nodatatxt.setText(errorMessage);
                             break;
                     }
                 }

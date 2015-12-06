@@ -63,8 +63,21 @@
         android:childDivider="@color/cat_color"
         android:divider="@color/cat_color"
         android:dividerHeight="1dp"
+        android:visibility="visible"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/padding_text">
     </ExpandableListView>
+    <TextView
+        android:id="@+id/nodataTxt"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:text="No data found"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:textSize="@dimen/_20sdp"
+        android:textColor="@color/white"
+        android:layout_margin="@dimen/padding_text"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

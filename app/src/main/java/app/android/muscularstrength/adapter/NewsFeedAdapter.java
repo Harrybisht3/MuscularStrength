@@ -48,6 +48,8 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
     String msg;
     SessionManager session;
     User userObj;
+    TextView textView;
+
 
     public NewsFeedAdapter(Context context, List<Newsfeed> data_newsfeed) {
         this._context = context;
@@ -110,7 +112,7 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
         heading.setText(headerInfo.getName());
         TextView textcontent = (TextView) convertView.findViewById(R.id.text_content);
         textcontent.setText(Html.fromHtml(headerInfo.getComment()));
-        TextView textlike = (TextView) convertView.findViewById(R.id.likeTxt);
+        final TextView textlike = (TextView) convertView.findViewById(R.id.likeTxt);
         TextView textreply = (TextView) convertView.findViewById(R.id.text_reply);
         TextView timeago = (TextView) convertView.findViewById(R.id.time_ago);
         timeago.setText(headerInfo.getTime());
@@ -127,6 +129,7 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
         textlike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                textView=textlike;
                 hitLike(headerInfo.getId());
             }
         });
@@ -157,7 +160,7 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
         heading.setText(childinfo.getName());
         TextView textcontent = (TextView) convertView.findViewById(R.id.text_content);
         textcontent.setText(Html.fromHtml(childinfo.getComment()));
-        TextView textlike = (TextView) convertView.findViewById(R.id.likeTxt);
+       final TextView textlike = (TextView) convertView.findViewById(R.id.likeTxt);
         TextView textreply = (TextView) convertView.findViewById(R.id.text_reply);
         TextView timeago = (TextView) convertView.findViewById(R.id.time_ago);
         timeago.setText(childinfo.getTime());
@@ -168,6 +171,7 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
         textlike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                textView=textlike;
                 hitLike(childinfo.getId());
             }
         });
@@ -232,7 +236,7 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
                         if (json.getString("result").equalsIgnoreCase("SUCCESS")) {
                             // datanewsFeed.addAll(data.getData().getNewsfeed());
                             msg = json.getString("data");
-                            mainHandler.sendMessage(mainHandler.obtainMessage(1));
+                            mainHandler.sendMessage(mainHandler.obtainMessage(2));
                         } else {
                             mainHandler.sendMessage(mainHandler.obtainMessage(0));
                         }
@@ -257,11 +261,14 @@ public class NewsFeedAdapter extends BaseExpandableListAdapter {
                     case 0:
                         break;
                     case 1:
+                        textView.setText("Liked");
+                        textView.setTextColor(_context.getResources().getColor(R.color.cat_color));
                         Toast.makeText(_context, msg, Toast.LENGTH_SHORT).show();
                         break;
                     case 2:
                         // isSearch=true;
                         // setListAdapter();
+                        Toast.makeText(_context, msg, Toast.LENGTH_SHORT).show();
                         break;
                 }
                 //}

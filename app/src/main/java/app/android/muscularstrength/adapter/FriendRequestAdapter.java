@@ -50,6 +50,18 @@ public class FriendRequestAdapter extends ArrayAdapter<FriendRequest> {
         Glide.with(_context).load(data.getImage()).into(holder.userimg);
         holder.text_name.setText(data.getName());
         holder.text_user.setText(data.getUser());
+        holder.accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        holder.deny.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         return row;
     }

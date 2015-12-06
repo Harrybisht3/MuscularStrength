@@ -64,6 +64,8 @@ public class ThreadFragment extends Fragment {
     String msg;
     SessionManager session;
     User userObj;
+    TextView nodatatxt;
+    View threadView;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 
@@ -85,7 +87,8 @@ public class ThreadFragment extends Fragment {
         //DashBoardActivity.mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         list_thread=(ListView)rootView.findViewById(R.id.list_thread);
         userimg = (CircleImageView)rootView.findViewById(R.id.userimg);
-
+        threadView=(View)rootView.findViewById(R.id.threadView);
+        nodatatxt= (TextView) rootView.findViewById(R.id.nodataTxt);
         text_user = (TextView)rootView.findViewById(R.id.text_user);
        text_time = (TextView)rootView.findViewById(R.id.text_time);
        text_preview = (TextView)rootView.findViewById(R.id.text_preview);
@@ -157,7 +160,7 @@ public class ThreadFragment extends Fragment {
                     }
                     else{
                         errorMessage=json.getJSONObject("posts").getString("data");
-                        mainHandler.sendMessage(mainHandler.obtainMessage(0));
+                        mainHandler.sendMessage(mainHandler.obtainMessage(3));
                     }
                 } else {
                     errorMessage = getResources().getString(R.string.errorMessage);
@@ -188,6 +191,9 @@ public class ThreadFragment extends Fragment {
                 if (isAdded()) {
                     pDialog.dismiss();
                     pDialog.cancel();
+                    list_thread.setVisibility(View.VISIBLE);
+                    nodatatxt.setVisibility(View.GONE);
+                    threadView.setVisibility(View.VISIBLE);
                     switch (message.what) {
                         case 0:
                             Toast.makeText(getActivity(), "" + errorMessage, Toast.LENGTH_SHORT).show();
@@ -196,7 +202,13 @@ public class ThreadFragment extends Fragment {
                             setListAdapter();
                             break;
                         case 2:
-                            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "" + errorMessage, Toast.LENGTH_SHORT).show();
+                            break;
+                        case 3:
+                            list_thread.setVisibility(View.GONE);
+                            nodatatxt.setVisibility(View.VISIBLE);
+                            threadView.setVisibility(View.GONE);
+                            nodatatxt.setText(errorMessage);
                             break;
                         default:
                             break;

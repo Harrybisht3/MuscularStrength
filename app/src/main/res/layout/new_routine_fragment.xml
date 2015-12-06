@@ -342,13 +342,13 @@ android:textAllCaps="false"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/red"
                 android:layout_height="@dimen/_2sdp"/>
-            <GridView
+            <app.android.muscularstrength.custom.NonScrollableGridView
                 android:id="@+id/gridRoutine"
                 android:layout_width="match_parent"
                 android:numColumns="2"
                 android:verticalSpacing="@dimen/_2sdp"
                 android:horizontalSpacing="@dimen/_2sdp"
-                android:layout_height="@dimen/_150sdp"></GridView>
+                android:layout_height="@dimen/_150sdp"></app.android.muscularstrength.custom.NonScrollableGridView>
             <include layout="@layout/footer_layout"></include>
         </LinearLayout>
     </ScrollView>

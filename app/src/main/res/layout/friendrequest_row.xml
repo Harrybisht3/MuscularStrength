@@ -10,8 +10,8 @@
         android:layout_centerVertical="true"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_width="@dimen/_50sdp"
-        android:layout_height="@dimen/_50sdp"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
         app:border_width="1dp"
         app:border_color="@android:color/transparent"/>
     <LinearLayout

@@ -12,4 +12,9 @@ public class Constants {
     public static final int MYPOSTS=1;
     public static final int TODAYS=2;
     public static final int PASTPOSTS=3;
+    public static final int MESSAGE=2;
+    public static final int FRIEND=1;
+    public static final int NOTIFICATION=3;
+    public static final int EDITPROFILE=4;
+    public static final int DASHHOME=5;
 }

@@ -56,7 +56,7 @@
                         android:layout_weight="1" />
                 </LinearLayout>
 
-                <GridView
+                <app.android.muscularstrength.custom.NonScrollableGridView
                     android:id="@+id/albumGrid"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="match_parent"
@@ -64,8 +64,8 @@
                     android:verticalSpacing="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_height="wrap_content"
-                    android:numColumns="2"></GridView>
+                    android:layout_height="match_parent"
+                    android:numColumns="2"></app.android.muscularstrength.custom.NonScrollableGridView>
             </LinearLayout>
 
             <LinearLayout

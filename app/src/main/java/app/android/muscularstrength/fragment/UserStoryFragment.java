@@ -9,11 +9,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import app.android.muscularstrength.R;
+import app.android.muscularstrength.Util.Constants;
 import app.android.muscularstrength.Util.Util;
 import app.android.muscularstrength.activity.DashBoardActivity;
 import app.android.muscularstrength.model.StoryParser;
@@ -51,6 +54,9 @@ public class UserStoryFragment extends Fragment {
     User userObj;
     TextView storyTxt;
     String story,errorMessage;
+    FragmentManager fragmentManager;
+    ImageView profile,message,notification;
+
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -75,6 +81,10 @@ public class UserStoryFragment extends Fragment {
             user = (TextView) headerlayout.findViewById(R.id.user);
             account_type = (TextView) headerlayout.findViewById(R.id.account_type);
             level = (TextView) headerlayout.findViewById(R.id.level);
+            profile=(ImageView)headerlayout.findViewById(R.id.profile);
+            message=(ImageView)headerlayout.findViewById(R.id.message);
+            notification=(ImageView)headerlayout.findViewById(R.id.notification);
+            fragmentManager=getActivity().getSupportFragmentManager();
             Glide.with(getActivity()).load(userObj.getFullImage()).into(userProfileImg);
             user.setText(userObj.getFirstName() + "" + userObj.getLastName());
             account_type.setText(userObj.getAccountType());
@@ -88,6 +98,25 @@ public class UserStoryFragment extends Fragment {
 
             //getNewsfeed();
         }
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.FRIEND);
+            }
+        });
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.MESSAGE);
+            }
+        });
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Util.setFragment(fragmentManager, Constants.NOTIFICATION);
+            }
+        });
+
 
 
         return rootView;
