@@ -164,8 +164,8 @@ public class LiftAdapter extends ArrayAdapter<Lift> {
         String datevalue = data.getDate();
         int index_u = w_unit.indexOf(unit_v);
 
-        int index_m = months.indexOf(datevalue.split("/")[0]);
-        int index_d = days.indexOf(datevalue.split("/")[1]);
+        int index_m = months.indexOf(Util.pad(datevalue.split("/")[0]));
+        int index_d = days.indexOf(Util.pad(datevalue.split("/")[1]));
         int index_y = year.indexOf(datevalue.split("/")[2]);
         settingSpinner(year, year_sp);
         settingSpinner(months, month_sp);
